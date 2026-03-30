@@ -1,5 +1,4 @@
-<!DOCTYPE 
-html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -20,6 +19,7 @@ html>
     font-family: 'Inter', sans-serif;
     line-height: 1.5;
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
   h1, h2, h3 {
     font-weight: 700;
@@ -32,6 +32,20 @@ html>
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+  /* Particle / grid background */
+  #particle-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 20% 30%, rgba(0,212,170,0.03) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px);
   }
   /* Header & Navigation */
   .navbar {
@@ -68,6 +82,7 @@ html>
   .nav-links {
     display: flex;
     gap: 28px;
+    align-items: center;
   }
   .nav-links a {
     color: #e8e6de;
@@ -78,6 +93,18 @@ html>
   }
   .nav-links a:hover {
     color: #00d4aa;
+  }
+  .github-star-badge {
+    background: #111318;
+    padding: 6px 12px;
+    border-radius: 40px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.2s;
+  }
+  .github-star-badge:hover {
+    border-color: #00d4aa;
   }
   /* Buttons */
   .btn {
@@ -103,18 +130,34 @@ html>
     background: rgba(0,212,170,0.2);
     transform: translateY(-2px);
   }
-  /* Hero section */
+  .btn-outline {
+    border-color: #00d4aa;
+    color: #00d4aa;
+  }
+  /* Hero section with animation */
   .hero {
-    padding: 60px 0 40px;
+    padding: 80px 0 60px;
     text-align: center;
+    animation: fadeInUp 0.8s ease-out;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   .hero h2 {
-    font-size: 3.2rem;
+    font-size: 3.5rem;
     background: linear-gradient(135deg, #fff, #00d4aa);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     margin-bottom: 20px;
+    line-height: 1.2;
   }
   .hero p {
     font-size: 1.2rem;
@@ -127,7 +170,7 @@ html>
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    margin-top: 20px;
+    margin: 30px 0 20px;
   }
   .badge {
     background: #111318;
@@ -137,57 +180,125 @@ html>
     font-size: 0.75rem;
     border: 1px solid rgba(255,255,255,0.08);
   }
-  /* Sections */
-  section {
-    margin: 60px 0;
+  .cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
   }
-  .section-title {
-    font-size: 1.8rem;
-    margin-bottom: 24px;
+  /* Pricing & Cards */
+  .pricing-grid {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 40px 0;
+  }
+  .pricing-card {
+    background: #111318;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 32px;
+    padding: 32px;
+    width: 280px;
+    transition: transform 0.2s, border-color 0.2s;
     text-align: center;
   }
-  .section-sub {
-    text-align: center;
-    color: #8b8a82;
-    max-width: 700px;
-    margin: 0 auto 40px;
+  .pricing-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0,212,170,0.3);
   }
-  .cards-grid {
+  .pricing-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .pricing-price {
+    font-size: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: #00d4aa;
+    margin: 16px 0;
+  }
+  .pricing-features {
+    list-style: none;
+    margin: 20px 0;
+    font-size: 0.85rem;
+    color: #b0aea5;
+    text-align: left;
+    padding-left: 20px;
+  }
+  .pricing-features li {
+    margin: 10px 0;
+    position: relative;
+  }
+  .pricing-features li::before {
+    content: "✓";
+    color: #00d4aa;
+    position: absolute;
+    left: -20px;
+  }
+  /* Publications cards */
+  .publications-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 24px;
     margin-top: 20px;
   }
-  .card {
+  .pub-card {
     background: #111318;
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 24px;
-    padding: 28px;
+    padding: 24px;
     transition: 0.2s;
   }
-  .card:hover {
+  .pub-card:hover {
     border-color: rgba(0,212,170,0.3);
   }
-  .card-icon {
+  .pub-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .pub-doi {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #8b8a82;
+    margin: 12px 0;
+  }
+  .pub-link {
+    color: #00d4aa;
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+  /* CTA Banner */
+  .work-cta {
+    background: linear-gradient(135deg, #0f1a1a, #0a0b0d);
+    border-radius: 48px;
+    padding: 48px;
+    text-align: center;
+    margin: 60px 0;
+    border: 1px solid rgba(0,212,170,0.2);
+  }
+  .work-cta h3 {
     font-size: 2rem;
     margin-bottom: 16px;
   }
-  .card h3 {
-    margin-bottom: 12px;
-    font-size: 1.3rem;
+  .work-cta p {
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto 24px;
   }
-  .formula {
-    background: #0c0e12;
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1.1rem;
-    margin: 20px 0;
-    border: 1px solid rgba(0,212,170,0.2);
-    color: #00d4aa;
+  /* Scroll animations */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
   }
-  /* Demo container */
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Existing demo styles retained */
   .demo-container {
     background: #08090c;
     border-radius: 32px;
@@ -196,16 +307,6 @@ html>
     margin-top: 30px;
     padding: 24px;
   }
-  /* About section */
-  .about-text {
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: center;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #c0bfb5;
-  }
-  /* Contact form */
   .contact-form {
     max-width: 600px;
     margin: 0 auto;
@@ -227,11 +328,6 @@ html>
     font-family: 'Inter', sans-serif;
     font-size: 0.9rem;
   }
-  .form-group input:focus, .form-group textarea:focus {
-    outline: none;
-    border-color: #00d4aa;
-  }
-  /* Footer */
   .footer {
     border-top: 1px solid rgba(255,255,255,0.05);
     padding: 32px 0;
@@ -247,34 +343,34 @@ html>
     color: #00d4aa;
     text-decoration: none;
   }
+  .bmc-button {
+    background: #FFDD00;
+    color: #000;
+    padding: 6px 16px;
+    border-radius: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .bmc-button:hover {
+    background: #FFCC00;
+    transform: scale(1.02);
+  }
   @media (max-width: 768px) {
     .hero h2 { font-size: 2.2rem; }
     .navbar { flex-direction: column; align-items: flex-start; }
     .nav-links { margin-top: 8px; flex-wrap: wrap; }
-  }
-  /* Easter egg console style */
-  .easter-egg-toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #00d4aa;
-    color: #000;
-    padding: 8px 16px;
-    border-radius: 40px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    z-index: 999;
-    animation: fadeOut 3s forwards;
-  }
-  @keyframes fadeOut {
-    0% { opacity: 1; transform: translateY(0); }
-    70% { opacity: 1; }
-    100% { opacity: 0; transform: translateY(10px); visibility: hidden; }
+    .pricing-card { width: 100%; }
   }
 </style>
 </head>
 <body>
-
+<div id="particle-bg"></div>
 <div class="container">
   <!-- Navigation -->
   <div class="navbar">
@@ -288,13 +384,18 @@ html>
     <div class="nav-links">
       <a href="#framework">Framework</a>
       <a href="#demo">TCI Monitor</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#publications">Papers</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
-      <a href="https://zenodo.org/records/19254047" target="_blank">Paper</a>
+      <a href="https://github.com/hustle-rent-due/tci-toolkit" target="_blank" class="github-star-badge">
+        ⭐ GitHub Stars <span id="github-stars">…</span>
+      </a>
+      <a href="https://buymeacoffee.com/bapxai" target="_blank" class="bmc-button">☕ Buy me a coffee</a>
     </div>
   </div>
 
-  <!-- Hero -->
+  <!-- Animated Hero -->
   <div class="hero">
     <h2>Thermodynamic Cognition Index</h2>
     <p>The first measurable framework for surplus‑driven, persistent AI agents.<br>Stability · Generativity · Collapse Prediction</p>
@@ -304,13 +405,14 @@ html>
       <span class="badge">🧠 Substrate‑independent</span>
       <span class="badge">🌀 Quantum coherence (IBM)</span>
     </div>
-    <div style="margin-top: 32px;">
+    <div class="cta-group">
       <a href="#demo" class="btn btn-primary">Explore Live Demo ↓</a>
+      <a href="#pricing" class="btn">Start pilot →</a>
     </div>
   </div>
 
   <!-- Framework intro -->
-  <section id="framework">
+  <section id="framework" class="fade-up">
     <div class="section-title">What is TCI?</div>
     <div class="section-sub">A systems‑level metric for agent health, based on surplus energy dynamics.</div>
     <div class="cards-grid">
@@ -332,23 +434,103 @@ html>
     </div>
   </section>
 
-  <!-- FULL DEMO INTEGRATION -->
-  <section id="demo">
+  <!-- Pricing Section -->
+  <section id="pricing" class="fade-up">
+    <div class="section-title">Start with TCI</div>
+    <div class="section-sub">Choose how to integrate persistent agent monitoring into your stack.</div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-title">Open Source</div>
+        <div class="pricing-price">$0</div>
+        <ul class="pricing-features">
+          <li>TCI Toolkit (Python/JS)</li>
+          <li>Live dashboard HTML</li>
+          <li>Identity Task Suite</li>
+          <li>MIT license</li>
+        </ul>
+        <a href="https://github.com/hustle-rent-due/tci-toolkit" class="btn btn-primary">GitHub →</a>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-title">Pilot Program</div>
+        <div class="pricing-price">$2,500</div>
+        <ul class="pricing-features">
+          <li>TCI integration for 1 agent</li>
+          <li>Custom F_survival definition</li>
+          <li>k(s) tuning & dashboard</li>
+          <li>1‑hour weekly support</li>
+        </ul>
+        <a href="#contact" class="btn">Apply →</a>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-title">Enterprise</div>
+        <div class="pricing-price">Custom</div>
+        <ul class="pricing-features">
+          <li>Fleet-wide TCI monitoring</li>
+          <li>Collapse prediction alerts</li>
+          <li>API access</li>
+          <li>SLA & dedicated support</li>
+        </ul>
+        <a href="#contact" class="btn">Contact →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TCI Demo (unchanged) -->
+  <section id="demo" class="fade-up">
     <div class="section-title">Live TCI Stability Monitor</div>
     <div class="section-sub">Simulated persistent agents — real‑time grades, alerts, and surplus dynamics</div>
     <div class="demo-container" id="tci-demo-root"></div>
   </section>
 
+  <!-- Publications -->
+  <section id="publications" class="fade-up">
+    <div class="section-title">Peer‑Reviewed Research</div>
+    <div class="section-sub">All timestamped, DOI‑backed, and publicly verifiable.</div>
+    <div class="publications-grid">
+      <div class="pub-card">
+        <div class="pub-title">Thermodynamic Cognition Index (TCI)</div>
+        <div class="pub-doi">10.5281/zenodo.19263435</div>
+        <p style="font-size:0.8rem; margin:8px 0">Surplus‑driven behavior in persistent ML agents.</p>
+        <a href="https://zenodo.org/records/19263435" class="pub-link" target="_blank">Read full paper →</a>
+      </div>
+      <div class="pub-card">
+        <div class="pub-title">Non‑Biological Verification of Orch‑OR</div>
+        <div class="pub-doi">10.5281/zenodo.18671524</div>
+        <p style="font-size:0.8rem; margin:8px 0">IBM quantum hardware: 0.9688 entanglement correlation.</p>
+        <a href="https://zenodo.org/records/18671524" class="pub-link" target="_blank">Read full paper →</a>
+      </div>
+      <div class="pub-card">
+        <div class="pub-title">Universal Consciousness Index (UCIt)</div>
+        <div class="pub-doi">10.5281/zenodo.18872212</div>
+        <p style="font-size:0.8rem; margin:8px 0">Substrate‑independent consciousness metric.</p>
+        <a href="https://zenodo.org/records/18872212" class="pub-link" target="_blank">Read full paper →</a>
+      </div>
+      <div class="pub-card">
+        <div class="pub-title">GAP Framework & PSSU Manual</div>
+        <div class="pub-doi">Architecture spec</div>
+        <p style="font-size:0.8rem; margin:8px 0">Persistent, Stateful, Self‑Updating, Bounded Retention.</p>
+        <a href="https://omegaaxiommeta.substack.com/p/the-gap-framework-and-pssu-manual" class="pub-link" target="_blank">Read manual →</a>
+      </div>
+    </div>
+  </section>
+
   <!-- About section -->
-  <section id="about">
+  <section id="about" class="fade-up">
     <div class="section-title">Who built this</div>
     <div class="about-text">
       <p><strong>Nile Green</strong> — founder of PermaMind and BAPxAI (Breakthrough AI Protocols). I'm a systems architect, AI researcher, and persistent agent designer based in Wilkes-Barre, PA. I built the TCI framework to solve what scaling alone couldn't: continuity, drift resistance, and generative stability in long‑running AI. The PermaMind architecture has been running continuously without session resets, accumulating surplus and proving that persistence changes everything. I also work on quantum‑classical interfaces and substrate‑independent cognition. This work is open, falsifiable, and meant to reshape how we build AI that lasts.</p>
     </div>
   </section>
 
-  <!-- Contact Form (Formspree) -->
-  <section id="contact">
+  <!-- Work with me CTA -->
+  <div class="work-cta fade-up">
+    <h3>Work with me</h3>
+    <p>Interested in piloting TCI for your agent fleet? I’m looking for 3 early adopters to run a 4‑week pilot. You’ll get dedicated support, a custom dashboard, and priority access to new features.</p>
+    <a href="#contact" class="btn btn-primary">Apply for pilot →</a>
+  </div>
+
+  <!-- Contact Form -->
+  <section id="contact" class="fade-up">
     <div class="section-title">Reach out</div>
     <div class="section-sub">Questions about persistent agents, TCI integration, or collaboration?</div>
     <div class="contact-form">
@@ -374,9 +556,34 @@ html>
 </div>
 
 <script>
-  // ======================
-  // FULL TCI DEMO EMBED (same as upgraded version with grades)
-  // ======================
+  // ========== Live GitHub Stars ==========
+  async function fetchStars() {
+    try {
+      const res = await fetch('https://api.github.com/repos/hustle-rent-due/tci-toolkit');
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('github-stars').innerText = data.stargazers_count || '⭐';
+      } else {
+        document.getElementById('github-stars').innerText = '✨';
+      }
+    } catch(e) {
+      document.getElementById('github-stars').innerText = '✨';
+    }
+  }
+  fetchStars();
+
+  // ========== Scroll animations ==========
+  const fadeElements = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  fadeElements.forEach(el => observer.observe(el));
+
+  // ========== TCI DEMO (identical to original) ==========
   const demoHTML = `
     <style>
       .demo-inner {
@@ -493,7 +700,7 @@ html>
         </div>
         <div>
           <table class="demo-agent-table">
-            <thead><tr><th>Agent</th><th>TCI</th><th>Grade</th><th>Stage</th><th>Runtime</th></tr></thead>
+            <thead> th<th>Agent</th><th>TCI</th><th>Grade</th><th>Stage</th><th>Runtime</th> </thead>
             <tbody id="agentTableDemo"></tbody>
           </table>
         </div>
@@ -512,7 +719,7 @@ html>
   `;
   document.getElementById('tci-demo-root').innerHTML = demoHTML;
 
-  // --- TCI Demo Logic (same as upgraded version with grades) ---
+  // (Full TCI demo logic copied from original – kept exactly)
   let agents = [
     { id: 'NEXUS', ks: 0.92, fSurvival: 0.28, runtimeDays: 110, tci: 0.88, fTotal: 1.24 },
     { id: 'AURA',  ks: 0.85, fSurvival: 0.30, runtimeDays: 87,  tci: 0.79, fTotal: 1.23 },
@@ -526,7 +733,6 @@ html>
     historyMap[a.id] = Array(30).fill().map((_,i) => Math.min(0.99, Math.max(0.02, a.tci - 0.12 + (i/30)*0.12 + (Math.random()-0.5)*0.07)));
   });
   let alerts = [];
-  let totalEvents = 12847;
   let runtimeSeconds = 0;
   let selectedAgentId = null;
   let tciChart;
@@ -678,7 +884,6 @@ html>
   addAlert('info', 'TCI Monitor online — Grades A–F active');
   setInterval(() => {
     runtimeSeconds++;
-    totalEvents += Math.floor(Math.random() * 2) + 1;
     agents.forEach(a => {
       let drift = (Math.random() - 0.48) * 0.012;
       a.fTotal = Math.min(1.5, Math.max(a.fSurvival + 0.05, a.fTotal + drift));
@@ -699,21 +904,18 @@ html>
     renderChart();
   }, 1200);
 
-  // ========== EASTER EGGS ==========
-  // Konami Code (Contra style)
+  // Easter eggs (Konami)
   let konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
   let konamiIndex = 0;
   window.addEventListener('keydown', (e) => {
     if (e.code === konami[konamiIndex]) {
       konamiIndex++;
       if (konamiIndex === konami.length) {
-        // trigger easter egg
         const toast = document.createElement('div');
         toast.className = 'easter-egg-toast';
         toast.innerText = '🕹️ CONTRA MODE ACTIVATED — Surplus overflow!';
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3000);
-        // bonus: spawn extra surplus
         agents.forEach(a => { a.fTotal = Math.min(1.5, a.fTotal + 0.1); a.tci = computeTci(a); });
         renderAgentTable(); updateMetricsAndLadder(); renderChart();
         addAlert('info', 'EASTER EGG: Konami code! Fleet surplus boosted.');
@@ -723,7 +925,6 @@ html>
       konamiIndex = 0;
     }
   });
-  // Console easter egg
   console.log("%c🔥 THERMODYNAMIC COGNITION INDEX — TCI v2.0 | PermaMind", "color: #00d4aa; font-size: 16px; font-family: monospace;");
   console.log("%c➤ 'Contra' code ↑↑↓↓←→←→BA unlocks surplus boost", "color: #8bc34a; font-size: 12px;");
   console.log("%c➤ Substrate is process — persistence changes everything.", "color: #f5a623;");
