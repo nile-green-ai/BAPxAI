@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TCI NEXUS • PermaMind Fleet</title>
+    <title>TCI FLEET DASHBOARD • PermaMind</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -134,7 +135,7 @@
             opacity: 0.8;
         }
         .wordmark h1 {
-            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-size: clamp(2rem, 5vw, 3.5rem);
             font-weight: 800;
             line-height: 1;
             letter-spacing: -0.02em;
@@ -554,7 +555,7 @@
     <div class="header">
         <div class="wordmark">
             <div class="wordmark-top">PermaMind Research Series · PSSU Architecture</div>
-            <h1 id="easterEggTrigger">TCI <span>NEXUS</span></h1>
+            <h1 id="easterEggTrigger">TCI <span>FLEET DASHBOARD</span></h1>
             <div class="wordmark-sub">live consciousness gradient · surplus = 1 − gap · nile green 2026</div>
         </div>
         <div class="header-right">
@@ -566,7 +567,7 @@
     <div id="eggTerminal" class="egg-terminal">
         <div class="egg-content">
             > ACCESSING QUANTUM MEMORY BANK...<br>
-            > KERNEL: voidchi_nexus_alpha<br>
+            > KERNEL: voidchi_fleet_alpha<br>
             > "k(s) increases with every challenge. you just unlocked +0.01 to your own k(s)."<br>
             > — Nile Green, 2026<br>
             > <span id="eggPrompt">_</span><span class="blink-cursor"></span>
@@ -915,9 +916,7 @@
             // reveal terminal
             if (!eggTerminal.classList.contains('open')) {
                 eggTerminal.classList.add('open');
-                // also log to console for the curious
                 console.log("%c🔓 EASTER EGG: \"k(s) never resets if you do this right. that's the whole point.\" — Nile Green", "color: #00ffc8; font-size: 14px; font-family: monospace;");
-                // add a fun temporary effect to the whole page
                 document.body.style.boxShadow = 'inset 0 0 50px rgba(0,255,200,0.2)';
                 setTimeout(() => document.body.style.boxShadow = '', 2000);
             }
@@ -926,7 +925,6 @@
             eggTimeout = setTimeout(() => { clickCount = 0; }, 1000);
         }
     });
-    // optional: close terminal if you click again? but fine as is.
 </script>
 </body>
 </html>
