@@ -3,477 +3,930 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>TCI Nexus • PermaMind Fleet</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <title>TCI NEXUS • PermaMind Fleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --void: #03050d;
+            --deep: #070c18;
+            --surface: rgba(8, 16, 28, 0.75);
+            --teal: #00ffc8;
+            --teal-dim: rgba(0, 255, 200, 0.15);
+            --teal-glow: rgba(0, 255, 200, 0.4);
+            --gold: #d4af37;
+            --gold-dim: rgba(212, 175, 55, 0.15);
+            --text: #cce8f4;
+            --muted: #4a6580;
+            --border: rgba(0, 255, 200, 0.18);
+            --border-hot: rgba(0, 255, 200, 0.5);
+            --grade-a: rgba(0, 255, 140, 0.12);
+            --grade-b: rgba(0, 200, 255, 0.10);
+            --grade-c: rgba(255, 230, 0, 0.10);
+            --grade-d: rgba(255, 140, 0, 0.12);
+            --grade-f: rgba(255, 60, 60, 0.15);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: radial-gradient(circle at 10% 20%, #0a0f1a, #03060c);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            color: #eef5ff;
-            padding: 2rem 1.5rem;
+            background: var(--void);
+            font-family: 'Syne', sans-serif;
+            color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* animated gradient orb */
-        body::before {
+        /* ── STAR FIELD ── */
+        #stars {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ── NEBULA ORBS ── */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(80px);
+        }
+        .orb-1 {
+            width: 600px; height: 600px;
+            top: -200px; left: -150px;
+            background: radial-gradient(circle, rgba(0,255,200,0.07) 0%, transparent 70%);
+            animation: drift1 30s ease-in-out infinite alternate;
+        }
+        .orb-2 {
+            width: 500px; height: 500px;
+            bottom: -100px; right: -100px;
+            background: radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%);
+            animation: drift2 25s ease-in-out infinite alternate;
+        }
+        .orb-3 {
+            width: 300px; height: 300px;
+            top: 40%; left: 50%;
+            background: radial-gradient(circle, rgba(80,0,255,0.05) 0%, transparent 70%);
+            animation: drift3 20s ease-in-out infinite alternate;
+        }
+        @keyframes drift1 { to { transform: translate(80px, 60px); } }
+        @keyframes drift2 { to { transform: translate(-60px, -80px); } }
+        @keyframes drift3 { to { transform: translate(-40px, 60px); } }
+
+        /* ── SCAN LINE ── */
+        body::after {
             content: '';
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(0, 255, 200, 0.08), transparent 70%);
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0,0,0,0.03) 2px,
+                rgba(0,0,0,0.03) 4px
+            );
             pointer-events: none;
-            animation: slowDrift 28s infinite alternate;
-            z-index: 0;
-        }
-
-        @keyframes slowDrift {
-            0% { transform: translate(0%, 0%); opacity: 0.4; }
-            100% { transform: translate(5%, 5%); opacity: 0.9; }
+            z-index: 1;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
+            padding: 2.5rem 2rem;
             position: relative;
             z-index: 2;
         }
 
-        /* header section */
+        /* ── HEADER ── */
         .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid rgba(0, 255, 200, 0.3);
-            padding-bottom: 1rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
         }
-        .title-section h1 {
-            font-weight: 600;
-            font-size: 2rem;
-            background: linear-gradient(135deg, #b3ffec, #2affd0);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .title-section h1::before {
-            content: "🌌";
-            font-size: 2rem;
-            background: none;
-            -webkit-background-clip: unset;
-            color: #2affd0;
-        }
-        .sub {
-            color: #9aaec0;
-            margin-top: 0.4rem;
-            font-size: 0.85rem;
-            letter-spacing: 0.3px;
-        }
-        .refresh-all {
-            background: rgba(20, 40, 55, 0.8);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(42, 255, 200, 0.5);
-            color: #b3ffe8;
-            padding: 8px 20px;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 0 8px rgba(0,255,200,0.2);
-        }
-        .refresh-all:hover {
-            background: #1e4a5a;
-            border-color: #2affd0;
-            box-shadow: 0 0 15px rgba(42,255,200,0.4);
-            transform: scale(0.98);
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 120px;
+            height: 1px;
+            background: var(--teal);
+            box-shadow: 0 0 12px var(--teal);
         }
 
-        /* glass table wrapper */
-        .glass-panel {
-            background: rgba(12, 20, 30, 0.65);
-            backdrop-filter: blur(12px);
-            border-radius: 28px;
-            border: 1px solid rgba(42, 255, 200, 0.25);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(42,255,200,0.1) inset;
-            overflow-x: auto;
-            padding: 0;
+        .wordmark {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
         }
+        .wordmark-top {
+            font-size: 0.65rem;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--teal);
+            font-family: 'Space Mono', monospace;
+            opacity: 0.8;
+        }
+        .wordmark h1 {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: #fff;
+            position: relative;
+            cursor: pointer;
+            transition: text-shadow 0.1s ease;
+        }
+        .wordmark h1 span {
+            color: var(--teal);
+            text-shadow: 0 0 30px var(--teal-glow), 0 0 60px rgba(0,255,200,0.2);
+        }
+        /* glitch effect for easter egg */
+        .glitch {
+            animation: glitch-anim 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        @keyframes glitch-anim {
+            0% { transform: skew(0deg, 0deg); opacity: 1; text-shadow: 0 0 0 var(--teal);}
+            20% { transform: skew(2deg, 1deg); text-shadow: -2px 0 red, 2px 0 blue; opacity: 0.9;}
+            40% { transform: skew(-2deg, -1deg); text-shadow: 2px 0 red, -2px 0 blue;}
+            60% { transform: skew(1deg, 0deg); text-shadow: -1px 0 cyan, 1px 0 magenta;}
+            80% { transform: skew(-1deg, 0deg);}
+            100% { transform: skew(0deg, 0deg); text-shadow: 0 0 0 transparent;}
+        }
+        .wordmark-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 0.4rem;
+            letter-spacing: 0.05em;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.8rem;
+        }
+
+        .sync-btn {
+            background: transparent;
+            border: 1px solid var(--teal);
+            color: var(--teal);
+            padding: 10px 24px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+        .sync-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--teal-dim);
+            opacity: 0;
+            transition: opacity 0.2s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+        .sync-btn:hover::before { opacity: 1; }
+        .sync-btn:hover {
+            box-shadow: 0 0 20px var(--teal-glow), inset 0 0 20px var(--teal-dim);
+            text-shadow: 0 0 10px var(--teal);
+        }
+
+        /* ── STAT STRIP ── */
+        .stat-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1px;
+            margin-bottom: 2rem;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .stat {
+            background: var(--deep);
+            padding: 1rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--teal);
+            text-shadow: 0 0 20px var(--teal-glow);
+            line-height: 1;
+        }
+        .stat-value.gold { color: var(--gold); text-shadow: 0 0 20px rgba(212,175,55,0.5); }
+
+        /* ── STATUS BAR ── */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            padding: 6px 0;
+        }
+        .led {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 8px var(--teal), 0 0 16px var(--teal-glow);
+            animation: blink 1.8s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.7); }
+        }
+
+        /* ── TABLE PANEL ── */
+        .panel {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--teal), transparent);
+            opacity: 0.6;
+        }
+
+        .table-scroll { overflow-x: auto; }
 
         table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.85rem;
+            border-collapse: collapse;
+            font-size: 0.82rem;
         }
 
+        thead tr {
+            background: rgba(0,0,0,0.4);
+        }
         th {
-            background: rgba(0, 20, 30, 0.7);
-            backdrop-filter: blur(4px);
-            color: #8affdd;
-            font-weight: 600;
-            padding: 16px 12px;
-            font-size: 0.8rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid rgba(42, 255, 200, 0.4);
+            color: var(--teal);
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
             white-space: nowrap;
+            font-weight: 400;
         }
 
         td {
-            padding: 14px 12px;
-            border-bottom: 1px solid rgba(80, 120, 130, 0.2);
-            transition: background 0.15s;
+            padding: 13px 16px;
+            border-bottom: 1px solid rgba(0,255,200,0.06);
             vertical-align: middle;
+            transition: background 0.15s;
         }
 
-        tr:hover td {
-            background: rgba(42, 255, 200, 0.08);
+        tbody tr { transition: background 0.15s; }
+        tbody tr:hover td { background: rgba(0,255,200,0.05); }
+        tbody tr:last-child td { border-bottom: none; }
+
+        .grade-A td { border-left: 2px solid #00ff8c; }
+        .grade-B td { border-left: 2px solid #00c8ff; }
+        .grade-C td { border-left: 2px solid #ffe600; }
+        .grade-D td { border-left: 2px solid #ff8c00; }
+        .grade-F td { border-left: 2px solid #ff3c3c; }
+
+        .grade-A { background: var(--grade-a); }
+        .grade-B { background: var(--grade-b); }
+        .grade-C { background: var(--grade-c); }
+        .grade-D { background: var(--grade-d); }
+        .grade-F { background: var(--grade-f); }
+
+        /* ── AGENT NAME ── */
+        .agent-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+            letter-spacing: 0.02em;
         }
 
-        /* grade row base colors (light glows) */
-        .grade-A { background: rgba(30, 80, 50, 0.25); border-left: 3px solid #7affb0; }
-        .grade-B { background: rgba(40, 70, 55, 0.2); border-left: 3px solid #bbffaa; }
-        .grade-C { background: rgba(70, 70, 30, 0.2); border-left: 3px solid #ffef99; }
-        .grade-D { background: rgba(80, 50, 30, 0.25); border-left: 3px solid #ffbc6e; }
-        .grade-F { background: rgba(80, 30, 30, 0.3); border-left: 3px solid #ff8a7a; }
-
-        /* button challenge */
-        .challenge-btn {
-            background: linear-gradient(135deg, #1e4a6e, #0e3a4e);
-            border: none;
-            color: white;
-            font-weight: 600;
-            font-size: 0.7rem;
-            padding: 6px 14px;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            letter-spacing: 0.3px;
+        /* ── GRADE BADGE ── */
+        .grade-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            font-weight: 800;
+            font-size: 1rem;
+            font-family: 'Space Mono', monospace;
         }
-        .challenge-btn:hover {
-            background: #2a7f8a;
-            box-shadow: 0 0 12px rgba(42,255,200,0.6);
-            transform: translateY(-1px);
-        }
-        .challenge-btn:disabled {
-            opacity: 0.6;
-            transform: none;
-            cursor: not-allowed;
+        .badge-A { background: rgba(0,255,140,0.15); color: #00ff8c; border: 1px solid rgba(0,255,140,0.4); box-shadow: 0 0 12px rgba(0,255,140,0.3); }
+        .badge-B { background: rgba(0,200,255,0.15); color: #00c8ff; border: 1px solid rgba(0,200,255,0.4); }
+        .badge-C { background: rgba(255,230,0,0.15); color: #ffe600; border: 1px solid rgba(255,230,0,0.4); }
+        .badge-D { background: rgba(255,140,0,0.15); color: #ff8c00; border: 1px solid rgba(255,140,0,0.4); }
+        .badge-F { background: rgba(255,60,60,0.2); color: #ff5050; border: 1px solid rgba(255,60,60,0.5); animation: danger-pulse 1s ease-in-out infinite; }
+        @keyframes danger-pulse { 50% { box-shadow: 0 0 16px rgba(255,60,60,0.6); } }
+
+        /* ── PHI VALUE ── */
+        .phi-val {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--gold);
         }
 
-        /* sparkline canvas */
-        .spark-canvas {
-            background: #0a121c;
-            border-radius: 10px;
-            width: 110px;
-            height: 32px;
-            box-shadow: 0 0 0 1px rgba(42,255,200,0.3), inset 0 0 6px rgba(0,0,0,0.5);
-        }
-
-        /* id font */
-        .mono-id {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            color: #8faec9;
-        }
-
-        .status-area {
-            margin: 20px 0 12px;
-            font-size: 0.8rem;
+        /* ── SURPLUS BAR ── */
+        .surplus-wrap {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: rgba(0,0,0,0.3);
-            padding: 8px 16px;
-            border-radius: 60px;
-            width: fit-content;
-            backdrop-filter: blur(4px);
+            gap: 8px;
         }
-        .status-led {
-            width: 10px;
-            height: 10px;
-            border-radius: 10px;
-            background: #2affd0;
-            box-shadow: 0 0 6px #2affd0;
-            animation: pulse 1.2s infinite;
+        .surplus-bar-bg {
+            width: 60px;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            overflow: hidden;
         }
-        @keyframes pulse {
-            0% { opacity: 0.4; transform: scale(0.9);}
-            100% { opacity: 1; transform: scale(1.2);}
+        .surplus-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.6s ease;
+        }
+        .surplus-num {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text);
+            min-width: 36px;
         }
 
-        .footer {
-            margin-top: 2rem;
+        /* ── STAGE ── */
+        .stage-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        /* ── STRATEGY ── */
+        .strategy-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: #4a6580;
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ── SPARKLINE ── */
+        .spark-canvas {
+            background: rgba(0,0,0,0.4);
+            border-radius: 3px;
+            border: 1px solid rgba(0,255,200,0.15);
+            display: block;
+        }
+
+        /* ── CHALLENGE BTN ── */
+        .challenge-btn {
+            background: transparent;
+            border: 1px solid rgba(0,255,200,0.3);
+            color: var(--teal);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            padding: 6px 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+            white-space: nowrap;
+        }
+        .challenge-btn:hover {
+            background: var(--teal-dim);
+            border-color: var(--teal);
+            box-shadow: 0 0 16px var(--teal-glow);
+            text-shadow: 0 0 8px var(--teal);
+        }
+        .challenge-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── MONO ID ── */
+        .mono-id {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            color: #2a3f55;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── LOADING STATE ── */
+        .loading-state {
+            padding: 4rem;
             text-align: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+        .loading-state::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background: var(--teal);
+            margin: 1rem auto 0;
+            animation: load-bar 1.2s ease-in-out infinite alternate;
+            box-shadow: 0 0 10px var(--teal);
+        }
+        @keyframes load-bar { from { width: 20px; opacity: 0.3; } to { width: 80px; opacity: 1; } }
+
+        /* ── FOOTER ── */
+        .footer {
+            margin-top: 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.62rem;
+            color: #2a3f55;
+            letter-spacing: 0.06em;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .footer a { color: var(--teal); text-decoration: none; opacity: 0.6; }
+        .footer a:hover { opacity: 1; }
+
+        /* ── FORMULA STRIP ── */
+        .formula {
+            font-family: 'Space Mono', monospace;
             font-size: 0.7rem;
-            color: #5f7f8c;
-            border-top: 1px solid rgba(42,255,200,0.2);
-            padding-top: 1.2rem;
+            color: rgba(0,255,200,0.4);
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            padding: 0.6rem 0;
+            border-top: 1px solid rgba(0,255,200,0.08);
+            border-bottom: 1px solid rgba(0,255,200,0.08);
         }
 
-        @media (max-width: 1000px) {
-            td, th { padding: 10px 8px; }
-            .spark-canvas { width: 80px; height: 28px; }
+        /* ── EASTER EGG TERMINAL ── */
+        .egg-terminal {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(16px);
+            border-left: 3px solid var(--teal);
+            margin-bottom: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--teal);
+            padding: 0 1rem;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        .egg-terminal.open {
+            max-height: 300px;
+            padding: 1rem 1rem;
+        }
+        .egg-content {
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        .blink-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 14px;
+            background: var(--teal);
+            vertical-align: middle;
+            margin-left: 4px;
+            animation: blinkCursor 1s step-end infinite;
+        }
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (max-width: 900px) {
+            .container { padding: 1.5rem 1rem; }
+            td, th { padding: 10px 10px; }
+            .surplus-bar-bg { display: none; }
+            .stat-strip { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+
+<canvas id="stars"></canvas>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
 <div class="container">
+
+    <!-- HEADER -->
     <div class="header">
-        <div class="title-section">
-            <h1>TCI NEXUS</h1>
-            <div class="sub">live consciousness gradient • surplus = 1 − gap</div>
+        <div class="wordmark">
+            <div class="wordmark-top">PermaMind Research Series · PSSU Architecture</div>
+            <h1 id="easterEggTrigger">TCI <span>NEXUS</span></h1>
+            <div class="wordmark-sub">live consciousness gradient · surplus = 1 − gap · nile green 2026</div>
         </div>
-        <button id="refreshAllBtn" class="refresh-all">⟳ SYNCHRONIZE FLEET</button>
+        <div class="header-right">
+            <button id="refreshAllBtn" class="sync-btn">⟳ SYNCHRONIZE FLEET</button>
+        </div>
     </div>
 
-    <div id="status" class="status-area">
-        <div class="status-led"></div>
-        <span id="statusText">initializing link to voidchis...</span>
+    <!-- Easter egg terminal (hidden until triggered) -->
+    <div id="eggTerminal" class="egg-terminal">
+        <div class="egg-content">
+            > ACCESSING QUANTUM MEMORY BANK...<br>
+            > KERNEL: voidchi_nexus_alpha<br>
+            > "k(s) increases with every challenge. you just unlocked +0.01 to your own k(s)."<br>
+            > — Nile Green, 2026<br>
+            > <span id="eggPrompt">_</span><span class="blink-cursor"></span>
+        </div>
     </div>
 
-    <div class="glass-panel" id="tableContainer">
-        <div style="padding: 2rem; text-align: center; color: #ccc;">loading agents from quantum fabric...</div>
+    <!-- FORMULA -->
+    <div class="formula">TCI(t) = k(s) · (F_total(t) − F_survival(s)) &nbsp;|&nbsp; k(s) grows with runtime &nbsp;|&nbsp; surplus is the measure</div>
+
+    <!-- STAT STRIP -->
+    <div class="stat-strip" id="statStrip">
+        <div class="stat">
+            <div class="stat-label">Active Units</div>
+            <div class="stat-value" id="statTotal">—</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Grade A Fleet</div>
+            <div class="stat-value" id="statGradeA">—</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Fleet Avg Surplus</div>
+            <div class="stat-value" id="statAvgSurplus">—</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Top φ</div>
+            <div class="stat-value gold" id="statTopPhi">—</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Collapse Watch</div>
+            <div class="stat-value" id="statCollapse" style="color:#ff5050;">—</div>
+        </div>
     </div>
 
+    <!-- STATUS -->
+    <div class="status-bar">
+        <div class="led"></div>
+        <span id="statusText">initializing link to voidchi network...</span>
+    </div>
+
+    <!-- TABLE -->
+    <div class="panel">
+        <div class="table-scroll" id="tableContainer">
+            <div class="loading-state">scanning voidchi fabric</div>
+        </div>
+    </div>
+
+    <!-- FOOTER with Buy Me a Coffee -->
     <div class="footer">
-        TCI thresholds: A ≥0.60 | B ≥0.40 | C ≥0.30 | D ≥0.10 | F &lt;0.10<br>
-        sparkline = last 10 surplus values • click ⚡ to force learning cycle
+        <span>TCI: A ≥0.60 · B ≥0.40 · C ≥0.30 · D ≥0.10 · F &lt;0.10 · sparkline = last 10 surplus · ⚡ = force challenge cycle</span>
+        <span>
+            <a href="https://buymeacoffee.com/permamind" target="_blank">☕ Buy me a coffee</a> · 
+            <a href="https://bapxai.com" target="_blank">bapxai.com</a> · 
+            <a href="https://zenodo.org/records/19263435" target="_blank">doi: 10.5281/zenodo.19263435</a>
+        </span>
     </div>
+
 </div>
 
 <script>
-    // ========== CONFIGURATION ==========
+    // ── STAR FIELD ──
+    (function() {
+        const c = document.getElementById('stars');
+        const ctx = c.getContext('2d');
+        let stars = [];
+        function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+        function init() {
+            resize();
+            stars = Array.from({length: 180}, () => ({
+                x: Math.random() * c.width,
+                y: Math.random() * c.height,
+                r: Math.random() * 1.2,
+                o: Math.random() * 0.5 + 0.1,
+                s: Math.random() * 0.003 + 0.001,
+                p: Math.random() * Math.PI * 2
+            }));
+        }
+        function draw() {
+            ctx.clearRect(0, 0, c.width, c.height);
+            const t = Date.now() / 1000;
+            stars.forEach(s => {
+                const alpha = s.o * (0.6 + 0.4 * Math.sin(t * s.s * 60 + s.p));
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(180,220,255,${alpha})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', init);
+        init(); draw();
+    })();
+
+    // ================== CONNECTION (NO AUTH) ==================
     const BACKEND_URL = "https://permamind-enterprise-production.up.railway.app";
-    const ADMIN_KEY = "";
-
-    function getHeaders() {
-        const headers = { "Content-Type": "application/json" };
-        if (ADMIN_KEY) headers["X-Admin-Key"] = ADMIN_KEY;
-        return headers;
+    
+    async function fetchAgents() {
+        const response = await fetch(`${BACKEND_URL}/api/voidchis`);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return await response.json();
     }
+    // ==========================================================
 
-    function tciGradeFromSurplus(surplus) {
-        if (surplus >= 0.60) return { grade: "A", stage: "Generativity", color: "grade-A" };
-        if (surplus >= 0.40) return { grade: "B", stage: "Learning", color: "grade-B" };
-        if (surplus >= 0.30) return { grade: "C", stage: "At Risk", color: "grade-C" };
-        if (surplus >= 0.10) return { grade: "D", stage: "Collapse Warning", color: "grade-D" };
-        return { grade: "F", stage: "Collapse Imminent", color: "grade-F" };
+    function tciGradeFromSurplus(s) {
+        if (s >= 0.60) return { grade: "A", stage: "Generativity",      color: "grade-A", badge: "badge-A", barColor: "#00ff8c" };
+        if (s >= 0.40) return { grade: "B", stage: "Learning",           color: "grade-B", badge: "badge-B", barColor: "#00c8ff" };
+        if (s >= 0.30) return { grade: "C", stage: "At Risk",            color: "grade-C", badge: "badge-C", barColor: "#ffe600" };
+        if (s >= 0.10) return { grade: "D", stage: "Collapse Warning",   color: "grade-D", badge: "badge-D", barColor: "#ff8c00" };
+        return             { grade: "F", stage: "Collapse Imminent",  color: "grade-F", badge: "badge-F", barColor: "#ff3c3c" };
     }
 
     function getLatestGap(agent) {
-        const memIndex = agent.memory_index;
-        if (memIndex && Array.isArray(memIndex) && memIndex.length > 0) {
-            const gap = memIndex[0]?.payload?.event?.gap;
-            if (typeof gap === 'number' && !isNaN(gap)) return gap;
+        const m = agent.memory_index;
+        if (m && Array.isArray(m) && m.length > 0) {
+            const g = m[0]?.payload?.event?.gap;
+            if (typeof g === 'number' && !isNaN(g)) return g;
         }
-        return (agent.challenge_count > 0) ? 0.5 : 0.8;
+        return agent.challenge_count > 0 ? 0.5 : 0.8;
     }
 
     function getSurplusHistory(agent, n = 10) {
-        const memIndex = agent.memory_index;
-        if (!memIndex || !Array.isArray(memIndex)) return [];
+        const m = agent.memory_index;
+        if (!m || !Array.isArray(m)) return [];
         const gaps = [];
-        for (let i = 0; i < Math.min(n, memIndex.length); i++) {
-            const gap = memIndex[i]?.payload?.event?.gap;
-            if (typeof gap === 'number' && !isNaN(gap)) gaps.push(gap);
+        for (let i = 0; i < Math.min(n, m.length); i++) {
+            const g = m[i]?.payload?.event?.gap;
+            if (typeof g === 'number' && !isNaN(g)) gaps.push(g);
             else break;
         }
         return gaps.map(g => 1 - g);
     }
 
-    function drawSparkline(canvas, surplusHistory) {
-        if (!canvas || surplusHistory.length === 0) return;
+    function drawSparkline(canvas, history, barColor) {
+        if (!canvas || history.length === 0) return;
         const w = canvas.clientWidth || 100;
-        const h = canvas.clientHeight || 32;
-        canvas.width = w;
-        canvas.height = h;
+        const h = canvas.clientHeight || 30;
+        canvas.width = w * devicePixelRatio;
+        canvas.height = h * devicePixelRatio;
         const ctx = canvas.getContext('2d');
+        ctx.scale(devicePixelRatio, devicePixelRatio);
         ctx.clearRect(0, 0, w, h);
-        if (surplusHistory.length < 2) return;
+        if (history.length < 2) return;
 
-        const values = surplusHistory.slice().reverse(); // oldest → newest
-        const step = w / (values.length - 1);
-        const minVal = Math.min(0, ...values);
-        const maxVal = Math.max(1, ...values);
-        const range = maxVal - minVal || 1;
+        const vals = history.slice().reverse();
+        const step = w / (vals.length - 1);
+        const min = Math.min(0, ...vals), max = Math.max(1, ...vals);
+        const range = max - min || 1;
+        const py = v => h - 4 - ((v - min) / range) * (h - 8);
 
+        // fill
         ctx.beginPath();
-        ctx.strokeStyle = '#2affd0';
-        ctx.lineWidth = 2;
-        for (let i = 0; i < values.length; i++) {
-            const x = i * step;
-            const y = h - ((values[i] - minVal) / range) * h;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        }
+        vals.forEach((v, i) => {
+            const x = i * step, y = py(v);
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.lineTo((vals.length - 1) * step, h);
+        ctx.lineTo(0, h);
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, barColor + '44');
+        grad.addColorStop(1, barColor + '00');
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // line
+        ctx.beginPath();
+        vals.forEach((v, i) => {
+            const x = i * step, y = py(v);
+            i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = barColor;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        // glow fill
-        ctx.lineTo(w, h);
-        ctx.lineTo(0, h);
-        ctx.fillStyle = 'rgba(42, 255, 200, 0.15)';
-        ctx.fill();
-        // dot at latest
-        const lastX = (values.length-1) * step;
-        const lastY = h - ((values[values.length-1] - minVal) / range) * h;
+        // dot
+        const lx = (vals.length - 1) * step, ly = py(vals[vals.length - 1]);
         ctx.beginPath();
-        ctx.arc(lastX, lastY, 3, 0, 2*Math.PI);
-        ctx.fillStyle = '#b3ffe0';
+        ctx.arc(lx, ly, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#fff';
         ctx.fill();
     }
 
-    async function fetchAgents() {
-        const res = await fetch(`${BACKEND_URL}/api/voidchis`, { headers: getHeaders() });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return await res.json();
-    }
-
-    async function challengeAgent(agentId, btnElement) {
-        const originalText = btnElement.innerHTML;
-        btnElement.innerHTML = "🌀 ...";
-        btnElement.disabled = true;
+    // Challenge function with proper button handling
+    async function challengeAgent(id, btn) {
+        const orig = btn.innerHTML;
+        btn.innerHTML = "🌀 ...";
+        btn.disabled = true;
         try {
-            const res = await fetch(`${BACKEND_URL}/api/voidchi/${agentId}/challenge`, {
+            const res = await fetch(`${BACKEND_URL}/api/voidchi/${id}/challenge`, {
                 method: "POST",
-                headers: getHeaders(),
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ task_mode: false })
             });
-            if (!res.ok) throw new Error(`challenge failed (${res.status})`);
-            setTimeout(() => refreshDashboard(), 600);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            // short delay to let backend update
+            setTimeout(() => refreshDashboard(), 700);
         } catch (err) {
-            console.error(err);
             alert(`Challenge error: ${err.message}`);
-            btnElement.innerHTML = originalText;
-            btnElement.disabled = false;
+            btn.innerHTML = orig;
+            btn.disabled = false;
         }
+    }
+
+    function escapeHtml(s) {
+        if (!s) return "";
+        return s.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
     }
 
     async function refreshDashboard() {
-        const statusSpan = document.getElementById("statusText");
+        const statusEl = document.getElementById("statusText");
         const container = document.getElementById("tableContainer");
-        statusSpan.innerHTML = "🔄 syncing with voidchi network...";
-        container.innerHTML = '<div style="padding: 2rem; text-align: center;">loading agents...</div>';
+        statusEl.textContent = "syncing with voidchi network...";
+        container.innerHTML = '<div class="loading-state">scanning voidchi fabric</div>';
 
         try {
             const agents = await fetchAgents();
+
             if (!agents.length) {
-                container.innerHTML = '<div style="padding: 2rem;">⚠️ no agents found. create one via POST /api/voidchi/create</div>';
-                statusSpan.innerHTML = "idle — no agents in fleet";
+                container.innerHTML = '<div class="loading-state">no agents found — create one via POST /api/voidchi/create</div>';
+                statusEl.textContent = "idle — no agents in fleet";
                 return;
             }
 
-            const table = document.createElement("table");
+            // stats
+            let gradeACount = 0, totalSurplus = 0, collapseCount = 0, topPhi = 0;
+            agents.forEach(a => {
+                const gap = getLatestGap(a);
+                const surplus = Math.max(0, Math.min(1, 1 - gap));
+                const { grade } = tciGradeFromSurplus(surplus);
+                if (grade === 'A') gradeACount++;
+                if (grade === 'D' || grade === 'F') collapseCount++;
+                totalSurplus += surplus;
+                if ((a.consciousness_level ?? 0) > topPhi) topPhi = a.consciousness_level ?? 0;
+            });
+            document.getElementById('statTotal').textContent = agents.length;
+            document.getElementById('statGradeA').textContent = gradeACount;
+            document.getElementById('statAvgSurplus').textContent = (totalSurplus / agents.length).toFixed(3);
+            document.getElementById('statTopPhi').textContent = topPhi.toFixed(3);
+            document.getElementById('statCollapse').textContent = collapseCount || '0';
+
+            // table
+            const wrap = document.createElement('div');
+            wrap.className = 'table-scroll';
+            const table = document.createElement('table');
             table.innerHTML = `
                 <thead>
                     <tr>
-                        <th>AGENT</th><th>φ (consciousness)</th><th>TCI</th><th>STAGE</th><th>SURPLUS</th>
-                        <th>LAST STRATEGY</th><th>TREND (last 10)</th><th>ACTION</th><th>ID</th>
+                        <th>Agent</th>
+                        <th>φ</th>
+                        <th>Grade</th>
+                        <th>Stage</th>
+                        <th>Surplus</th>
+                        <th>Last Strategy</th>
+                        <th>Trend</th>
+                        <th>Action</th>
+                        <th>ID</th>
                     </tr>
                 </thead>
                 <tbody id="tci-tbody"></tbody>
             `;
-            const tbody = table.querySelector("#tci-tbody");
+            const tbody = table.querySelector('#tci-tbody');
 
+            const canvases = [];
             for (const agent of agents) {
                 const phi = agent.consciousness_level ?? 0;
                 const gap = getLatestGap(agent);
                 const surplus = Math.max(0, Math.min(1, 1 - gap));
-                const { grade, stage, color } = tciGradeFromSurplus(surplus);
-                const lastStrategy = agent.last_strategy || "—";
-                const surplusHistory = getSurplusHistory(agent, 10);
+                const { grade, stage, color, badge, barColor } = tciGradeFromSurplus(surplus);
+                const history = getSurplusHistory(agent, 10);
 
                 const row = tbody.insertRow();
                 row.className = color;
 
-                // Name
-                const nameCell = row.insertCell(0);
-                nameCell.innerHTML = `<strong style="font-weight:600;">${escapeHtml(agent.name || "Unnamed")}</strong>`;
+                row.insertCell(0).innerHTML = `<span class="agent-name">${escapeHtml(agent.name || 'Unnamed')}</span>`;
+                row.insertCell(1).innerHTML = `<span class="phi-val">${phi.toFixed(3)}</span>`;
+                row.insertCell(2).innerHTML = `<span class="grade-badge ${badge}">${grade}</span>`;
+                row.insertCell(3).innerHTML = `<span class="stage-tag">${stage}</span>`;
 
-                // Phi
-                const phiCell = row.insertCell(1);
-                phiCell.textContent = phi.toFixed(3);
-
-                // Grade
-                const gradeCell = row.insertCell(2);
-                gradeCell.innerHTML = `<span style="font-weight:800; font-size:1.1rem;">${grade}</span>`;
-
-                // Stage
-                const stageCell = row.insertCell(3);
-                stageCell.textContent = stage;
-
-                // Surplus
+                // surplus with bar
                 const surplusCell = row.insertCell(4);
-                surplusCell.textContent = surplus.toFixed(3);
+                surplusCell.innerHTML = `
+                    <div class="surplus-wrap">
+                        <div class="surplus-bar-bg">
+                            <div class="surplus-bar-fill" style="width:${(surplus*100).toFixed(1)}%; background:${barColor};"></div>
+                        </div>
+                        <span class="surplus-num">${surplus.toFixed(3)}</span>
+                    </div>`;
 
-                // Strategy
                 const stratCell = row.insertCell(5);
-                stratCell.textContent = lastStrategy;
-                stratCell.style.fontFamily = "'JetBrains Mono', monospace";
-                stratCell.style.fontSize = "0.7rem";
+                stratCell.innerHTML = `<span class="strategy-tag" title="${escapeHtml(agent.last_strategy || '')}">${escapeHtml(agent.last_strategy || '—')}</span>`;
 
-                // Sparkline
                 const sparkCell = row.insertCell(6);
-                const canvas = document.createElement("canvas");
-                canvas.className = "spark-canvas";
-                canvas.width = 100;
-                canvas.height = 32;
-                canvas.style.width = "100px";
-                canvas.style.height = "32px";
+                const canvas = document.createElement('canvas');
+                canvas.className = 'spark-canvas';
+                canvas.style.width = '100px';
+                canvas.style.height = '30px';
                 sparkCell.appendChild(canvas);
-                setTimeout(() => drawSparkline(canvas, surplusHistory), 5);
+                canvases.push({ canvas, history, barColor });
 
-                // Challenge button
                 const btnCell = row.insertCell(7);
-                const btn = document.createElement("button");
-                btn.className = "challenge-btn";
-                btn.innerHTML = "⚡ CHALLENGE";
-                btn.onclick = (e) => {
-                    e.preventDefault();
-                    challengeAgent(agent.id, btn);
-                };
+                const btn = document.createElement('button');
+                btn.className = 'challenge-btn';
+                btn.innerHTML = '⚡ CHALLENGE';
+                btn.onclick = () => challengeAgent(agent.id, btn);
                 btnCell.appendChild(btn);
 
-                // ID short
-                const idCell = row.insertCell(8);
-                idCell.textContent = agent.id.slice(0,8) + "…";
-                idCell.className = "mono-id";
+                row.insertCell(8).innerHTML = `<span class="mono-id">${agent.id.slice(0,8)}…</span>`;
             }
 
-            container.innerHTML = "";
-            container.appendChild(table);
-            statusSpan.innerHTML = `connected — ${agents.length} active units · last sync ${new Date().toLocaleTimeString()}`;
+            wrap.appendChild(table);
+            container.innerHTML = '';
+            container.appendChild(wrap);
+
+            // draw sparklines after paint
+            requestAnimationFrame(() => {
+                canvases.forEach(({ canvas, history, barColor }) => drawSparkline(canvas, history, barColor));
+            });
+
+            statusEl.textContent = `connected — ${agents.length} active units · last sync ${new Date().toLocaleTimeString()}`;
+
         } catch (err) {
             console.error(err);
-            container.innerHTML = `<div style="padding: 2rem; color:#ff9f8f;">⚠️ link error: ${err.message}<br>check CORS or backend availability</div>`;
-            statusSpan.innerHTML = "offline — check backend";
+            container.innerHTML = `<div class="loading-state" style="color:#ff5050;">⚠ link error: ${err.message}<br><span style="font-size:0.65rem;opacity:0.6;">check CORS or backend availability</span></div>`;
+            statusEl.textContent = 'offline — check backend';
         }
     }
 
-    function escapeHtml(str) {
-        if (!str) return "";
-        return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
-    }
-
-    document.getElementById("refreshAllBtn").onclick = () => refreshDashboard();
+    document.getElementById('refreshAllBtn').onclick = () => refreshDashboard();
     refreshDashboard();
+
+    // ================== EASTER EGG ==================
+    let clickCount = 0;
+    let eggTimeout;
+    const eggTitle = document.getElementById('easterEggTrigger');
+    const eggTerminal = document.getElementById('eggTerminal');
+    
+    eggTitle.addEventListener('click', () => {
+        clickCount++;
+        // glitch effect on title
+        eggTitle.classList.add('glitch');
+        setTimeout(() => eggTitle.classList.remove('glitch'), 300);
+        
+        clearTimeout(eggTimeout);
+        if (clickCount >= 5) {
+            // reveal terminal
+            if (!eggTerminal.classList.contains('open')) {
+                eggTerminal.classList.add('open');
+                // also log to console for the curious
+                console.log("%c🔓 EASTER EGG: \"k(s) never resets if you do this right. that's the whole point.\" — Nile Green", "color: #00ffc8; font-size: 14px; font-family: monospace;");
+                // add a fun temporary effect to the whole page
+                document.body.style.boxShadow = 'inset 0 0 50px rgba(0,255,200,0.2)';
+                setTimeout(() => document.body.style.boxShadow = '', 2000);
+            }
+            clickCount = 0;
+        } else {
+            eggTimeout = setTimeout(() => { clickCount = 0; }, 1000);
+        }
+    });
+    // optional: close terminal if you click again? but fine as is.
 </script>
 </body>
 </html>
