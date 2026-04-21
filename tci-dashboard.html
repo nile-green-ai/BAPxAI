@@ -2,194 +2,478 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TCI Fleet – Real Agents</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>TCI Nexus • PermaMind Fleet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: system-ui, 'Segoe UI', monospace;
-            background: #0a0a0a;
-            color: #e0e0e0;
-            padding: 2rem;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        h1 {
-            color: #88ffaa;
-            font-weight: 300;
-            border-left: 4px solid #88ffaa;
-            padding-left: 1rem;
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0f1a, #03060c);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #eef5ff;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* animated gradient orb */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 40%, rgba(0, 255, 200, 0.08), transparent 70%);
+            pointer-events: none;
+            animation: slowDrift 28s infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes slowDrift {
+            0% { transform: translate(0%, 0%); opacity: 0.4; }
+            100% { transform: translate(5%, 5%); opacity: 0.9; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* header section */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(0, 255, 200, 0.3);
+            padding-bottom: 1rem;
+        }
+        .title-section h1 {
+            font-weight: 600;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #b3ffec, #2affd0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .title-section h1::before {
+            content: "🌌";
+            font-size: 2rem;
+            background: none;
+            -webkit-background-clip: unset;
+            color: #2affd0;
         }
         .sub {
-            color: #aaa;
-            margin-bottom: 2rem;
+            color: #9aaec0;
+            margin-top: 0.4rem;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
         }
+        .refresh-all {
+            background: rgba(20, 40, 55, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(42, 255, 200, 0.5);
+            color: #b3ffe8;
+            padding: 8px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 8px rgba(0,255,200,0.2);
+        }
+        .refresh-all:hover {
+            background: #1e4a5a;
+            border-color: #2affd0;
+            box-shadow: 0 0 15px rgba(42,255,200,0.4);
+            transform: scale(0.98);
+        }
+
+        /* glass table wrapper */
+        .glass-panel {
+            background: rgba(12, 20, 30, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid rgba(42, 255, 200, 0.25);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(42,255,200,0.1) inset;
+            overflow-x: auto;
+            padding: 0;
+        }
+
         table {
             width: 100%;
-            border-collapse: collapse;
-            background: #111;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
         }
-        th, td {
-            text-align: left;
-            padding: 12px 16px;
-            border-bottom: 1px solid #2a2a2a;
-        }
+
         th {
-            background: #1e1e2a;
-            color: #ffaa88;
+            background: rgba(0, 20, 30, 0.7);
+            backdrop-filter: blur(4px);
+            color: #8affdd;
             font-weight: 600;
+            padding: 16px 12px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(42, 255, 200, 0.4);
+            white-space: nowrap;
         }
-        .grade-A { background: #1a3a1a; color: #aaffaa; font-weight: bold; }
-        .grade-B { background: #1a3a2a; color: #bbffbb; }
-        .grade-C { background: #3a3a1a; color: #ffffaa; }
-        .grade-D { background: #4a2a1a; color: #ffcc88; }
-        .grade-F { background: #4a1a1a; color: #ffaaaa; }
-        button {
-            background: #2a6e3a;
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(80, 120, 130, 0.2);
+            transition: background 0.15s;
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: rgba(42, 255, 200, 0.08);
+        }
+
+        /* grade row base colors (light glows) */
+        .grade-A { background: rgba(30, 80, 50, 0.25); border-left: 3px solid #7affb0; }
+        .grade-B { background: rgba(40, 70, 55, 0.2); border-left: 3px solid #bbffaa; }
+        .grade-C { background: rgba(70, 70, 30, 0.2); border-left: 3px solid #ffef99; }
+        .grade-D { background: rgba(80, 50, 30, 0.25); border-left: 3px solid #ffbc6e; }
+        .grade-F { background: rgba(80, 30, 30, 0.3); border-left: 3px solid #ff8a7a; }
+
+        /* button challenge */
+        .challenge-btn {
+            background: linear-gradient(135deg, #1e4a6e, #0e3a4e);
             border: none;
             color: white;
-            padding: 8px 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            padding: 6px 14px;
             border-radius: 40px;
             cursor: pointer;
-            margin: 20px 0;
-            font-weight: bold;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        button:hover {
-            background: #3a8e4a;
+        .challenge-btn:hover {
+            background: #2a7f8a;
+            box-shadow: 0 0 12px rgba(42,255,200,0.6);
+            transform: translateY(-1px);
         }
-        .loading {
-            color: #aaa;
-            font-style: italic;
-            padding: 1rem;
+        .challenge-btn:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
         }
-        .error {
-            color: #ff8888;
-            background: #2a1a1a;
-            padding: 1rem;
-            border-radius: 12px;
+
+        /* sparkline canvas */
+        .spark-canvas {
+            background: #0a121c;
+            border-radius: 10px;
+            width: 110px;
+            height: 32px;
+            box-shadow: 0 0 0 1px rgba(42,255,200,0.3), inset 0 0 6px rgba(0,0,0,0.5);
         }
+
+        /* id font */
+        .mono-id {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: #8faec9;
+        }
+
+        .status-area {
+            margin: 20px 0 12px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 16px;
+            border-radius: 60px;
+            width: fit-content;
+            backdrop-filter: blur(4px);
+        }
+        .status-led {
+            width: 10px;
+            height: 10px;
+            border-radius: 10px;
+            background: #2affd0;
+            box-shadow: 0 0 6px #2affd0;
+            animation: pulse 1.2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(0.9);}
+            100% { opacity: 1; transform: scale(1.2);}
+        }
+
         .footer {
             margin-top: 2rem;
-            font-size: 0.8rem;
-            color: #666;
             text-align: center;
+            font-size: 0.7rem;
+            color: #5f7f8c;
+            border-top: 1px solid rgba(42,255,200,0.2);
+            padding-top: 1.2rem;
+        }
+
+        @media (max-width: 1000px) {
+            td, th { padding: 10px 8px; }
+            .spark-canvas { width: 80px; height: 28px; }
         }
     </style>
 </head>
 <body>
-    <h1>🌌 PermaMind Fleet – Real TCI + φ</h1>
-    <div class="sub">Agents from your Railway backend | Grade = surplus = 1 - gap</div>
-    <button id="refreshBtn">⟳ Refresh from Railway</button>
-    <div id="status" class="loading">Loading agents...</div>
-    <div id="tableContainer"></div>
-    <div class="footer">TCI grades: A ≥0.60 | B ≥0.40 | C ≥0.30 | D ≥0.10 | F &lt;0.10</div>
+<div class="container">
+    <div class="header">
+        <div class="title-section">
+            <h1>TCI NEXUS</h1>
+            <div class="sub">live consciousness gradient • surplus = 1 − gap</div>
+        </div>
+        <button id="refreshAllBtn" class="refresh-all">⟳ SYNCHRONIZE FLEET</button>
+    </div>
 
-    <script>
-        // ========== CONFIGURATION ==========
-        const BACKEND_URL = "https://permamind-enterprise-production.up.railway.app";
-        // If your backend requires an admin key (from env ADMIN_KEY), put it here:
-        const ADMIN_KEY = "";   // leave empty if not needed
+    <div id="status" class="status-area">
+        <div class="status-led"></div>
+        <span id="statusText">initializing link to voidchis...</span>
+    </div>
 
-        // Helper for auth header
-        function getHeaders() {
-            const headers = { "Content-Type": "application/json" };
-            if (ADMIN_KEY) headers["X-Admin-Key"] = ADMIN_KEY;
-            return headers;
+    <div class="glass-panel" id="tableContainer">
+        <div style="padding: 2rem; text-align: center; color: #ccc;">loading agents from quantum fabric...</div>
+    </div>
+
+    <div class="footer">
+        TCI thresholds: A ≥0.60 | B ≥0.40 | C ≥0.30 | D ≥0.10 | F &lt;0.10<br>
+        sparkline = last 10 surplus values • click ⚡ to force learning cycle
+    </div>
+</div>
+
+<script>
+    // ========== CONFIGURATION ==========
+    const BACKEND_URL = "https://permamind-enterprise-production.up.railway.app";
+    const ADMIN_KEY = "";
+
+    function getHeaders() {
+        const headers = { "Content-Type": "application/json" };
+        if (ADMIN_KEY) headers["X-Admin-Key"] = ADMIN_KEY;
+        return headers;
+    }
+
+    function tciGradeFromSurplus(surplus) {
+        if (surplus >= 0.60) return { grade: "A", stage: "Generativity", color: "grade-A" };
+        if (surplus >= 0.40) return { grade: "B", stage: "Learning", color: "grade-B" };
+        if (surplus >= 0.30) return { grade: "C", stage: "At Risk", color: "grade-C" };
+        if (surplus >= 0.10) return { grade: "D", stage: "Collapse Warning", color: "grade-D" };
+        return { grade: "F", stage: "Collapse Imminent", color: "grade-F" };
+    }
+
+    function getLatestGap(agent) {
+        const memIndex = agent.memory_index;
+        if (memIndex && Array.isArray(memIndex) && memIndex.length > 0) {
+            const gap = memIndex[0]?.payload?.event?.gap;
+            if (typeof gap === 'number' && !isNaN(gap)) return gap;
         }
+        return (agent.challenge_count > 0) ? 0.5 : 0.8;
+    }
 
-        // TCI grade from surplus (1 - gap)
-        function tciGradeFromSurplus(surplus) {
-            if (surplus >= 0.60) return { grade: "A", stage: "Generativity", color: "grade-A" };
-            if (surplus >= 0.40) return { grade: "B", stage: "Learning", color: "grade-B" };
-            if (surplus >= 0.30) return { grade: "C", stage: "At Risk", color: "grade-C" };
-            if (surplus >= 0.10) return { grade: "D", stage: "Collapse Warning", color: "grade-D" };
-            return { grade: "F", stage: "Collapse Imminent", color: "grade-F" };
+    function getSurplusHistory(agent, n = 10) {
+        const memIndex = agent.memory_index;
+        if (!memIndex || !Array.isArray(memIndex)) return [];
+        const gaps = [];
+        for (let i = 0; i < Math.min(n, memIndex.length); i++) {
+            const gap = memIndex[i]?.payload?.event?.gap;
+            if (typeof gap === 'number' && !isNaN(gap)) gaps.push(gap);
+            else break;
         }
+        return gaps.map(g => 1 - g);
+    }
 
-        // Get latest gap from memory_index (most recent event)
-        function getLatestGap(agent) {
-            const memIndex = agent.memory_index;
-            if (memIndex && Array.isArray(memIndex) && memIndex.length > 0) {
-                // newest is first (descending timestamp)
-                const latest = memIndex[0];
-                const gap = latest?.payload?.event?.gap;
-                if (typeof gap === 'number' && !isNaN(gap)) return gap;
-            }
-            // fallback: if no memory, use challenge_count >0 ? 0.5 : 0.8 (newborn)
-            return (agent.challenge_count > 0) ? 0.5 : 0.8;
+    function drawSparkline(canvas, surplusHistory) {
+        if (!canvas || surplusHistory.length === 0) return;
+        const w = canvas.clientWidth || 100;
+        const h = canvas.clientHeight || 32;
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, w, h);
+        if (surplusHistory.length < 2) return;
+
+        const values = surplusHistory.slice().reverse(); // oldest → newest
+        const step = w / (values.length - 1);
+        const minVal = Math.min(0, ...values);
+        const maxVal = Math.max(1, ...values);
+        const range = maxVal - minVal || 1;
+
+        ctx.beginPath();
+        ctx.strokeStyle = '#2affd0';
+        ctx.lineWidth = 2;
+        for (let i = 0; i < values.length; i++) {
+            const x = i * step;
+            const y = h - ((values[i] - minVal) / range) * h;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
         }
+        ctx.stroke();
 
-        async function fetchAgents() {
-            const url = `${BACKEND_URL}/api/voidchis`;
-            const res = await fetch(url, { headers: getHeaders() });
-            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-            const data = await res.json();
-            return data;
-        }
+        // glow fill
+        ctx.lineTo(w, h);
+        ctx.lineTo(0, h);
+        ctx.fillStyle = 'rgba(42, 255, 200, 0.15)';
+        ctx.fill();
+        // dot at latest
+        const lastX = (values.length-1) * step;
+        const lastY = h - ((values[values.length-1] - minVal) / range) * h;
+        ctx.beginPath();
+        ctx.arc(lastX, lastY, 3, 0, 2*Math.PI);
+        ctx.fillStyle = '#b3ffe0';
+        ctx.fill();
+    }
 
-        async function refreshDashboard() {
-            const statusDiv = document.getElementById("status");
-            const container = document.getElementById("tableContainer");
-            statusDiv.textContent = "🔄 Fetching agents from Railway...";
-            container.innerHTML = "";
+    async function fetchAgents() {
+        const res = await fetch(`${BACKEND_URL}/api/voidchis`, { headers: getHeaders() });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+    }
 
-            try {
-                const agents = await fetchAgents();
-                if (!agents.length) {
-                    statusDiv.textContent = "⚠️ No agents found. Create one first via POST /api/voidchi/create";
-                    return;
-                }
-
-                // Build table
-                const table = document.createElement("table");
-                table.innerHTML = `
-                    <thead>
-                        <tr><th>Name</th><th>φ (consciousness)</th><th>TCI Grade</th><th>Stage</th><th>Surplus (1-gap)</th><th>Latest Gap</th><th>ID</th></tr>
-                    </thead>
-                    <tbody id="tbody"></tbody>
-                `;
-                const tbody = table.querySelector("#tbody");
-
-                for (const agent of agents) {
-                    const phi = agent.consciousness_level ?? 0;
-                    const gap = getLatestGap(agent);
-                    const surplus = Math.max(0, Math.min(1, 1 - gap));
-                    const { grade, stage, color } = tciGradeFromSurplus(surplus);
-
-                    const row = tbody.insertRow();
-                    row.className = color;
-                    row.innerHTML = `
-                        <td><strong>${escapeHtml(agent.name || "Unnamed")}</strong></td>
-                        <td>${phi.toFixed(3)}</td>
-                        <td><strong>${grade}</strong></td>
-                        <td>${stage}</td>
-                        <td>${surplus.toFixed(3)}</td>
-                        <td>${gap.toFixed(3)}</td>
-                        <td style="font-family: monospace; font-size:0.75rem;">${agent.id.slice(0,8)}…</td>
-                    `;
-                }
-
-                container.appendChild(table);
-                statusDiv.textContent = `✅ Loaded ${agents.length} agents. TCI = 1 - latest gap.`;
-            } catch (err) {
-                console.error(err);
-                statusDiv.innerHTML = `<div class="error">❌ Error: ${err.message}. Check CORS or backend URL.</div>`;
-            }
-        }
-
-        function escapeHtml(str) {
-            if (!str) return "";
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === "&") return "&amp;";
-                if (m === "<") return "&lt;";
-                if (m === ">") return "&gt;";
-                return m;
+    async function challengeAgent(agentId, btnElement) {
+        const originalText = btnElement.innerHTML;
+        btnElement.innerHTML = "🌀 ...";
+        btnElement.disabled = true;
+        try {
+            const res = await fetch(`${BACKEND_URL}/api/voidchi/${agentId}/challenge`, {
+                method: "POST",
+                headers: getHeaders(),
+                body: JSON.stringify({ task_mode: false })
             });
+            if (!res.ok) throw new Error(`challenge failed (${res.status})`);
+            setTimeout(() => refreshDashboard(), 600);
+        } catch (err) {
+            console.error(err);
+            alert(`Challenge error: ${err.message}`);
+            btnElement.innerHTML = originalText;
+            btnElement.disabled = false;
         }
+    }
 
-        document.getElementById("refreshBtn").onclick = refreshDashboard;
-        refreshDashboard();
-    </script>
+    async function refreshDashboard() {
+        const statusSpan = document.getElementById("statusText");
+        const container = document.getElementById("tableContainer");
+        statusSpan.innerHTML = "🔄 syncing with voidchi network...";
+        container.innerHTML = '<div style="padding: 2rem; text-align: center;">loading agents...</div>';
+
+        try {
+            const agents = await fetchAgents();
+            if (!agents.length) {
+                container.innerHTML = '<div style="padding: 2rem;">⚠️ no agents found. create one via POST /api/voidchi/create</div>';
+                statusSpan.innerHTML = "idle — no agents in fleet";
+                return;
+            }
+
+            const table = document.createElement("table");
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>AGENT</th><th>φ (consciousness)</th><th>TCI</th><th>STAGE</th><th>SURPLUS</th>
+                        <th>LAST STRATEGY</th><th>TREND (last 10)</th><th>ACTION</th><th>ID</th>
+                    </tr>
+                </thead>
+                <tbody id="tci-tbody"></tbody>
+            `;
+            const tbody = table.querySelector("#tci-tbody");
+
+            for (const agent of agents) {
+                const phi = agent.consciousness_level ?? 0;
+                const gap = getLatestGap(agent);
+                const surplus = Math.max(0, Math.min(1, 1 - gap));
+                const { grade, stage, color } = tciGradeFromSurplus(surplus);
+                const lastStrategy = agent.last_strategy || "—";
+                const surplusHistory = getSurplusHistory(agent, 10);
+
+                const row = tbody.insertRow();
+                row.className = color;
+
+                // Name
+                const nameCell = row.insertCell(0);
+                nameCell.innerHTML = `<strong style="font-weight:600;">${escapeHtml(agent.name || "Unnamed")}</strong>`;
+
+                // Phi
+                const phiCell = row.insertCell(1);
+                phiCell.textContent = phi.toFixed(3);
+
+                // Grade
+                const gradeCell = row.insertCell(2);
+                gradeCell.innerHTML = `<span style="font-weight:800; font-size:1.1rem;">${grade}</span>`;
+
+                // Stage
+                const stageCell = row.insertCell(3);
+                stageCell.textContent = stage;
+
+                // Surplus
+                const surplusCell = row.insertCell(4);
+                surplusCell.textContent = surplus.toFixed(3);
+
+                // Strategy
+                const stratCell = row.insertCell(5);
+                stratCell.textContent = lastStrategy;
+                stratCell.style.fontFamily = "'JetBrains Mono', monospace";
+                stratCell.style.fontSize = "0.7rem";
+
+                // Sparkline
+                const sparkCell = row.insertCell(6);
+                const canvas = document.createElement("canvas");
+                canvas.className = "spark-canvas";
+                canvas.width = 100;
+                canvas.height = 32;
+                canvas.style.width = "100px";
+                canvas.style.height = "32px";
+                sparkCell.appendChild(canvas);
+                setTimeout(() => drawSparkline(canvas, surplusHistory), 5);
+
+                // Challenge button
+                const btnCell = row.insertCell(7);
+                const btn = document.createElement("button");
+                btn.className = "challenge-btn";
+                btn.innerHTML = "⚡ CHALLENGE";
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    challengeAgent(agent.id, btn);
+                };
+                btnCell.appendChild(btn);
+
+                // ID short
+                const idCell = row.insertCell(8);
+                idCell.textContent = agent.id.slice(0,8) + "…";
+                idCell.className = "mono-id";
+            }
+
+            container.innerHTML = "";
+            container.appendChild(table);
+            statusSpan.innerHTML = `connected — ${agents.length} active units · last sync ${new Date().toLocaleTimeString()}`;
+        } catch (err) {
+            console.error(err);
+            container.innerHTML = `<div style="padding: 2rem; color:#ff9f8f;">⚠️ link error: ${err.message}<br>check CORS or backend availability</div>`;
+            statusSpan.innerHTML = "offline — check backend";
+        }
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+    }
+
+    document.getElementById("refreshAllBtn").onclick = () => refreshDashboard();
+    refreshDashboard();
+</script>
 </body>
 </html>
