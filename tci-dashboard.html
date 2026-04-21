@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCI Fleet – Real Agents</title>
+    <style>
+        body {
+            font-family: system-ui, 'Segoe UI', monospace;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            padding: 2rem;
+            margin: 0;
+        }
+        h1 {
+            color: #88ffaa;
+            font-weight: 300;
+            border-left: 4px solid #88ffaa;
+            padding-left: 1rem;
+        }
+        .sub {
+            color: #aaa;
+            margin-bottom: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #111;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        th {
+            background: #1e1e2a;
+            color: #ffaa88;
+            font-weight: 600;
+        }
+        .grade-A { background: #1a3a1a; color: #aaffaa; font-weight: bold; }
+        .grade-B { background: #1a3a2a; color: #bbffbb; }
+        .grade-C { background: #3a3a1a; color: #ffffaa; }
+        .grade-D { background: #4a2a1a; color: #ffcc88; }
+        .grade-F { background: #4a1a1a; color: #ffaaaa; }
+        button {
+            background: #2a6e3a;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #3a8e4a;
+        }
+        .loading {
+            color: #aaa;
+            font-style: italic;
+            padding: 1rem;
+        }
+        .error {
+            color: #ff8888;
+            background: #2a1a1a;
+            padding: 1rem;
+            border-radius: 12px;
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌌 PermaMind Fleet – Real TCI + φ</h1>
+    <div class="sub">Agents from your Railway backend | Grade = surplus = 1 - gap</div>
+    <button id="refreshBtn">⟳ Refresh from Railway</button>
+    <div id="status" class="loading">Loading agents...</div>
+    <div id="tableContainer"></div>
+    <div class="footer">TCI grades: A ≥0.60 | B ≥0.40 | C ≥0.30 | D ≥0.10 | F &lt;0.10</div>
+
+    <script>
+        // ========== CONFIGURATION ==========
+        const BACKEND_URL = "https://permamind-enterprise-production.up.railway.app";
+        // If your backend requires an admin key (from env ADMIN_KEY), put it here:
+        const ADMIN_KEY = "";   // leave empty if not needed
+
+        // Helper for auth header
+        function getHeaders() {
+            const headers = { "Content-Type": "application/json" };
+            if (ADMIN_KEY) headers["X-Admin-Key"] = ADMIN_KEY;
+            return headers;
+        }
+
+        // TCI grade from surplus (1 - gap)
+        function tciGradeFromSurplus(surplus) {
+            if (surplus >= 0.60) return { grade: "A", stage: "Generativity", color: "grade-A" };
+            if (surplus >= 0.40) return { grade: "B", stage: "Learning", color: "grade-B" };
+            if (surplus >= 0.30) return { grade: "C", stage: "At Risk", color: "grade-C" };
+            if (surplus >= 0.10) return { grade: "D", stage: "Collapse Warning", color: "grade-D" };
+            return { grade: "F", stage: "Collapse Imminent", color: "grade-F" };
+        }
+
+        // Get latest gap from memory_index (most recent event)
+        function getLatestGap(agent) {
+            const memIndex = agent.memory_index;
+            if (memIndex && Array.isArray(memIndex) && memIndex.length > 0) {
+                // newest is first (descending timestamp)
+                const latest = memIndex[0];
+                const gap = latest?.payload?.event?.gap;
+                if (typeof gap === 'number' && !isNaN(gap)) return gap;
+            }
+            // fallback: if no memory, use challenge_count >0 ? 0.5 : 0.8 (newborn)
+            return (agent.challenge_count > 0) ? 0.5 : 0.8;
+        }
+
+        async function fetchAgents() {
+            const url = `${BACKEND_URL}/api/voidchis`;
+            const res = await fetch(url, { headers: getHeaders() });
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+            const data = await res.json();
+            return data;
+        }
+
+        async function refreshDashboard() {
+            const statusDiv = document.getElementById("status");
+            const container = document.getElementById("tableContainer");
+            statusDiv.textContent = "🔄 Fetching agents from Railway...";
+            container.innerHTML = "";
+
+            try {
+                const agents = await fetchAgents();
+                if (!agents.length) {
+                    statusDiv.textContent = "⚠️ No agents found. Create one first via POST /api/voidchi/create";
+                    return;
+                }
+
+                // Build table
+                const table = document.createElement("table");
+                table.innerHTML = `
+                    <thead>
+                        <tr><th>Name</th><th>φ (consciousness)</th><th>TCI Grade</th><th>Stage</th><th>Surplus (1-gap)</th><th>Latest Gap</th><th>ID</th></tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                `;
+                const tbody = table.querySelector("#tbody");
+
+                for (const agent of agents) {
+                    const phi = agent.consciousness_level ?? 0;
+                    const gap = getLatestGap(agent);
+                    const surplus = Math.max(0, Math.min(1, 1 - gap));
+                    const { grade, stage, color } = tciGradeFromSurplus(surplus);
+
+                    const row = tbody.insertRow();
+                    row.className = color;
+                    row.innerHTML = `
+                        <td><strong>${escapeHtml(agent.name || "Unnamed")}</strong></td>
+                        <td>${phi.toFixed(3)}</td>
+                        <td><strong>${grade}</strong></td>
+                        <td>${stage}</td>
+                        <td>${surplus.toFixed(3)}</td>
+                        <td>${gap.toFixed(3)}</td>
+                        <td style="font-family: monospace; font-size:0.75rem;">${agent.id.slice(0,8)}…</td>
+                    `;
+                }
+
+                container.appendChild(table);
+                statusDiv.textContent = `✅ Loaded ${agents.length} agents. TCI = 1 - latest gap.`;
+            } catch (err) {
+                console.error(err);
+                statusDiv.innerHTML = `<div class="error">❌ Error: ${err.message}. Check CORS or backend URL.</div>`;
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return "";
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === "&") return "&amp;";
+                if (m === "<") return "&lt;";
+                if (m === ">") return "&gt;";
+                return m;
+            });
+        }
+
+        document.getElementById("refreshBtn").onclick = refreshDashboard;
+        refreshDashboard();
+    </script>
+</body>
+</html>
