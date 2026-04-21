@@ -278,7 +278,7 @@
     border: 1px solid rgba(255,255,255,0.08);
     overflow: hidden;
     margin-top: 30px;
-    padding: 0;  /* remove padding to let iframe fill */
+    padding: 0;
   }
   .demo-iframe {
     width: 100%;
@@ -435,8 +435,8 @@
     </div>
     <div class="cta-group">
       <a href="#demo" class="btn btn-primary">Live TCI Fleet →</a>
-      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" class="star-cta">
-        ⭐ Star the TCI Toolkit on GitHub (currently 1 star — be #2!)
+      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" class="star-cta" id="starCta">
+        ⭐ Star the TCI Toolkit on GitHub (currently <span id="star-cta-count">…</span> stars — be the next!)
       </a>
     </div>
   </div>
@@ -504,7 +504,7 @@
     </div>
   </section>
 
-  <!-- ========== REPLACED DEMO SECTION WITH REAL TCI FLEET DASHBOARD ========== -->
+  <!-- Real TCI Fleet Dashboard (iframe) -->
   <section id="demo" class="fade-up">
     <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 16px;">Live TCI Fleet – Your Agents</div>
     <div style="color: #b0aea5; margin-bottom: 40px;">Real‑time surplus, consciousness (φ), grades, and challenge controls.</div>
@@ -512,7 +512,6 @@
       <iframe class="demo-iframe" src="https://bapxai.com/tci-dashboard.html" title="TCI Fleet Dashboard"></iframe>
     </div>
   </section>
-  <!-- ======================================================================= -->
 
   <div class="paper-card fade-up">
     <div style="font-size: 2rem; margin-bottom: 12px;">📄</div>
@@ -582,25 +581,47 @@
 </div>
 
 <script>
-  // GitHub stars
-  async function fetchStars() {
+  // ========================
+  // LIVE GITHUB STAR COUNT (real-time)
+  // ========================
+  async function updateGitHubStars() {
+    const starSpans = document.querySelectorAll('#github-stars, #star-cta-count');
+    if (!starSpans.length) return;
+    
     try {
-      const res = await fetch('https://api.github.com/repos/nile-green-ai/tci-toolkit');
-      if (res.ok) {
-        const data = await res.json();
-        document.getElementById('github-stars').innerText = data.stargazers_count || '1';
-      } else { document.getElementById('github-stars').innerText = '1'; }
-    } catch(e) { document.getElementById('github-stars').innerText = '1'; }
+      const response = await fetch('https://api.github.com/repos/nile-green-ai/tci-toolkit');
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      const stars = data.stargazers_count;
+      starSpans.forEach(span => {
+        span.textContent = stars;
+      });
+    } catch (error) {
+      console.error('Failed to fetch GitHub stars:', error);
+      starSpans.forEach(span => {
+        span.textContent = '?';
+      });
+    }
   }
-  fetchStars();
 
-  // Scroll animations (keep for other sections)
+  // Run on load and refresh every hour (3600000 ms)
+  updateGitHubStars();
+  setInterval(updateGitHubStars, 3600000);
+
+  // ========================
+  // Scroll animations (fade-up)
+  // ========================
   const fadeElements = document.querySelectorAll('.fade-up');
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
   }, { threshold: 0.1 });
   fadeElements.forEach(el => observer.observe(el));
 
+  // ========================
+  // Easter eggs (keep the fun ones)
+  // ========================
   function showToast(msg) {
     const toast = document.createElement('div');
     toast.className = 'easter-egg-toast';
@@ -609,8 +630,7 @@
     setTimeout(() => toast.remove(), 3000);
   }
 
-  // ========== EASTER EGGS (keep the fun ones) ==========
-  // Formula 10x surplus boost (only affects the simulated demo? Not needed, but we keep for nostalgia)
+  // Formula click easter egg (10x)
   let formulaClicks = 0;
   const formulaElem = document.getElementById('tciFormula');
   if (formulaElem) {
@@ -625,7 +645,7 @@
     });
   }
 
-  // Logo clicks (5x message, 10x quantum shuffle – now just fun messages)
+  // Logo click easter egg (5x / 10x)
   const logoDiv = document.getElementById('logoEasterEgg');
   let logoClickCount = 0;
   logoDiv.addEventListener('click', () => {
@@ -641,7 +661,7 @@
     }
   });
 
-  // Konami code surplus boost (toast only, since real agents are separate)
+  // Konami code (just for fun)
   const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
   let konamiIndex = 0;
   window.addEventListener('keydown', (e) => {
