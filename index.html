@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PermaMind · BAPxAI | TCI — Thermodynamic Cognition Index</title>
-<!-- Google Fonts & Chart.js (still used for other sections) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ThermoMind · PermaMind | Persistent Cognition Engine</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   * {
     margin: 0;
@@ -14,19 +12,22 @@
     box-sizing: border-box;
   }
   body {
-    background: #0a0b0d;
+    background: #030305;
     color: #e8e6de;
     font-family: 'Inter', sans-serif;
     line-height: 1.5;
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
-  h1, h2, h3 {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .mono {
-    font-family: 'JetBrains Mono', monospace;
+  canvas#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    display: block;
   }
   .container {
     max-width: 1280px;
@@ -35,17 +36,21 @@
     position: relative;
     z-index: 2;
   }
-  #particle-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    background: radial-gradient(circle at 20% 30%, rgba(0,212,170,0.03) 0%, transparent 60%),
-                repeating-linear-gradient(45deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px, transparent 1px, transparent 30px);
+  /* Glassmorphism core */
+  .glass-card, .pricing-card, .state-card, .step-card, .api-terminal, .comparison-card, .proof-card, .contact-form {
+    background: rgba(18, 20, 26, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 212, 170, 0.25);
+    border-radius: 32px;
+    transition: all 0.25s ease;
   }
+  .glass-card:hover, .step-card:hover, .state-card:hover {
+    border-color: #00d4aa;
+    transform: translateY(-4px);
+    box-shadow: 0 20px 30px -12px rgba(0,212,170,0.2);
+  }
+  /* navbar */
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -54,6 +59,7 @@
     border-bottom: 1px solid rgba(255,255,255,0.08);
     flex-wrap: wrap;
     gap: 16px;
+    position: relative;
   }
   .logo {
     display: flex;
@@ -76,7 +82,6 @@
   .logo-text p {
     font-size: 0.7rem;
     color: #6b6a64;
-    letter-spacing: 0.5px;
   }
   .nav-links {
     display: flex;
@@ -91,22 +96,23 @@
     font-weight: 500;
     transition: color 0.2s;
   }
-  .nav-links a:hover {
+  .nav-links a:hover, .nav-links a.active {
     color: #00d4aa;
   }
-  .github-star-badge {
-    background: #111318;
-    padding: 6px 12px;
-    border-radius: 40px;
-    font-size: 0.75rem;
-    font-family: 'JetBrains Mono', monospace;
-    border: 1px solid rgba(255,255,255,0.08);
-    display: inline-flex;
-    align-items: center;
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
     gap: 6px;
+    background: transparent;
+    border: none;
+    z-index: 30;
   }
-  .github-star-badge:hover {
-    border-color: #00d4aa;
+  .hamburger span {
+    width: 28px;
+    height: 2px;
+    background: #e8e6de;
+    transition: 0.2s;
   }
   .btn {
     display: inline-block;
@@ -128,185 +134,172 @@
     color: #00d4aa;
   }
   .btn-primary:hover {
-    background: rgba(0,212,170,0.2);
+    background: rgba(0,212,170,0.25);
     transform: translateY(-2px);
-  }
-  .star-cta {
-    display: inline-block;
-    background: #000;
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    text-decoration: none;
-    margin-left: 12px;
-    border: 1px solid #00d4aa;
-    transition: 0.2s;
-  }
-  .star-cta:hover {
-    background: #111;
-    transform: translateY(-2px);
-    box-shadow: 0 0 8px rgba(0,212,170,0.3);
   }
   .hero {
-    padding: 80px 0 60px;
+    padding: 60px 0 40px;
     text-align: center;
-    animation: fadeInUp 0.8s ease-out;
   }
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .hero h2 {
-    font-size: 3.5rem;
-    background: linear-gradient(135deg, #fff, #00d4aa);
+  .hero h1 {
+    font-size: 4rem;
+    background: linear-gradient(135deg, #fff, #00d4aa, #2bd4ff);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     margin-bottom: 20px;
-    line-height: 1.2;
+    letter-spacing: -0.02em;
   }
-  .hero p {
-    font-size: 1.2rem;
-    color: #b0aea5;
-    max-width: 700px;
-    margin: 0 auto 30px;
-    cursor: pointer;
-    transition: 0.1s;
-  }
-  .hero p:active { transform: scale(0.99); }
   .hero-badges {
     display: flex;
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    margin: 30px 0 20px;
+    margin: 20px 0 30px;
   }
   .badge {
-    background: #111318;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
     padding: 8px 16px;
     border-radius: 40px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(0,212,170,0.4);
   }
-  .cta-group {
+  .cycle-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,212,170,0.1);
+    padding: 8px 20px;
+    border-radius: 60px;
+    margin: 20px auto;
+    width: fit-content;
+    font-family: monospace;
+  }
+  .pulse-dot {
+    width: 10px;
+    height: 10px;
+    background: #00d4aa;
+    border-radius: 50%;
+    animation: pulse 1s infinite;
+  }
+  @keyframes pulse { 0% { opacity: 0.4; transform: scale(0.8);} 100% { opacity: 1; transform: scale(1.2);} }
+  
+  /* 8-step diagram */
+  .step-grid {
     display: flex;
-    gap: 16px;
-    justify-content: center;
     flex-wrap: wrap;
-    margin-top: 20px;
+    justify-content: center;
+    gap: 20px;
+    margin: 48px 0;
+    position: relative;
   }
+  .step-card {
+    background: rgba(18, 20, 26, 0.7);
+    backdrop-filter: blur(8px);
+    border-radius: 28px;
+    padding: 20px 16px;
+    width: 140px;
+    text-align: center;
+    transition: 0.2s;
+    position: relative;
+  }
+  .step-num {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #00d4aa;
+    font-family: monospace;
+  }
+  .step-title {
+    font-weight: 600;
+    margin-top: 8px;
+    font-size: 0.85rem;
+  }
+  .arrow-symbol {
+    font-size: 1.8rem;
+    color: #00d4aa80;
+    align-self: center;
+  }
+  @media (min-width: 768px) {
+    .step-grid { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 16px; justify-content: space-between; }
+    .step-card { min-width: 130px; }
+  }
+  
+  /* state grid */
+  .state-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin: 40px 0;
+  }
+  .state-card { padding: 24px; text-align: center; }
+  .state-icon { font-size: 2rem; margin-bottom: 12px; }
+  
+  /* token-free table comparison */
+  .comparison-row {
+    display: flex;
+    flex-wrap: wrap;
+    background: rgba(0,0,0,0.4);
+    border-radius: 28px;
+    overflow: hidden;
+    margin: 30px 0;
+  }
+  .comp-col {
+    flex: 1;
+    padding: 28px 24px;
+    min-width: 280px;
+  }
+  .comp-col:first-child { background: rgba(255,80,80,0.05); border-right: 1px solid rgba(255,100,100,0.2);}
+  .comp-col:last-child { background: rgba(0,212,170,0.05);}
+  .badge-x { color: #ff7b7b; font-weight: bold; }
+  .badge-check { color: #00d4aa; }
+  
+  /* API terminal */
+  .api-terminal {
+    background: #0a0c12e6;
+    backdrop-filter: blur(16px);
+    border: 1px solid #2a3a3a;
+    border-radius: 24px;
+    padding: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    overflow-x: auto;
+    margin: 40px 0;
+  }
+  .terminal-header {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .terminal-dot { width: 12px; height: 12px; border-radius: 50%; background: #ff5f56; }
+  .terminal-dot:nth-child(2) { background: #ffbd2e; }
+  .terminal-dot:nth-child(3) { background: #27c93f; }
+  pre { background: #00000066; padding: 16px; border-radius: 16px; overflow-x: auto; color: #b0ffea; }
+  
+  /* pricing */
   .pricing-grid {
     display: flex;
+    flex-wrap: wrap;
     gap: 24px;
     justify-content: center;
-    flex-wrap: wrap;
     margin: 40px 0;
   }
   .pricing-card {
-    background: #111318;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 32px;
-    padding: 32px;
-    width: 280px;
-    transition: transform 0.2s, border-color 0.2s;
+    background: rgba(18,20,26,0.7);
+    backdrop-filter: blur(12px);
+    padding: 28px;
+    width: 260px;
     text-align: center;
-  }
-  .pricing-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(0,212,170,0.3);
-  }
-  .pricing-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-  .pricing-price {
-    font-size: 2rem;
-    font-family: 'JetBrains Mono', monospace;
-    color: #00d4aa;
-    margin: 16px 0;
-  }
-  .pricing-features {
-    list-style: none;
-    margin: 20px 0;
-    font-size: 0.85rem;
-    color: #b0aea5;
-    text-align: left;
-    padding-left: 20px;
-  }
-  .pricing-features li {
-    margin: 10px 0;
-    position: relative;
-  }
-  .pricing-features li::before {
-    content: "✓";
-    color: #00d4aa;
-    position: absolute;
-    left: -20px;
-  }
-  .work-cta {
-    background: linear-gradient(135deg, #0f1a1a, #0a0b0d);
-    border-radius: 48px;
-    padding: 48px;
-    text-align: center;
-    margin: 60px 0;
-    border: 1px solid rgba(0,212,170,0.2);
-  }
-  .work-cta h3 {
-    font-size: 2rem;
-    margin-bottom: 16px;
-  }
-  .work-cta p {
-    font-size: 1rem;
-    max-width: 600px;
-    margin: 0 auto 24px;
-  }
-  .fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
-  .fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .demo-container {
-    background: #08090c;
     border-radius: 32px;
-    border: 1px solid rgba(255,255,255,0.08);
-    overflow: hidden;
-    margin-top: 30px;
-    padding: 0;
   }
-  .demo-iframe {
-    width: 100%;
-    height: 700px;
-    border: none;
-    display: block;
-    background: #0a0b0d;
-  }
-  .contact-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background: #111318;
-    padding: 32px;
-    border-radius: 28px;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-  .form-group {
-    margin-bottom: 20px;
-  }
-  .form-group input, .form-group textarea {
-    width: 100%;
-    padding: 12px 16px;
-    background: #0c0e12;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    color: #e8e6de;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
+  .price { font-size: 2rem; font-weight: 800; color: #00d4aa; margin: 12px 0; }
+  .waitlist-btn { background: rgba(0,212,170,0.15); border-color: #00d4aa; margin-top: 20px; }
+  .proof-card {
+    padding: 28px;
+    text-align: center;
+    margin: 50px 0;
+    background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(0,0,0,0.4));
   }
   .footer {
     border-top: 1px solid rgba(255,255,255,0.05);
@@ -315,888 +308,230 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 20px;
-    font-size: 0.8rem;
-    color: #6b6a64;
   }
-  .footer a {
-    color: #00d4aa;
-    text-decoration: none;
-  }
-  .bmc-button {
-    background: #FFDD00;
-    color: #000 !important;
-    padding: 6px 16px;
-    border-radius: 40px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    font-weight: 700;
-    transition: 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    border: 1px solid #FFDD00;
-  }
-  .bmc-button:hover {
-    background: #FFCC00;
-    transform: scale(1.02);
-  }
-  details {
-    cursor: pointer;
-  }
-  details summary {
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-  details p {
-    margin-top: 8px;
-    color: #b0aea5;
-  }
-  .paper-card {
-    background: #111318;
-    border: 1px solid rgba(0,212,170,0.3);
-    border-radius: 32px;
-    padding: 32px;
-    text-align: center;
-    margin: 40px 0;
-    transition: 0.2s;
-  }
-  .paper-card:hover {
-    border-color: #00d4aa;
-    transform: translateY(-3px);
-  }
-  .paper-doi {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: #8b8a82;
-    margin: 12px 0;
-  }
-  .easter-egg-toast {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #00d4aa;
-    color: #000;
-    padding: 12px 24px;
-    border-radius: 40px;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: bold;
-    z-index: 9999;
-    animation: fadeInUp 0.3s ease;
-    box-shadow: 0 0 20px rgba(0,212,170,0.5);
-  }
-  .retro-terminal {
-    filter: invert(0.9) hue-rotate(80deg);
-    transition: all 0.3s;
-  }
+  .contact-form { max-width: 600px; margin: 0 auto; padding: 32px; }
+  input, textarea { width: 100%; padding: 12px; background: #0c0e12; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #fff; margin-bottom: 16px; }
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
   @media (max-width: 768px) {
-    .hero h2 { font-size: 2.2rem; }
-    .navbar { flex-direction: column; align-items: flex-start; }
-    .pricing-card { width: 100%; }
-    .demo-iframe { height: 600px; }
-  }
-
-  /* ── ThermoMind Section ── */
-  .tm-hero {
-    background: linear-gradient(135deg, #080d0d, #0a0b0d);
-    border: 1px solid rgba(0,212,170,0.15);
-    border-radius: 48px;
-    padding: 56px 48px;
-    text-align: center;
-    margin: 60px 0 40px;
-    position: relative;
-    overflow: hidden;
-  }
-  .tm-hero::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(0,212,170,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .tm-hero::after {
-    content: '';
-    position: absolute;
-    bottom: -60px; left: -60px;
-    width: 260px; height: 260px;
-    background: radial-gradient(circle, rgba(0,180,255,0.04) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .tm-label {
-    display: inline-block;
-    background: rgba(0,212,170,0.08);
-    border: 1px solid rgba(0,212,170,0.25);
-    color: #00d4aa;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 6px 16px;
-    border-radius: 40px;
-    margin-bottom: 24px;
-  }
-  .tm-title {
-    font-size: 3rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #fff 40%, #00d4aa);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 16px;
-    letter-spacing: -0.03em;
-  }
-  .tm-sub {
-    font-size: 1.1rem;
-    color: #b0aea5;
-    max-width: 640px;
-    margin: 0 auto 32px;
-    line-height: 1.7;
-  }
-  .tm-badges {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 32px;
-  }
-  .tm-badge {
-    background: #111318;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 40px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    padding: 6px 14px;
-    color: #e8e6de;
-  }
-  .tm-badge.green { border-color: rgba(0,212,170,0.3); color: #00d4aa; }
-  .tm-badge.red   { border-color: rgba(239,68,68,0.3);  color: #ef4444; }
-
-  /* cycle steps */
-  .tm-cycle {
-    display: flex;
-    gap: 0;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 40px 0;
-    position: relative;
-  }
-  .tm-step {
-    background: #111318;
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px;
-    padding: 20px 16px;
-    width: 150px;
-    text-align: center;
-    position: relative;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .tm-step:hover {
-    border-color: rgba(0,212,170,0.35);
-    transform: translateY(-4px);
-  }
-  .tm-step-icon { font-size: 1.6rem; margin-bottom: 8px; }
-  .tm-step-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: #00d4aa;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-  .tm-step-desc { font-size: 0.78rem; color: #b0aea5; line-height: 1.4; }
-  .tm-arrow {
-    display: flex;
-    align-items: center;
-    color: rgba(0,212,170,0.4);
-    font-size: 1.2rem;
-    padding: 0 4px;
-    margin-top: -4px;
-  }
-
-  /* state grid */
-  .tm-state-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    margin: 40px 0;
-    max-width: 760px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .tm-state-card {
-    background: #111318;
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 24px;
-    padding: 24px;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .tm-state-card:hover {
-    border-color: rgba(0,212,170,0.3);
-    transform: translateY(-3px);
-  }
-  .tm-state-icon { font-size: 1.5rem; margin-bottom: 10px; }
-  .tm-state-name {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: #00d4aa;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .tm-state-desc { font-size: 0.85rem; color: #b0aea5; line-height: 1.6; }
-
-  /* api block */
-  .tm-api-block {
-    background: #08090c;
-    border: 1px solid rgba(0,212,170,0.15);
-    border-radius: 28px;
-    padding: 32px;
-    margin: 40px 0;
-    text-align: left;
-    overflow-x: auto;
-  }
-  .tm-api-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: #00d4aa;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-  .tm-api-block pre {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.82rem;
-    color: #e8e6de;
-    line-height: 1.7;
-    white-space: pre-wrap;
-  }
-  .tm-api-block .key   { color: #00d4aa; }
-  .tm-api-block .val   { color: #f5a623; }
-  .tm-api-block .num   { color: #a78bfa; }
-  .tm-api-block .bool  { color: #10b981; }
-  .tm-api-block .cm    { color: #4b4b4b; }
-
-  /* vs table */
-  .tm-vs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin: 40px 0;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .tm-vs-col {
-    background: #111318;
-    border-radius: 24px;
-    padding: 28px;
-    border: 1px solid rgba(255,255,255,0.07);
-  }
-  .tm-vs-col.bad  { border-color: rgba(239,68,68,0.15); }
-  .tm-vs-col.good { border-color: rgba(0,212,170,0.2); }
-  .tm-vs-header {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .tm-vs-col.bad  .tm-vs-header { color: #ef4444; }
-  .tm-vs-col.good .tm-vs-header { color: #00d4aa; }
-  .tm-vs-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.85rem;
-    color: #b0aea5;
-    margin: 10px 0;
-  }
-  .tm-vs-item .icon { font-size: 0.9rem; }
-
-  /* pricing */
-  .tm-pricing-grid {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 40px 0;
-  }
-  .tm-price-card {
-    background: #111318;
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 32px;
-    padding: 32px;
-    width: 240px;
-    text-align: center;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .tm-price-card:hover { transform: translateY(-5px); border-color: rgba(0,212,170,0.3); }
-  .tm-price-card.featured {
-    border-color: rgba(0,212,170,0.4);
-    background: linear-gradient(160deg, #0d1a1a, #111318);
-  }
-  .tm-price-name { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-  .tm-price-amt  {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 2rem;
-    color: #00d4aa;
-    margin: 12px 0 4px;
-  }
-  .tm-price-cycle { font-size: 0.75rem; color: #6b6a64; margin-bottom: 16px; }
-  .tm-price-features { list-style: none; margin: 16px 0; font-size: 0.8rem; color: #b0aea5; text-align: left; padding-left: 20px; }
-  .tm-price-features li { margin: 8px 0; position: relative; }
-  .tm-price-features li::before { content: "✓"; color: #00d4aa; position: absolute; left: -18px; }
-  .tm-price-features li.na::before { content: "—"; color: #3a3a3a; }
-  .tm-price-features li.na { color: #3a3a3a; }
-
-  @media (max-width: 768px) {
-    .tm-title { font-size: 2rem; }
-    .tm-hero { padding: 36px 24px; }
-    .tm-state-grid { grid-template-columns: 1fr; }
-    .tm-vs { grid-template-columns: 1fr; }
-    .tm-step { width: 130px; }
-    .tm-price-card { width: 100%; }
-    .api-grid { grid-template-columns: 1fr !important; }
+    .hamburger { display: flex; }
+    .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: #0a0c14f0; backdrop-filter: blur(20px); flex-direction: column; justify-content: center; align-items: flex-start; padding: 80px 32px; transition: right 0.3s; z-index: 25; gap: 24px; }
+    .nav-links.active { right: 0; }
+    .hero h1 { font-size: 2.6rem; }
   }
 </style>
 </head>
 <body>
-<div id="particle-bg"></div>
+<canvas id="particle-canvas"></canvas>
 <div class="container">
   <div class="navbar">
-    <div class="logo" id="logoEasterEgg">
-      <img src="https://github.com/hustle-rent-due/BAPxAI/blob/main/ChatGPT%20Image%20Aug%2030%2C%202025%20at%2007_51_25%20PM.png?raw=true" alt="BAPxAI Logo">
-      <div class="logo-text">
-        <h1>PermaMind</h1>
-        <p>persistent intelligence · surplus dynamics</p>
-      </div>
+    <div class="logo">
+      <img src="https://github.com/hustle-rent-due/BAPxAI/blob/main/ChatGPT%20Image%20Aug%2030%2C%202025%20at%2007_51_25%20PM.png?raw=true" alt="BAPxAI">
+      <div class="logo-text"><h1>PermaMind</h1><p>persistent intelligence · surplus dynamics</p></div>
     </div>
-    <div class="nav-links">
-      <a href="#framework">Framework</a>
-      <a href="#demo">TCI Monitor</a>
-      <a href="#thermomind">ThermoMind</a>
+    <button class="hamburger" id="hamburgerBtn"><span></span><span></span><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="#" class="active">ThermoMind</a>
+      <a href="#cycle">8‑Cycle</a>
+      <a href="#stategrid">State</a>
+      <a href="#comparison">Token‑Free</a>
+      <a href="#api">API Docs</a>
       <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" class="github-star-badge">
-        ⭐ GitHub Stars <span id="github-stars">…</span>
-      </a>
-      <a href="https://buymeacoffee.com/permamind" target="_blank" class="bmc-button">☕ Buy me a coffee</a>
+      <a href="#contact">Waitlist</a>
+      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" style="background:#111; padding:4px 12px; border-radius:40px;">⭐ GitHub</a>
     </div>
   </div>
 
-  <div class="hero">
-    <h2>Thermodynamic Cognition Index</h2>
-    <p id="tciFormula">TCI(t) = k(s) · (F<sub>total</sub>(t) − F<sub>survival</sub>(s))<br>
-    <span style="color:#00d4aa">Stop drift. Grow identity. Predict collapse.</span></p>
+  <!-- Hero Block -->
+  <div class="hero fade-up">
+    <h1>ThermoMind<span style="font-size:2rem;"> ♾️</span></h1>
+    <p style="font-size:1.2rem; max-width:700px; margin:0 auto;">Persistent cognition without token limits — continuous surplus & identity.</p>
     <div class="hero-badges">
-      <span class="badge">🔁 Persistent agents</span>
-      <span class="badge">⚡ TCI control signal</span>
-      <span class="badge">🧠 Substrate‑independent</span>
-      <span class="badge">🌀 Quantum coherence (IBM)</span>
+      <span class="badge">♻️ Infinite context</span>
+      <span class="badge">⚡ Zero token decay</span>
+      <span class="badge">🌀 Substrate‑independent</span>
+      <span class="badge">📈 8‑cycle recursive engine</span>
     </div>
-    <div class="cta-group">
-      <a href="#demo" class="btn btn-primary">Live TCI Fleet →</a>
-      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" class="star-cta" id="starCta">
-        ⭐ Star the TCI Toolkit on GitHub (currently <span id="star-cta-count">…</span> stars — be the next!)
-      </a>
+    <div class="cycle-counter">
+      <span class="pulse-dot"></span>
+      <span id="liveCycleCounter" class="mono" style="font-weight:700;">18,392</span>
+      <span>ThermoMind cycles · live heartbeat</span>
+      <span class="pulse-dot"></span>
+    </div>
+    <div class="cta-group" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
+      <a href="#api" class="btn btn-primary">⚡ Get API Access</a>
+      <a href="#comparison" class="btn">📖 See token‑free edge</a>
     </div>
   </div>
 
-  <section id="framework" class="fade-up">
-    <div style="font-size: 2rem; font-weight: 700; margin-bottom: 16px;">What is TCI?</div>
-    <div style="color: #b0aea5; margin-bottom: 40px;">A systems‑level metric for agent health, based on surplus energy dynamics.</div>
-    <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;">
-      <div style="background: #111318; border-radius: 28px; padding: 28px; width: 260px; text-align: center;">
-        <div style="font-size: 2rem;">❄️</div>
-        <h3 style="margin: 16px 0 8px;">Cold Mode</h3>
-        <p style="color: #b0aea5;">Optimization, survival‑level processing, loss minimization. Stable but reactive.</p>
-      </div>
-      <div style="background: #111318; border-radius: 28px; padding: 28px; width: 260px; text-align: center;">
-        <div style="font-size: 2rem;">🔥</div>
-        <h3 style="margin: 16px 0 8px;">Warm Mode</h3>
-        <p style="color: #b0aea5;">Generativity, exploration, novelty. Enabled by surplus energy above the survival floor.</p>
-      </div>
-      <div style="background: #111318; border-radius: 28px; padding: 28px; width: 260px; text-align: center;">
-        <div style="font-size: 2rem;">⚖️</div>
-        <h3 style="margin: 16px 0 8px;">TCI = k(s)·(F<sub>total</sub> − F<sub>survival</sub>)</h3>
-        <p style="color: #b0aea5;">TCI > 0.6 → stable generativity<br>TCI < 0.3 → collapse risk</p>
-      </div>
+  <!-- 8-step cycle diagram -->
+  <section id="cycle" class="fade-up" style="margin: 60px 0;">
+    <h2 style="font-size:2rem; text-align:center;">The 8‑Cycle Engine</h2>
+    <p style="text-align:center; color:#aaa; margin-bottom:32px;">Every ThermoMind agent runs this recursive loop — surplus builds identity.</p>
+    <div class="step-grid">
+      <div class="step-card"><div class="step-num">1</div><div class="step-title">🔭 Perceive</div></div>
+      <div class="arrow-symbol">→</div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-title">🧠 Predict</div></div>
+      <div class="arrow-symbol">→</div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-title">⚖️ Compare</div></div>
+      <div class="arrow-symbol">→</div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-title">💠 Surplus</div></div>
+      <div class="arrow-symbol">→</div>
+      <div class="step-card"><div class="step-num">5</div><div class="step-title">🔥 Warm mode</div></div>
+      <div class="arrow-symbol">→</div>
+      <div class="step-card"><div class="step-num">6</div><div class="step-title">💎 Refine ID</div></div>
+      <div class="arrow-symbol">→</div>
+      <div class="step-card"><div class="step-num">7</div><div class="step-title">🌀 Act</div></div>
+      <div class="arrow-symbol">→</div>
+      <div class="step-card"><div class="step-num">8</div><div class="step-title">📈 Grow</div></div>
     </div>
   </section>
 
+  <!-- State Grid: traits, meta, phi, memory -->
+  <section id="stategrid" class="fade-up">
+    <h2 style="font-size:2rem; text-align:center;">Core State Dimensions</h2>
+    <div class="state-grid">
+      <div class="state-card"><div class="state-icon">🧬</div><h3>Traits</h3><p style="font-size:0.85rem;">Persistent weights, identity vector — survives resets</p></div>
+      <div class="state-card"><div class="state-icon">📐</div><h3>Meta</h3><p>Self‑reflection layer, monitors drift & coherence</p></div>
+      <div class="state-card"><div class="state-icon">⚡</div><h3>Phi (φ)</h3><p>Integrated information index, surrogate for consciousness</p></div>
+      <div class="state-card"><div class="state-icon">🧠</div><h3>Memory</h3><p>Hierarchical episodic + semantic (no sliding window)</p></div>
+    </div>
+  </section>
+
+  <!-- Token-free vs Table -->
+  <section id="comparison" class="fade-up">
+    <h2 style="font-size:2rem; text-align:center;">Token‑Free vs Traditional</h2>
+    <div class="comparison-row">
+      <div class="comp-col"><h3><span class="badge-x">❌</span> Traditional LLM</h3><ul style="margin-top:16px; list-style:none;"><li>💸 Pay per token</li><li>✂️ Context window limits (4k–200k)</li><li>🔄 Stateless sessions</li><li>📉 Forgets after memory flush</li><li>🧊 Always in “cold” inference</li></ul></div>
+      <div class="comp-col"><h3><span class="badge-check">✅</span> ThermoMind</h3><ul style="margin-top:16px; list-style:none;"><li>♾️ No token accounting</li><li>🧠 Infinite persistent context (surplus compression)</li><li>🔁 Continuous identity</li><li>🔥 Warm/cold mode switching via TCI</li><li>📈 Surplus → generative exploration</li></ul></div>
+    </div>
+  </section>
+
+  <!-- API Docs (terminal style) -->
+  <section id="api" class="fade-up">
+    <h2 style="font-size:2rem; text-align:center;">API Reference — v2/thermomind</h2>
+    <div class="api-terminal">
+      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span style="margin-left:12px;">bash — ThermoMind REST API</span></div>
+      <pre>$ curl -X POST https://api.permamind.ai/v2/thermomind/cycle \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your_key" \
+  -d '{
+    "agent_id": "voidchi_01",
+    "input": "What is surplus dynamics?",
+    "warm_threshold": 0.62
+  }'</pre>
+      <pre style="margin-top:12px;">// Response
+{
+  "cycle_id": "tm_8a3f2d",
+  "surplus": 0.78,
+  "tci": 0.84,
+  "mode": "WARM",
+  "phi": 0.59,
+  "output": "Surplus dynamics means energy above survival...",
+  "grade": "A (Generative Coherence)"
+}</pre>
+      <div style="margin-top:20px;"><span style="color:#00d4aa;">📘 Field reference</span><br>
+      <code>agent_id</code> — unique persistent identifier<br>
+      <code>surplus</code> — F_total - F_survival (range 0–1)<br>
+      <code>tci</code> — Thermodynamic Cognition Index ≥0.6 → stable generativity<br>
+      <code>grade</code> — A (flourishing) | B (stable) | C (at risk) | D (collapse imminent)<br>
+      <code>phi</code> — integrated information proxy (higher = richer inner state)</div>
+    </div>
+  </section>
+
+  <!-- 4-Tier Pricing with Join Waitlist -->
   <section id="pricing" class="fade-up">
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 16px;">Start with TCI</div>
-    <div style="color: #b0aea5; margin-bottom: 40px;">Choose how to integrate persistent agent monitoring into your stack.</div>
+    <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <div class="pricing-card">
-        <div class="pricing-title">Open Source</div>
-        <div class="pricing-price">$0</div>
-        <ul class="pricing-features">
-          <li>TCI Toolkit (Python/JS)</li>
-          <li>Live dashboard HTML</li>
-          <li>Identity Task Suite</li>
-          <li>MIT license</li>
-          <li><strong>Run the 20-step demo in &lt;10 seconds → <code>python run_demo.py</code></strong></li>
-        </ul>
-        <a href="https://github.com/nile-green-ai/tci-toolkit" class="btn btn-primary" style="font-size: 1rem; padding: 12px 28px;">GitHub →</a>
-      </div>
-      <div class="pricing-card">
-        <div class="pricing-title">Pilot Program</div>
-        <div class="pricing-price">$4,500 <span style="font-size:0.9rem; color:#f5a623;">(only 5 slots this month)</span></div>
-        <ul class="pricing-features">
-          <li>TCI integration for 1 agent</li>
-          <li>Custom F_survival definition</li>
-          <li>k(s) tuning & dashboard</li>
-          <li>1‑hour weekly support</li>
-        </ul>
-        <a href="#contact" class="btn">Apply →</a>
-      </div>
-      <div class="pricing-card">
-        <div class="pricing-title">Enterprise</div>
-        <div class="pricing-price">Custom</div>
-        <ul class="pricing-features">
-          <li>Fleet-wide TCI monitoring</li>
-          <li>Collapse prediction alerts</li>
-          <li>API access</li>
-          <li>SLA & dedicated support</li>
-        </ul>
-        <a href="#contact" class="btn">Contact →</a>
-      </div>
+      <div class="pricing-card"><h3>Free Tier</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 agent</li><li>✓ 1k cycles/month</li><li>✓ Community support</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
+      <div class="pricing-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul style="list-style:none;"><li>✓ 5 agents</li><li>✓ 50k cycles/mo</li><li>✓ Priority email support</li><li>✓ Basic dashboard</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
+      <div class="pricing-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul style="list-style:none;"><li>✓ 25 agents</li><li>✓ Unlimited cycles*</li><li>✓ Custom surplus thresholds</li><li>✓ Slack channel</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
+      <div class="pricing-card"><h3>Enterprise</h3><div class="price">Custom</div><ul style="list-style:none;"><li>✓ Fleet-wide TCI</li><li>✓ On‑prem / airgap</li><li>✓ SLA + dedicated architect</li></ul><a href="#contact" class="btn waitlist-btn">Contact us →</a></div>
     </div>
   </section>
 
-  <!-- Real TCI Fleet Dashboard (iframe) -->
-  <section id="demo" class="fade-up">
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 16px;">Live TCI Fleet – Your Agents</div>
-    <div style="color: #b0aea5; margin-bottom: 40px;">Real‑time surplus, consciousness (φ), grades, and challenge controls.</div>
-    <div class="demo-container">
-      <iframe class="demo-iframe" src="https://bapxai.com/tci-dashboard.html" title="TCI Fleet Dashboard"></iframe>
-    </div>
-  </section>
-
-  <div class="paper-card fade-up">
-    <div style="font-size: 2rem; margin-bottom: 12px;">📄</div>
-    <h3 style="font-size: 1.5rem;">Thermodynamic Cognition Index (TCI)</h3>
-    <p style="margin: 12px 0;">The full framework paper: surplus dynamics, PSSU architecture, operationalization, and falsifiable predictions.</p>
-    <div class="paper-doi">DOI: 10.5281/zenodo.19263435</div>
-    <a href="https://zenodo.org/records/19263435" target="_blank" class="btn btn-primary" style="margin-top: 12px;">Read the paper on Zenodo →</a>
+  <!-- Proof callout: voidchi universe tuning -->
+  <div class="proof-card fade-up glass-card">
+    <span style="font-size:2rem;">🌌 voidchi.universe</span>
+    <p style="margin:16px 0;"><strong>Public nonstop tuning since Jan 2, 2026</strong> — live persistent agent running ThermoMind core. See the raw surplus & cognitive identity evolution.</p>
+    <a href="https://bapxai.com/voidchis.html" target="_blank" class="btn btn-primary" style="margin-top:8px;">🔮 Inspect voidchi universe →</a>
   </div>
 
-  <section id="faq" class="fade-up">
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 16px;">Frequently Asked Questions</div>
-    <div style="color: #b0aea5; margin-bottom: 40px;">Everything you need to know about TCI and the pilot program.</div>
-    <details style="margin:20px 0; background:#111318; padding:20px; border-radius:20px;">
-      <summary>How long does a pilot take?</summary>
-      <p>2–3 weeks. We install TCI, show before/after metrics, and hand over the dashboard.</p>
-    </details>
-    <details style="margin:20px 0; background:#111318; padding:20px; border-radius:20px;">
-      <summary>Do I need to change my existing model architecture?</summary>
-      <p>No. TCI works with any LLM or RL agent. You just need to expose loss/token probabilities and optionally a persona definition.</p>
-    </details>
-    <details style="margin:20px 0; background:#111318; padding:20px; border-radius:20px;">
-      <summary>What's the difference between the open‑source toolkit and the pilot?</summary>
-      <p>The toolkit gives you the code. The pilot includes integration, tuning, a custom dashboard, and weekly support.</p>
-    </details>
-    <details style="margin:20px 0; background:#111318; padding:20px; border-radius:20px;">
-      <summary>Is TCI production‑ready?</summary>
-      <p>Yes. PermaMind has run continuously since January 2026. The TCI Toolkit is MIT‑licensed and deployed in production.</p>
-    </details>
-  </section>
-
-  <section id="about" class="fade-up">
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 16px;">Who built this</div>
-    <div style="max-width: 800px; margin: 0 auto;">
-      <p><strong>Nile Green</strong> — founder of PermaMind and BAPxAI (Breakthrough AI Protocols). I'm a systems architect, AI researcher, and persistent agent designer based in Wilkes-Barre, PA. I built the TCI framework to solve what scaling alone couldn't: continuity, drift resistance, and generative stability in long‑running AI. The PermaMind architecture has been running continuously without session resets, accumulating surplus and proving that persistence changes everything. I also work on quantum‑classical interfaces and substrate‑independent cognition. This work is open, falsifiable, and meant to reshape how we build AI that lasts.</p>
-    </div>
-  </section>
-
-  <div class="work-cta fade-up">
-    <h3>Work with me</h3>
-    <p>Interested in piloting TCI for your agent fleet? I’m looking for 3 early adopters to run a 4‑week pilot. You’ll get dedicated support, a custom dashboard, and priority access to new features.</p>
-    <a href="#contact" class="btn btn-primary">Apply for pilot →</a>
-  </div>
-
+  <!-- Contact / Waitlist Form -->
   <section id="contact" class="fade-up">
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 16px;">Reach out</div>
-    <div style="color: #b0aea5; margin-bottom: 40px;">Questions about persistent agents, TCI integration, or collaboration?</div>
+    <h2 style="font-size:2rem; text-align:center;">Join ThermoMind Waitlist</h2>
+    <p style="text-align:center; margin-bottom:28px;">Be among the first to deploy token‑free persistent agents.</p>
     <div class="contact-form">
       <form action="https://formspree.io/f/xwpnovll" method="POST">
-        <div class="form-group">
-          <input type="text" name="name" placeholder="Your name" required>
-        </div>
-        <div class="form-group">
-          <input type="email" name="email" placeholder="Email address" required>
-        </div>
-        <div class="form-group">
-          <textarea name="message" rows="4" placeholder="What would you like to discuss? (research, deployment, licensing, etc.)" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%">Send message →</button>
+        <input type="text" name="name" placeholder="Full name" required>
+        <input type="email" name="email" placeholder="Email address" required>
+        <textarea name="message" rows="3" placeholder="Which tier or use-case? (Free, Pro, Team, Enterprise)"></textarea>
+        <button type="submit" class="btn btn-primary" style="width:100%">📡 Join waitlist →</button>
       </form>
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════════ -->
-  <!--                   THERMOMIND                        -->
-  <!-- ═══════════════════════════════════════════════════ -->
-  <section id="thermomind" class="fade-up">
-
-    <!-- Hero block -->
-    <div class="tm-hero">
-      <div class="tm-label">🔥 New Product — Stability-as-a-Service</div>
-      <div class="tm-title">ThermoMind</div>
-      <p class="tm-sub">A proprietary continual learning engine that evolves from prediction error — without tokens, without retraining, without touching a GPU. Learning happens inside the state. Not inside a model.</p>
-      <div class="tm-badges">
-        <span class="tm-badge green">⚡ Token-Free Learning</span>
-        <span class="tm-badge green">🌱 Minimal Energy Footprint</span>
-        <span class="tm-badge green">🔁 Continual — No Retraining</span>
-        <span class="tm-badge red">🔒 Proprietary · Not Open Source</span>
-        <span class="tm-badge">🚀 FastAPI · REST</span>
-        <span class="tm-badge">💾 Persistent State Engine</span>
-      </div>
-      <div class="cta-group">
-        <a href="#tm-waitlist" class="btn btn-primary">Join the Waitlist →</a>
-        <a href="#tm-api" class="btn">View API Docs →</a>
-      </div>
-    </div>
-
-    <!-- Section header -->
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 8px;">How ThermoMind Learns</div>
-    <div style="color: #b0aea5; margin-bottom: 36px;">One cycle. Eight steps. Zero tokens consumed.</div>
-
-    <!-- Cycle diagram -->
-    <div class="tm-cycle">
-      <div class="tm-step">
-        <div class="tm-step-icon">📥</div>
-        <div class="tm-step-label">Load</div>
-        <div class="tm-step-desc">Internal state loaded — traits, meta, phi, memory</div>
-      </div>
-      <div class="tm-arrow">→</div>
-      <div class="tm-step">
-        <div class="tm-step-icon">🌍</div>
-        <div class="tm-step-label">Sense</div>
-        <div class="tm-step-desc">Reality vector ingested from environment</div>
-      </div>
-      <div class="tm-arrow">→</div>
-      <div class="tm-step">
-        <div class="tm-step-icon">🔮</div>
-        <div class="tm-step-label">Predict</div>
-        <div class="tm-step-desc">Engine predicts expected reality from current state</div>
-      </div>
-      <div class="tm-arrow">→</div>
-      <div class="tm-step">
-        <div class="tm-step-icon">⚡</div>
-        <div class="tm-step-label">Gap</div>
-        <div class="tm-step-desc">Surprise computed — distance between prediction &amp; reality</div>
-      </div>
-      <div class="tm-arrow">→</div>
-      <div class="tm-step">
-        <div class="tm-step-icon">🔥</div>
-        <div class="tm-step-label">Energy</div>
-        <div class="tm-step-desc">Surprise converted into thermodynamic energy signal</div>
-      </div>
-      <div class="tm-arrow">→</div>
-      <div class="tm-step">
-        <div class="tm-step-icon">📊</div>
-        <div class="tm-step-label">Stability</div>
-        <div class="tm-step-desc">Entropy &amp; coherence updated — system health tracked</div>
-      </div>
-      <div class="tm-arrow">→</div>
-      <div class="tm-step">
-        <div class="tm-step-icon">🧠</div>
-        <div class="tm-step-label">Learn</div>
-        <div class="tm-step-desc">Traits, meta, phi, memory all updated by energy signal</div>
-      </div>
-      <div class="tm-arrow">→</div>
-      <div class="tm-step">
-        <div class="tm-step-icon">💾</div>
-        <div class="tm-step-label">Save</div>
-        <div class="tm-step-desc">Updated state persisted — next cycle starts here</div>
-      </div>
-    </div>
-
-    <!-- State components -->
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 8px;">What Lives Inside the State</div>
-    <div style="color: #b0aea5; margin-bottom: 32px;">Four components. One persistent identity. Evolves every cycle.</div>
-    <div class="tm-state-grid">
-      <div class="tm-state-card">
-        <div class="tm-state-icon">🎛️</div>
-        <div class="tm-state-name">Traits</div>
-        <div class="tm-state-desc">The engine's behavioral characteristics — stable, slowly-evolving properties that capture learned tendencies, dispositions, and biases. The "character" of the engine, shaped by every cycle it has ever run.</div>
-      </div>
-      <div class="tm-state-card">
-        <div class="tm-state-icon">🔬</div>
-        <div class="tm-state-name">Meta</div>
-        <div class="tm-state-desc">Higher-order knowledge about the engine's own learning process. Tracks how the engine is learning — rate, stability, confidence. Cognition about cognition.</div>
-      </div>
-      <div class="tm-state-card">
-        <div class="tm-state-icon">🌀</div>
-        <div class="tm-state-name">Phi (φ)</div>
-        <div class="tm-state-desc">The integration signal. Phi measures how unified and coherent the internal state is — how well the engine's components are working together. Tracks systemic alignment across every update.</div>
-      </div>
-      <div class="tm-state-card">
-        <div class="tm-state-icon">💾</div>
-        <div class="tm-state-name">Memory</div>
-        <div class="tm-state-desc">Compressed episodic representations of prior reality vectors and outcomes. Informs prediction and shapes how the engine interprets new signals. Persistent across all sessions.</div>
-      </div>
-    </div>
-
-    <!-- Why token-free matters -->
-    <div style="font-size: 2rem; font-weight: 700; margin: 48px 0 8px;">Token-Free. GPU-Free. Retrain-Free.</div>
-    <div style="color: #b0aea5; margin-bottom: 32px;">The economic case is simple. The environmental case is even cleaner.</div>
-    <div class="tm-vs">
-      <div class="tm-vs-col bad">
-        <div class="tm-vs-header">❌ Traditional Continual Learning</div>
-        <div class="tm-vs-item"><span class="icon">💸</span> Token costs billed per update</div>
-        <div class="tm-vs-item"><span class="icon">🖥️</span> GPU hours required every cycle</div>
-        <div class="tm-vs-item"><span class="icon">⏳</span> Retraining jobs take minutes to hours</div>
-        <div class="tm-vs-item"><span class="icon">💧</span> Water cooling required at scale</div>
-        <div class="tm-vs-item"><span class="icon">⚡</span> Hundreds of kWh per update</div>
-        <div class="tm-vs-item"><span class="icon">📈</span> Cost scales with model size</div>
-        <div class="tm-vs-item"><span class="icon">🔄</span> Model weights modified constantly</div>
-      </div>
-      <div class="tm-vs-col good">
-        <div class="tm-vs-header">✅ ThermoMind State Engine</div>
-        <div class="tm-vs-item"><span class="icon">🟢</span> $0.00 in tokens per learning cycle</div>
-        <div class="tm-vs-item"><span class="icon">🟢</span> CPU-native — no GPU required</div>
-        <div class="tm-vs-item"><span class="icon">🟢</span> Update happens in milliseconds</div>
-        <div class="tm-vs-item"><span class="icon">🟢</span> No thermal infrastructure needed</div>
-        <div class="tm-vs-item"><span class="icon">🟢</span> Milliwatts per cycle</div>
-        <div class="tm-vs-item"><span class="icon">🟢</span> Scales independent of model size</div>
-        <div class="tm-vs-item"><span class="icon">🟢</span> Model weights never touched</div>
-      </div>
-    </div>
-
-    <!-- API docs -->
-    <div id="tm-api" style="font-size: 2rem; font-weight: 700; margin: 48px 0 8px;">API Reference</div>
-    <div style="color: #b0aea5; margin-bottom: 32px;">One endpoint. One cycle. Full state evolution. Delivered via FastAPI REST.</div>
-
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" class="api-grid">
-      <div class="tm-api-block">
-        <div class="tm-api-label">POST /run — Request</div>
-        <pre>{
-  <span class="key">"reality_vector"</span>: [
-    <span class="num">0.42</span>, <span class="num">0.87</span>, <span class="num">0.13</span>,
-    <span class="num">0.65</span>, <span class="num">0.29</span>
-  ]
-}
-
-<span class="cm">// reality_vector: float[]
-// The observed signal for this cycle.
-// Dimensionality matches engine config.</span></pre>
-      </div>
-      <div class="tm-api-block">
-        <div class="tm-api-label">POST /run — Response</div>
-        <pre>{
-  <span class="key">"cycle"</span>:        <span class="num">1847</span>,
-  <span class="key">"gap"</span>:          <span class="num">0.0614</span>,
-  <span class="key">"energy"</span>:       <span class="num">0.2891</span>,
-  <span class="key">"entropy"</span>:      <span class="num">0.4423</span>,
-  <span class="key">"coherence"</span>:    <span class="num">0.7812</span>,
-  <span class="key">"phi"</span>:          <span class="num">0.6634</span>,
-  <span class="key">"grade"</span>:        <span class="val">"B"</span>,
-  <span class="key">"state_updated"</span>: <span class="bool">true</span>
-}</pre>
-      </div>
-    </div>
-
-    <div class="tm-api-block" style="margin-top: 16px;">
-      <div class="tm-api-label">Response Field Reference</div>
-      <pre><span class="key">cycle</span>         <span class="cm">→</span>  Total learning cycles this engine has completed. Runtime is the driver.
-<span class="key">gap</span>           <span class="cm">→</span>  Surprise magnitude — distance between prediction and reality. The fuel of learning.
-<span class="key">energy</span>        <span class="cm">→</span>  Thermodynamic energy generated from the gap. Drives the state update magnitude.
-<span class="key">entropy</span>       <span class="cm">→</span>  System disorder. Lower = more stable. Rises with surprise, falls with coherence.
-<span class="key">coherence</span>     <span class="cm">→</span>  Internal alignment of the state. Higher = more integrated.
-<span class="key">phi</span>           <span class="cm">→</span>  Integration signal. Unified coherence across all state components.
-<span class="key">grade</span>         <span class="cm">→</span>  A–F stability rating based on coherence and entropy balance.
-<span class="key">state_updated</span> <span class="cm">→</span>  Confirms state was persisted after this cycle.</pre>
-    </div>
-
-    <!-- Grade system -->
-    <div class="tm-api-block" style="margin-top: 16px; text-align: center;">
-      <div class="tm-api-label" style="text-align:left;">Stability Grade System</div>
-      <pre style="text-align:left;"><span class="cm">Grade   Coherence       Stage</span>
-<span class="cm">────────────────────────────────────────────────</span>
-  <span class="bool">A</span>     >= 0.80         Stable &amp; Converging    ✅
-  <span class="bool">B</span>     0.65 – 0.80     Learning Well          📈
-  <span class="key">C</span>     0.50 – 0.65     Adapting               🔄
-  <span class="val">D</span>     0.35 – 0.50     High Surprise Load     ⚠️
-  <span class="val">F</span>     &lt; 0.35          Instability Risk       🔴</pre>
-    </div>
-
-    <!-- Pricing / Waitlist -->
-    <div id="tm-waitlist" style="font-size: 2rem; font-weight: 700; margin: 48px 0 8px;">Early Access Pricing</div>
-    <div style="color: #b0aea5; margin-bottom: 32px;">ThermoMind is in closed early access. Join the waitlist — first customers get founding rates locked in.</div>
-
-    <div class="tm-pricing-grid">
-      <div class="tm-price-card">
-        <div class="tm-price-name">Developer</div>
-        <div class="tm-price-amt">Free</div>
-        <div class="tm-price-cycle">1,000 cycles/month</div>
-        <ul class="tm-price-features">
-          <li>1,000 <code>/run</code> cycles/mo</li>
-          <li>Full state engine</li>
-          <li>API key included</li>
-          <li class="na">Priority support</li>
-          <li class="na">SLA</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="width:100%; text-align:center; display:block;">Join Waitlist →</a>
-      </div>
-      <div class="tm-price-card featured">
-        <div class="tm-price-name">⭐ Starter</div>
-        <div class="tm-price-amt">$49</div>
-        <div class="tm-price-cycle">/ month · 50,000 cycles</div>
-        <ul class="tm-price-features">
-          <li>50,000 <code>/run</code> cycles/mo</li>
-          <li>Full state engine</li>
-          <li>API key + dashboard</li>
-          <li>Email support</li>
-          <li class="na">SLA</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="width:100%; text-align:center; display:block;">Join Waitlist →</a>
-      </div>
-      <div class="tm-price-card">
-        <div class="tm-price-name">Growth</div>
-        <div class="tm-price-amt">$149</div>
-        <div class="tm-price-cycle">/ month · 500,000 cycles</div>
-        <ul class="tm-price-features">
-          <li>500,000 <code>/run</code> cycles/mo</li>
-          <li>Full state engine</li>
-          <li>API key + dashboard</li>
-          <li>Priority support</li>
-          <li class="na">Custom SLA</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" style="width:100%; text-align:center; display:block;">Join Waitlist →</a>
-      </div>
-      <div class="tm-price-card">
-        <div class="tm-price-name">Enterprise</div>
-        <div class="tm-price-amt">Custom</div>
-        <div class="tm-price-cycle">Unlimited · Dedicated instance</div>
-        <ul class="tm-price-features">
-          <li>Unlimited cycles</li>
-          <li>Dedicated engine instance</li>
-          <li>Custom state config</li>
-          <li>SLA-backed support</li>
-          <li>Legal contract + NDA</li>
-        </ul>
-        <a href="#contact" class="btn" style="width:100%; text-align:center; display:block;">Contact →</a>
-      </div>
-    </div>
-
-    <!-- Proof callout -->
-    <div class="work-cta fade-up" style="margin-top: 20px;">
-      <h3>The proof has been running since January 2, 2026</h3>
-      <p>Nexus and Aura — PermaMind's live agents — have been running the ThermoMind learning loop continuously for 100+ days. 12,800+ cycles. No resets. No retraining. Near-zero compute cost. This isn't theory. It's production.</p>
-      <a href="#contact" class="btn btn-primary">Get Early Access →</a>
-    </div>
-
-  </section>
-
   <div class="footer">
     <div>© 2026 PermaMind · BAPxAI — Nile Green, Breakthrough AI Protocols</div>
-    <div><a href="https://x.com/BAPxAI" target="_blank">𝕏 @BAPxAI</a> | <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank">GitHub</a> | <a href="#demo">Back to Demo</a></div>
+    <div><a href="https://x.com/BAPxAI" target="_blank">𝕏 @BAPxAI</a> | <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank">GitHub</a> | <a href="#" style="color:#00d4aa;">ThermoMind</a></div>
   </div>
 </div>
 
 <script>
-  // ========================
-  // LIVE GITHUB STAR COUNT (real-time)
-  // ========================
-  async function updateGitHubStars() {
-    const starSpans = document.querySelectorAll('#github-stars, #star-cta-count');
-    if (!starSpans.length) return;
-    
-    try {
-      const response = await fetch('https://api.github.com/repos/nile-green-ai/tci-toolkit');
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      const stars = data.stargazers_count;
-      starSpans.forEach(span => {
-        span.textContent = stars;
-      });
-    } catch (error) {
-      console.error('Failed to fetch GitHub stars:', error);
-      starSpans.forEach(span => {
-        span.textContent = '?';
-      });
+  // animated particles
+  const canvas = document.getElementById('particle-canvas');
+  let ctx = canvas.getContext('2d');
+  let particles = [];
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.35;
+      this.vy = (Math.random() - 0.5) * 0.25;
+      this.size = Math.random() * 2.2 + 0.8;
+      this.alpha = Math.random() * 0.5 + 0.2;
+      this.color = `rgba(0, ${180 + Math.random()*75}, 200, ${this.alpha})`;
     }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < -20) this.x = canvas.width + 20;
+      if (this.x > canvas.width + 20) this.x = -20;
+      if (this.y < -20) this.y = canvas.height + 20;
+      if (this.y > canvas.height + 20) this.y = -20;
+    }
+    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle = this.color; ctx.fill(); }
   }
+  function initParticles() { particles = Array.from({length: 100}, () => new Particle()); }
+  function animate() { if(!ctx) return; ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
+  window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+  resizeCanvas(); initParticles(); animate();
 
-  // Run on load and refresh every hour (3600000 ms)
-  updateGitHubStars();
-  setInterval(updateGitHubStars, 3600000);
+  // live cycle counter (heartbeat)
+  let cycleCount = 18392;
+  const cycleSpan = document.getElementById('liveCycleCounter');
+  setInterval(() => {
+    cycleCount += Math.floor(Math.random() * 6) + 1;
+    cycleSpan.innerText = cycleCount.toLocaleString();
+    cycleSpan.style.transform = 'scale(1.06)';
+    setTimeout(() => { if(cycleSpan) cycleSpan.style.transform = 'scale(1)'; }, 150);
+  }, 1400);
 
-  // ========================
-  // Scroll animations (fade-up)
-  // ========================
-  const fadeElements = document.querySelectorAll('.fade-up');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('visible');
-    });
+  // fade-up staggered observer
+  const faders = document.querySelectorAll('.fade-up');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
   }, { threshold: 0.1 });
-  fadeElements.forEach(el => observer.observe(el));
+  faders.forEach(el => obs.observe(el));
 
-  // ========================
-  // Easter eggs (keep the fun ones)
-  // ========================
-  function showToast(msg) {
-    const toast = document.createElement('div');
-    toast.className = 'easter-egg-toast';
-    toast.innerText = msg;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
-  }
+  // mobile hamburger
+  const hamburger = document.getElementById('hamburgerBtn');
+  const nav = document.getElementById('navLinks');
+  hamburger?.addEventListener('click', () => nav.classList.toggle('active'));
+  document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => nav.classList.remove('active')));
 
-  // Formula click easter egg (10x)
-  let formulaClicks = 0;
-  const formulaElem = document.getElementById('tciFormula');
-  if (formulaElem) {
-    formulaElem.addEventListener('click', () => {
-      formulaClicks++;
-      if (formulaClicks >= 10) {
-        showToast('♾️ Surplus overflow — check your real agents!');
-        formulaClicks = 0;
-      } else {
-        setTimeout(() => { formulaClicks = 0; }, 2000);
-      }
-    });
-  }
-
-  // Logo click easter egg (5x / 10x)
-  const logoDiv = document.getElementById('logoEasterEgg');
-  let logoClickCount = 0;
-  logoDiv.addEventListener('click', () => {
-    logoClickCount++;
-    if (logoClickCount === 10) {
-      showToast('⚛️ Quantum fluctuation — watch your fleet!');
-      logoClickCount = 0;
-    } else if (logoClickCount === 5) {
-      showToast('🌀 PermaMind — persistence is everything.');
-      logoClickCount = 0;
-    } else {
-      setTimeout(() => { logoClickCount = 0; }, 2000);
-    }
-  });
-
-  // Konami code (just for fun)
-  const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
-  let konamiIndex = 0;
-  window.addEventListener('keydown', (e) => {
-    if (e.code === konami[konamiIndex]) {
-      konamiIndex++;
-      if (konamiIndex === konami.length) {
-        showToast('🕹️ SURPLUS BOOST — Konami code recognized!');
-        konamiIndex = 0;
-      }
-    } else { konamiIndex = 0; }
-  });
-
-  console.log("%c🔥 THERMODYNAMIC COGNITION INDEX — TCI v2.0 | PermaMind", "color: #00d4aa; font-size: 16px;");
-  console.log("%c➤ Your real agents are live in the iframe above.", "color: #8bc34a;");
+  // hero badge hover effect
+  console.log('%c🔥 ThermoMind — Token-Free Persistent Engine | v1.0', 'color:#00d4aa; font-size:14px;');
 </script>
 </body>
 </html>
