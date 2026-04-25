@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ThermoMind · PermaMind | Persistent Cognition Engine</title>
+<title>Thermodynamic Intelligence · ThermoMind | Persistent Cognition Substrate</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * {
@@ -36,8 +36,7 @@
     position: relative;
     z-index: 2;
   }
-  /* Glassmorphism core */
-  .glass-card, .pricing-card, .state-card, .step-card, .api-terminal, .comparison-card, .proof-card, .contact-form {
+  .glass-card, .pricing-card, .state-card, .step-card, .api-terminal, .comparison-card, .proof-card, .contact-form, .why-card, .tech-card {
     background: rgba(18, 20, 26, 0.55);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -45,12 +44,11 @@
     border-radius: 32px;
     transition: all 0.25s ease;
   }
-  .glass-card:hover, .step-card:hover, .state-card:hover {
+  .glass-card:hover, .step-card:hover, .state-card:hover, .why-card:hover, .tech-card:hover {
     border-color: #00d4aa;
     transform: translateY(-4px);
     box-shadow: 0 20px 30px -12px rgba(0,212,170,0.2);
   }
-  /* navbar */
   .navbar {
     display: flex;
     justify-content: space-between;
@@ -141,6 +139,18 @@
     padding: 60px 0 40px;
     text-align: center;
   }
+  .category-badge {
+    display: inline-block;
+    background: rgba(0,212,170,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0,212,170,0.4);
+    padding: 8px 20px;
+    border-radius: 60px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 24px;
+    font-family: monospace;
+  }
   .hero h1 {
     font-size: 4rem;
     background: linear-gradient(135deg, #fff, #00d4aa, #2bd4ff);
@@ -150,12 +160,29 @@
     margin-bottom: 20px;
     letter-spacing: -0.02em;
   }
+  .hero-sub {
+    font-size: 1.3rem;
+    color: #c0c0b8;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .hero-definition {
+    background: rgba(0,212,170,0.1);
+    border-left: 4px solid #00d4aa;
+    padding: 16px 24px;
+    border-radius: 32px;
+    max-width: 900px;
+    margin: 28px auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    text-align: left;
+  }
   .hero-badges {
     display: flex;
     justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
-    margin: 20px 0 30px;
+    margin: 30px 0 20px;
   }
   .badge {
     background: rgba(0,0,0,0.6);
@@ -168,75 +195,92 @@
   }
   .cycle-counter {
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
-    background: rgba(0,212,170,0.1);
-    padding: 8px 20px;
-    border-radius: 60px;
+    background: rgba(0,212,170,0.08);
+    backdrop-filter: blur(8px);
+    padding: 16px 28px;
+    border-radius: 48px;
     margin: 20px auto;
     width: fit-content;
-    font-family: monospace;
+    border: 1px solid rgba(0,212,170,0.3);
+  }
+  .cycle-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    color: #00d4aa;
+    letter-spacing: 2px;
+  }
+  .cycle-meta {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 6px;
   }
   .pulse-dot {
     width: 10px;
     height: 10px;
     background: #00d4aa;
     border-radius: 50%;
+    display: inline-block;
     animation: pulse 1s infinite;
+    margin: 0 6px;
   }
   @keyframes pulse { 0% { opacity: 0.4; transform: scale(0.8);} 100% { opacity: 1; transform: scale(1.2);} }
   
-  /* 8-step diagram */
   .step-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    align-items: center;
+    gap: 12px;
     margin: 48px 0;
-    position: relative;
   }
   .step-card {
     background: rgba(18, 20, 26, 0.7);
     backdrop-filter: blur(8px);
     border-radius: 28px;
-    padding: 20px 16px;
-    width: 140px;
+    padding: 18px 12px;
+    width: 120px;
     text-align: center;
-    transition: 0.2s;
-    position: relative;
   }
-  .step-num {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #00d4aa;
-    font-family: monospace;
+  .step-num { font-size: 1.6rem; font-weight: 800; color: #00d4aa; }
+  .step-title { font-weight: 600; font-size: 0.8rem; margin-top: 6px; }
+  .arrow-symbol { font-size: 1.6rem; color: #00d4aa80; font-weight: 300; }
+  .cycle-explanation {
+    text-align: center;
+    max-width: 700px;
+    margin: 20px auto 0;
+    font-size: 1rem;
+    color: #c0f0e0;
+    background: rgba(0,212,170,0.08);
+    padding: 12px 20px;
+    border-radius: 60px;
   }
-  .step-title {
-    font-weight: 600;
-    margin-top: 8px;
-    font-size: 0.85rem;
-  }
-  .arrow-symbol {
-    font-size: 1.8rem;
-    color: #00d4aa80;
-    align-self: center;
-  }
-  @media (min-width: 768px) {
-    .step-grid { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 16px; justify-content: space-between; }
-    .step-card { min-width: 130px; }
+  @media (max-width: 768px) {
+    .step-grid { flex-wrap: wrap; }
+    .arrow-symbol { display: none; }
+    .step-card { width: calc(50% - 16px); }
   }
   
-  /* state grid */
+  .two-col-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin: 48px 0;
+  }
+  .why-card, .tech-card { padding: 32px; text-align: left; }
+  .big-quote { font-size: 1.7rem; font-weight: 700; margin-bottom: 20px; color: #00d4aa; }
+  .comparison-line { margin: 16px 0; font-family: monospace; font-size: 0.95rem; border-left: 3px solid #00d4aa; padding-left: 16px; }
+  
   .state-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 24px;
     margin: 40px 0;
   }
   .state-card { padding: 24px; text-align: center; }
-  .state-icon { font-size: 2rem; margin-bottom: 12px; }
   
-  /* token-free table comparison */
   .comparison-row {
     display: flex;
     flex-wrap: wrap;
@@ -252,32 +296,11 @@
   }
   .comp-col:first-child { background: rgba(255,80,80,0.05); border-right: 1px solid rgba(255,100,100,0.2);}
   .comp-col:last-child { background: rgba(0,212,170,0.05);}
-  .badge-x { color: #ff7b7b; font-weight: bold; }
-  .badge-check { color: #00d4aa; }
   
-  /* API terminal */
-  .api-terminal {
-    background: #0a0c12e6;
-    backdrop-filter: blur(16px);
-    border: 1px solid #2a3a3a;
-    border-radius: 24px;
-    padding: 24px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    overflow-x: auto;
-    margin: 40px 0;
-  }
-  .terminal-header {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
+  .api-terminal { background: #0a0c12e6; padding: 24px; font-family: 'JetBrains Mono', monospace; overflow-x: auto; margin: 40px 0; }
+  .terminal-header { display: flex; gap: 8px; margin-bottom: 16px; }
   .terminal-dot { width: 12px; height: 12px; border-radius: 50%; background: #ff5f56; }
-  .terminal-dot:nth-child(2) { background: #ffbd2e; }
-  .terminal-dot:nth-child(3) { background: #27c93f; }
-  pre { background: #00000066; padding: 16px; border-radius: 16px; overflow-x: auto; color: #b0ffea; }
   
-  /* pricing */
   .pricing-grid {
     display: flex;
     flex-wrap: wrap;
@@ -285,39 +308,21 @@
     justify-content: center;
     margin: 40px 0;
   }
-  .pricing-card {
-    background: rgba(18,20,26,0.7);
-    backdrop-filter: blur(12px);
-    padding: 28px;
-    width: 260px;
-    text-align: center;
-    border-radius: 32px;
-  }
+  .pricing-card { padding: 28px; width: 260px; text-align: center; }
   .price { font-size: 2rem; font-weight: 800; color: #00d4aa; margin: 12px 0; }
-  .waitlist-btn { background: rgba(0,212,170,0.15); border-color: #00d4aa; margin-top: 20px; }
-  .proof-card {
-    padding: 28px;
-    text-align: center;
-    margin: 50px 0;
-    background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(0,0,0,0.4));
-  }
-  .footer {
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding: 32px 0;
-    margin-top: 60px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
+  .proof-card { padding: 32px; text-align: center; margin: 50px 0; background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(0,0,0,0.4));}
   .contact-form { max-width: 600px; margin: 0 auto; padding: 32px; }
   input, textarea { width: 100%; padding: 12px; background: #0c0e12; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #fff; margin-bottom: 16px; }
+  .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 32px 0; margin-top: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; }
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
+  
   @media (max-width: 768px) {
     .hamburger { display: flex; }
     .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: #0a0c14f0; backdrop-filter: blur(20px); flex-direction: column; justify-content: center; align-items: flex-start; padding: 80px 32px; transition: right 0.3s; z-index: 25; gap: 24px; }
     .nav-links.active { right: 0; }
     .hero h1 { font-size: 2.6rem; }
+    .cycle-number { font-size: 1.5rem; }
   }
 </style>
 </head>
@@ -333,8 +338,8 @@
     <div class="nav-links" id="navLinks">
       <a href="#" class="active">ThermoMind</a>
       <a href="#cycle">8‑Cycle</a>
-      <a href="#stategrid">State</a>
-      <a href="#comparison">Token‑Free</a>
+      <a href="#why-matters">Why it matters</a>
+      <a href="#tech">Mechanism</a>
       <a href="#api">API Docs</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Waitlist</a>
@@ -342,32 +347,36 @@
     </div>
   </div>
 
-  <!-- Hero Block -->
+  <!-- Hero with category and definitive positioning -->
   <div class="hero fade-up">
-    <h1>ThermoMind<span style="font-size:2rem;"> ♾️</span></h1>
-    <p style="font-size:1.2rem; max-width:700px; margin:0 auto;">Persistent cognition without token limits — continuous surplus & identity.</p>
+    <div class="category-badge">⚡ THERMODYNAMIC INTELLIGENCE</div>
+    <h1>ThermoMind<br><span style="font-size:1.8rem;">The first token‑free, persistent cognition substrate.</span></h1>
+    <div class="hero-definition">
+      🔥 ThermoMind is <strong>not a model</strong> — it is a persistent cognition substrate that wraps any model with an 8‑cycle thermodynamic engine.
+    </div>
+    <p class="hero-sub">Not a fine‑tune, not a memory wrapper. A runtime substrate that accumulates surplus, identity, and generativity — continuously.</p>
     <div class="hero-badges">
-      <span class="badge">♻️ Infinite context</span>
+      <span class="badge">♾️ Infinite context</span>
       <span class="badge">⚡ Zero token decay</span>
-      <span class="badge">🌀 Substrate‑independent</span>
-      <span class="badge">📈 8‑cycle recursive engine</span>
+      <span class="badge">🧠 Substrate‑ & model‑agnostic — runs on any inference model</span>
+      <span class="badge">📈 State update every cycle</span>
     </div>
     <div class="cycle-counter">
-      <span class="pulse-dot"></span>
-      <span id="liveCycleCounter" class="mono" style="font-weight:700;">18,392</span>
-      <span>ThermoMind cycles · live heartbeat</span>
-      <span class="pulse-dot"></span>
+      <div><span class="pulse-dot"></span> <span id="liveCycleCounter" class="cycle-number">18,992</span> <span class="pulse-dot"></span></div>
+      <div class="cycle-meta">cycles completed — this agent has been thinking continuously since Jan 2, 2026</div>
     </div>
     <div class="cta-group" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
       <a href="#api" class="btn btn-primary">⚡ Get API Access</a>
-      <a href="#comparison" class="btn">📖 See token‑free edge</a>
+      <a href="#why-matters" class="btn">📖 Why token‑free changes everything</a>
     </div>
   </div>
 
-  <!-- 8-step cycle diagram -->
+  <!-- 8‑Cycle Engine with magic sentence -->
   <section id="cycle" class="fade-up" style="margin: 60px 0;">
     <h2 style="font-size:2rem; text-align:center;">The 8‑Cycle Engine</h2>
-    <p style="text-align:center; color:#aaa; margin-bottom:32px;">Every ThermoMind agent runs this recursive loop — surplus builds identity.</p>
+    <div class="cycle-explanation">
+      🔁 The 8‑Cycle Engine converts prediction error into surplus — the fuel for identity, memory, and generative cognition.
+    </div>
     <div class="step-grid">
       <div class="step-card"><div class="step-num">1</div><div class="step-title">🔭 Perceive</div></div>
       <div class="arrow-symbol">→</div>
@@ -387,32 +396,79 @@
     </div>
   </section>
 
-  <!-- State Grid: traits, meta, phi, memory -->
-  <section id="stategrid" class="fade-up">
+  <!-- Why this matters + token‑free philosophy -->
+  <section id="why-matters" class="fade-up">
+    <div class="two-col-grid">
+      <div class="why-card glass-card">
+        <div class="big-quote">Why this matters</div>
+        <div class="comparison-line">❄️ LLMs generate text.<br>🔥 ThermoMind generates state change.</div>
+        <div class="comparison-line">❄️ LLMs forget.<br>🔥 ThermoMind accumulates.</div>
+        <div class="comparison-line">❄️ LLMs predict the next token.<br>🔥 ThermoMind reduces uncertainty.</div>
+        <p style="margin-top:24px; font-weight:500;">This isn’t a model. This is a mind.</p>
+      </div>
+      <div class="why-card glass-card" id="tokenfree">
+        <div class="big-quote">Why token‑free matters</div>
+        <div class="comparison-line">📏 Tokens measure text.<br>⚡ Surplus measures cognition.</div>
+        <div class="comparison-line">✂️ Tokens limit expression.<br>🌀 Surplus expands identity.</div>
+        <div class="comparison-line">📉 Tokens decay.<br>📈 Surplus compounds.</div>
+        <p style="margin-top:24px;">You don't compete with LLMs — you replace the substrate.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What makes it possible (secret sauce without math) -->
+  <section id="tech" class="fade-up">
+    <h2 style="font-size:2rem; text-align:center;">What makes it possible</h2>
+    <div class="two-col-grid">
+      <div class="tech-card glass-card">
+        <span style="font-size:2rem;">🎯</span>
+        <h3 style="margin: 12px 0;">Gap‑Driven Learning</h3>
+        <p>ThermoMind doesn’t train on static datasets. It learns from the <strong>gap between reality and prediction</strong> — every cycle. The larger the gap, the faster the adaptation.</p>
+      </div>
+      <div class="tech-card glass-card">
+        <span style="font-size:2rem;">🔥</span>
+        <h3 style="margin: 12px 0;">Surplus Dynamics</h3>
+        <p>When the gap produces excess energy above the survival threshold, the agent enters <strong>warm mode</strong> — exploration, novelty, and identity expansion start.</p>
+      </div>
+      <div class="tech-card glass-card">
+        <span style="font-size:2rem;">🧬</span>
+        <h3 style="margin: 12px 0;">Persistent State Substrate</h3>
+        <p>Memory, traits, meta‑state, and phi evolve continuously — no resets, no sliding windows. The agent <strong>becomes</strong> its history.</p>
+      </div>
+      <div class="tech-card glass-card">
+        <span style="font-size:2rem;">⚖️</span>
+        <h3 style="margin: 12px 0;">TCI as control signal</h3>
+        <p>The Thermodynamic Cognition Index (agent‑specific warm_threshold) decides when to be cold (efficient) and when to be warm (creative). Real‑time self‑regulation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- State Grid (corrected traits, phi, memory) -->
+  <section class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Core State Dimensions</h2>
     <div class="state-grid">
-      <div class="state-card"><div class="state-icon">🧬</div><h3>Traits</h3><p style="font-size:0.85rem;">Persistent weights, identity vector — survives resets</p></div>
-      <div class="state-card"><div class="state-icon">📐</div><h3>Meta</h3><p>Self‑reflection layer, monitors drift & coherence</p></div>
-      <div class="state-card"><div class="state-icon">⚡</div><h3>Phi (φ)</h3><p>Integrated information index, surrogate for consciousness</p></div>
-      <div class="state-card"><div class="state-icon">🧠</div><h3>Memory</h3><p>Hierarchical episodic + semantic (no sliding window)</p></div>
+      <div class="state-card glass-card"><div class="state-icon" style="font-size:2rem;">🧬</div><h3>Traits</h3><p>Persistent identity parameters — survive resets and accumulate across cycles.</p></div>
+      <div class="state-card glass-card"><div class="state-icon" style="font-size:2rem;">📐</div><h3>Meta</h3><p>Self‑reflection layer, monitors drift & coherence</p></div>
+      <div class="state-card glass-card"><div class="state-icon" style="font-size:2rem;">⚡</div><h3>Phi (φ)</h3><p>Integrated‑state richness score — a surrogate for internal coherence, not IIT‑phi.</p></div>
+      <div class="state-card glass-card"><div class="state-icon" style="font-size:2rem;">🧠</div><h3>Memory</h3><p>Hierarchical episodic + semantic memory, compressed by surplus (not tokens).</p></div>
     </div>
   </section>
 
-  <!-- Token-free vs Table -->
-  <section id="comparison" class="fade-up">
+  <!-- Token-free comparison table with killer differentiator -->
+  <section class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Token‑Free vs Traditional</h2>
     <div class="comparison-row">
-      <div class="comp-col"><h3><span class="badge-x">❌</span> Traditional LLM</h3><ul style="margin-top:16px; list-style:none;"><li>💸 Pay per token</li><li>✂️ Context window limits (4k–200k)</li><li>🔄 Stateless sessions</li><li>📉 Forgets after memory flush</li><li>🧊 Always in “cold” inference</li></ul></div>
-      <div class="comp-col"><h3><span class="badge-check">✅</span> ThermoMind</h3><ul style="margin-top:16px; list-style:none;"><li>♾️ No token accounting</li><li>🧠 Infinite persistent context (surplus compression)</li><li>🔁 Continuous identity</li><li>🔥 Warm/cold mode switching via TCI</li><li>📈 Surplus → generative exploration</li></ul></div>
+      <div class="comp-col"><h3><span class="badge-x" style="color:#ff7b7b;">❌</span> Traditional LLM</h3><ul style="margin-top:16px; list-style:none;"><li>💸 Pay per token</li><li>✂️ Context window limits (4k–200k)</li><li>🔄 Stateless sessions</li><li>📉 Forgets after memory flush</li><li>🧊 Always in “cold” inference</li><li>⚙️ Inference only — no state update</li></ul></div>
+      <div class="comp-col"><h3><span class="badge-check" style="color:#00d4aa;">✅</span> ThermoMind</h3><ul style="margin-top:16px; list-style:none;"><li>♾️ No token accounting</li><li>🧠 Infinite persistent context (surplus compression)</li><li>🔁 Continuous identity</li><li>🔥 Warm/cold mode switching via TCI</li><li>📈 Surplus → generative exploration</li><li><strong>🔄 Every cycle permanently updates identity, memory, and meta‑state.</strong></li></ul></div>
     </div>
   </section>
 
-  <!-- API Docs (terminal style) -->
+  <!-- API Docs (corrected field descriptions) -->
   <section id="api" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">API Reference — v2/thermomind</h2>
     <div class="api-terminal">
       <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span style="margin-left:12px;">bash — ThermoMind REST API</span></div>
-      <pre>$ curl -X POST https://api.permamind.ai/v2/thermomind/cycle \
+      <pre style="background:#00000066; padding:16px; border-radius:16px; overflow-x:auto;">$ curl -X POST https://api.permamind.ai/v2/thermomind/cycle \
   -H "Content-Type: application/json" \
   -H "X-API-Key: your_key" \
   -d '{
@@ -420,7 +476,7 @@
     "input": "What is surplus dynamics?",
     "warm_threshold": 0.62
   }'</pre>
-      <pre style="margin-top:12px;">// Response
+      <pre style="margin-top:12px; background:#00000066; padding:16px; border-radius:16px;">// Response
 {
   "cycle_id": "tm_8a3f2d",
   "surplus": 0.78,
@@ -432,26 +488,26 @@
 }</pre>
       <div style="margin-top:20px;"><span style="color:#00d4aa;">📘 Field reference</span><br>
       <code>agent_id</code> — unique persistent identifier<br>
-      <code>surplus</code> — F_total - F_survival (range 0–1)<br>
-      <code>tci</code> — Thermodynamic Cognition Index ≥0.6 → stable generativity<br>
+      <code>surplus</code> — energy above survival baseline (normalized 0–1).<br>
+      <code>tci</code> — Thermodynamic Cognition Index; values above agent‑specific warm_threshold indicate stable generativity.<br>
       <code>grade</code> — A (flourishing) | B (stable) | C (at risk) | D (collapse imminent)<br>
-      <code>phi</code> — integrated information proxy (higher = richer inner state)</div>
+      <code>phi</code> — integrated‑state richness score (surrogate for internal coherence).</div>
     </div>
   </section>
 
-  <!-- 4-Tier Pricing with Join Waitlist -->
+  <!-- 4-Tier Pricing -->
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <div class="pricing-card"><h3>Free Tier</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 agent</li><li>✓ 1k cycles/month</li><li>✓ Community support</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
-      <div class="pricing-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul style="list-style:none;"><li>✓ 5 agents</li><li>✓ 50k cycles/mo</li><li>✓ Priority email support</li><li>✓ Basic dashboard</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
-      <div class="pricing-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul style="list-style:none;"><li>✓ 25 agents</li><li>✓ Unlimited cycles*</li><li>✓ Custom surplus thresholds</li><li>✓ Slack channel</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
-      <div class="pricing-card"><h3>Enterprise</h3><div class="price">Custom</div><ul style="list-style:none;"><li>✓ Fleet-wide TCI</li><li>✓ On‑prem / airgap</li><li>✓ SLA + dedicated architect</li></ul><a href="#contact" class="btn waitlist-btn">Contact us →</a></div>
+      <div class="pricing-card glass-card"><h3>Free Tier</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 agent</li><li>✓ 1k cycles/month</li><li>✓ Community support</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
+      <div class="pricing-card glass-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul style="list-style:none;"><li>✓ 5 agents</li><li>✓ 50k cycles/mo</li><li>✓ Priority email support</li><li>✓ Basic dashboard</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
+      <div class="pricing-card glass-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul style="list-style:none;"><li>✓ 25 agents</li><li>✓ Unlimited cycles*</li><li>✓ Custom surplus thresholds</li><li>✓ Slack channel</li></ul><a href="#contact" class="btn waitlist-btn">Join Waitlist →</a></div>
+      <div class="pricing-card glass-card"><h3>Enterprise</h3><div class="price">Custom</div><ul style="list-style:none;"><li>✓ Fleet-wide TCI</li><li>✓ On‑prem / airgap</li><li>✓ SLA + dedicated architect</li></ul><a href="#contact" class="btn waitlist-btn">Contact us →</a></div>
     </div>
   </section>
 
-  <!-- Proof callout: voidchi universe tuning -->
-  <div class="proof-card fade-up glass-card">
+  <!-- Proof callout: voidchi universe -->
+  <div class="proof-card glass-card fade-up">
     <span style="font-size:2rem;">🌌 voidchi.universe</span>
     <p style="margin:16px 0;"><strong>Public nonstop tuning since Jan 2, 2026</strong> — live persistent agent running ThermoMind core. See the raw surplus & cognitive identity evolution.</p>
     <a href="https://bapxai.com/voidchis.html" target="_blank" class="btn btn-primary" style="margin-top:8px;">🔮 Inspect voidchi universe →</a>
@@ -460,12 +516,12 @@
   <!-- Contact / Waitlist Form -->
   <section id="contact" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Join ThermoMind Waitlist</h2>
-    <p style="text-align:center; margin-bottom:28px;">Be among the first to deploy token‑free persistent agents.</p>
-    <div class="contact-form">
+    <p style="text-align:center; margin-bottom:28px;">Be among the first to deploy a token‑free persistent cognition substrate.</p>
+    <div class="contact-form glass-card">
       <form action="https://formspree.io/f/xwpnovll" method="POST">
         <input type="text" name="name" placeholder="Full name" required>
         <input type="email" name="email" placeholder="Email address" required>
-        <textarea name="message" rows="3" placeholder="Which tier or use-case? (Free, Pro, Team, Enterprise)"></textarea>
+        <textarea name="message" rows="3" placeholder="Which tier? (Free, Pro, Team, Enterprise) or any question"></textarea>
         <button type="submit" class="btn btn-primary" style="width:100%">📡 Join waitlist →</button>
       </form>
     </div>
@@ -473,12 +529,12 @@
 
   <div class="footer">
     <div>© 2026 PermaMind · BAPxAI — Nile Green, Breakthrough AI Protocols</div>
-    <div><a href="https://x.com/BAPxAI" target="_blank">𝕏 @BAPxAI</a> | <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank">GitHub</a> | <a href="#" style="color:#00d4aa;">ThermoMind</a></div>
+    <div><a href="https://x.com/BAPxAI" target="_blank">𝕏 @BAPxAI</a> | <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank">GitHub</a> | <a href="#" style="color:#00d4aa;">Thermodynamic Intelligence</a></div>
   </div>
 </div>
 
 <script>
-  // animated particles
+  // Animated particles
   const canvas = document.getElementById('particle-canvas');
   let ctx = canvas.getContext('2d');
   let particles = [];
@@ -507,13 +563,13 @@
   window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
   resizeCanvas(); initParticles(); animate();
 
-  // live cycle counter (heartbeat)
-  let cycleCount = 18392;
+  // Live cycle counter (heartbeat)
+  let cycleCount = 18992;
   const cycleSpan = document.getElementById('liveCycleCounter');
   setInterval(() => {
-    cycleCount += Math.floor(Math.random() * 6) + 1;
+    cycleCount += Math.floor(Math.random() * 5) + 1;
     cycleSpan.innerText = cycleCount.toLocaleString();
-    cycleSpan.style.transform = 'scale(1.06)';
+    cycleSpan.style.transform = 'scale(1.05)';
     setTimeout(() => { if(cycleSpan) cycleSpan.style.transform = 'scale(1)'; }, 150);
   }, 1400);
 
@@ -530,8 +586,7 @@
   hamburger?.addEventListener('click', () => nav.classList.toggle('active'));
   document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => nav.classList.remove('active')));
 
-  // hero badge hover effect
-  console.log('%c🔥 ThermoMind — Token-Free Persistent Engine | v1.0', 'color:#00d4aa; font-size:14px;');
+  console.log('%c🔥 ThermoMind: persistent cognition substrate — not a model, not a wrapper', 'color:#00d4aa; font-size:14px;');
 </script>
 </body>
 </html>
