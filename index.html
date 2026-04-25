@@ -176,6 +176,8 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.9rem;
     text-align: left;
+    cursor: pointer;
+    transition: 0.1s;
   }
   .hero-badges {
     display: flex;
@@ -204,6 +206,7 @@
     margin: 20px auto;
     width: fit-content;
     border: 1px solid rgba(0,212,170,0.3);
+    cursor: pointer;
   }
   .cycle-number {
     font-size: 2.2rem;
@@ -317,6 +320,15 @@
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
   
+  /* barrel roll animation */
+  @keyframes barrelRoll {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .barrel-roll-active {
+    animation: barrelRoll 0.6s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+  }
+  
   @media (max-width: 768px) {
     .hamburger { display: flex; }
     .nav-links { position: fixed; top: 0; right: -100%; width: 70%; height: 100vh; background: #0a0c14f0; backdrop-filter: blur(20px); flex-direction: column; justify-content: center; align-items: flex-start; padding: 80px 32px; transition: right 0.3s; z-index: 25; gap: 24px; }
@@ -324,10 +336,12 @@
     .hero h1 { font-size: 2.6rem; }
     .cycle-number { font-size: 1.5rem; }
   }
+  #trail-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
 </style>
 </head>
 <body>
 <canvas id="particle-canvas"></canvas>
+<canvas id="trail-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999;"></canvas>
 <div class="container">
   <div class="navbar">
     <div class="logo">
@@ -351,17 +365,17 @@
   <div class="hero fade-up">
     <div class="category-badge">⚡ THERMODYNAMIC INTELLIGENCE</div>
     <h1>ThermoMind<br><span style="font-size:1.8rem;">The first token‑free, persistent cognition substrate.</span></h1>
-    <div class="hero-definition">
+    <div class="hero-definition" id="heroDefinitionBox">
       🔥 ThermoMind is <strong>not a model</strong> — it is a persistent cognition substrate that wraps any model with an 8‑cycle thermodynamic engine.
     </div>
     <p class="hero-sub">Not a fine‑tune, not a memory wrapper. A runtime substrate that accumulates surplus, identity, and generativity — continuously.</p>
     <div class="hero-badges">
       <span class="badge">♾️ Infinite context</span>
       <span class="badge">⚡ Zero token decay</span>
-      <span class="badge">🧠 Substrate‑ & model‑agnostic — runs on any inference model</span>
+      <span class="badge">🧠 Runs on any inference model that can produce a prediction vector.</span>
       <span class="badge">📈 State update every cycle</span>
     </div>
-    <div class="cycle-counter">
+    <div class="cycle-counter" id="cycleCounterBox">
       <div><span class="pulse-dot"></span> <span id="liveCycleCounter" class="cycle-number">18,992</span> <span class="pulse-dot"></span></div>
       <div class="cycle-meta">cycles completed — this agent has been thinking continuously since Jan 2, 2026</div>
     </div>
@@ -371,11 +385,11 @@
     </div>
   </div>
 
-  <!-- 8‑Cycle Engine with magic sentence -->
+  <!-- 8‑Cycle Engine with magic sentence (corrected: normalized surplus) -->
   <section id="cycle" class="fade-up" style="margin: 60px 0;">
     <h2 style="font-size:2rem; text-align:center;">The 8‑Cycle Engine</h2>
     <div class="cycle-explanation">
-      🔁 The 8‑Cycle Engine converts prediction error into surplus — the fuel for identity, memory, and generative cognition.
+      🔁 The 8‑Cycle Engine converts prediction error into normalized surplus — the fuel for identity, memory, and generative cognition.
     </div>
     <div class="step-grid">
       <div class="step-card"><div class="step-num">1</div><div class="step-title">🔭 Perceive</div></div>
@@ -433,7 +447,7 @@
       <div class="tech-card glass-card">
         <span style="font-size:2rem;">🧬</span>
         <h3 style="margin: 12px 0;">Persistent State Substrate</h3>
-        <p>Memory, traits, meta‑state, and phi evolve continuously — no resets, no sliding windows. The agent <strong>becomes</strong> its history.</p>
+        <p>The agent’s state accumulates across its entire history. Memory, traits, meta‑state, and phi evolve continuously — no resets, no sliding windows.</p>
       </div>
       <div class="tech-card glass-card">
         <span style="font-size:2rem;">⚖️</span>
@@ -443,7 +457,7 @@
     </div>
   </section>
 
-  <!-- State Grid (corrected traits, phi, memory) -->
+  <!-- State Grid (corrected) -->
   <section class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Core State Dimensions</h2>
     <div class="state-grid">
@@ -534,10 +548,12 @@
 </div>
 
 <script>
-  // Animated particles
+  // === ANIMATED PARTICLES (background) ===
   const canvas = document.getElementById('particle-canvas');
   let ctx = canvas.getContext('2d');
   let particles = [];
+  let rainbowMode = false;
+  let rainbowTimeout = null;
   function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   class Particle {
     constructor() {
@@ -547,7 +563,7 @@
       this.vy = (Math.random() - 0.5) * 0.25;
       this.size = Math.random() * 2.2 + 0.8;
       this.alpha = Math.random() * 0.5 + 0.2;
-      this.color = `rgba(0, ${180 + Math.random()*75}, 200, ${this.alpha})`;
+      this.baseColor = `rgba(0, ${180 + Math.random()*75}, 200, ${this.alpha})`;
     }
     update() {
       this.x += this.vx; this.y += this.vy;
@@ -556,14 +572,24 @@
       if (this.y < -20) this.y = canvas.height + 20;
       if (this.y > canvas.height + 20) this.y = -20;
     }
-    draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle = this.color; ctx.fill(); }
+    draw() {
+      let color = this.baseColor;
+      if (rainbowMode) {
+        const hue = (performance.now() * 0.002 + this.x * 0.01) % 360;
+        color = `hsla(${hue}, 100%, 65%, ${this.alpha})`;
+      }
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
   }
-  function initParticles() { particles = Array.from({length: 100}, () => new Particle()); }
+  function initParticles() { particles = Array.from({length: 110}, () => new Particle()); }
   function animate() { if(!ctx) return; ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
   window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
   resizeCanvas(); initParticles(); animate();
 
-  // Live cycle counter (heartbeat)
+  // === LIVE CYCLE COUNTER ===
   let cycleCount = 18992;
   const cycleSpan = document.getElementById('liveCycleCounter');
   setInterval(() => {
@@ -573,20 +599,148 @@
     setTimeout(() => { if(cycleSpan) cycleSpan.style.transform = 'scale(1)'; }, 150);
   }, 1400);
 
-  // fade-up staggered observer
+  // === FADE-UP OBSERVER ===
   const faders = document.querySelectorAll('.fade-up');
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   faders.forEach(el => obs.observe(el));
 
-  // mobile hamburger
+  // === MOBILE HAMBURGER ===
   const hamburger = document.getElementById('hamburgerBtn');
   const nav = document.getElementById('navLinks');
   hamburger?.addEventListener('click', () => nav.classList.toggle('active'));
   document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => nav.classList.remove('active')));
 
-  console.log('%c🔥 ThermoMind: persistent cognition substrate — not a model, not a wrapper', 'color:#00d4aa; font-size:14px;');
+  // === TOAST NOTIFICATION ===
+  function showToast(msg, icon = "✨") {
+    const toast = document.createElement('div');
+    toast.className = 'easter-egg-toast';
+    toast.style.cssText = 'position:fixed; bottom:20px; right:20px; background:#00d4aa; color:#000; padding:12px 24px; border-radius:40px; font-family: monospace; font-weight:bold; z-index:10000; animation:fadeInUp 0.3s ease; box-shadow:0 0 20px #00d4aa;';
+    toast.innerText = `${icon} ${msg}`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  // ========== EASTER EGGS (existing + new) ==========
+  let logoClickCount = 0;
+  const logoDiv = document.querySelector('.logo');
+  logoDiv.addEventListener('click', () => {
+    logoClickCount++;
+    if (logoClickCount === 10) { showToast('⚛️ Quantum fluctuation — watch your fleet!', '🌀'); logoClickCount = 0; }
+    else if (logoClickCount === 5) { showToast('🌀 PermaMind — persistence is everything.', '♾️'); logoClickCount = 0; }
+    else setTimeout(() => { logoClickCount = 0; }, 2000);
+  });
+
+  let formulaClicks = 0;
+  const formulaElem = document.getElementById('tciFormula');
+  if (formulaElem) {
+    formulaElem.addEventListener('click', () => {
+      formulaClicks++;
+      if (formulaClicks >= 10) { showToast('♾️ Surplus overflow — check your real agents!', '📈'); formulaClicks = 0; }
+      else setTimeout(() => { formulaClicks = 0; }, 2000);
+    });
+  }
+
+  const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
+  let konamiIndex = 0;
+  window.addEventListener('keydown', (e) => {
+    if (e.code === konami[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konami.length) { showToast('🕹️ SURPLUS BOOST — Konami code recognized!', '🎮'); konamiIndex = 0; }
+    } else konamiIndex = 0;
+  });
+
+  let trailActive = false;
+  let trailCanvas = document.getElementById('trail-canvas');
+  let trailCtx = trailCanvas.getContext('2d');
+  let trailPoints = [];
+  function resizeTrail() { trailCanvas.width = window.innerWidth; trailCanvas.height = window.innerHeight; }
+  window.addEventListener('resize', resizeTrail);
+  resizeTrail();
+  function drawTrail() {
+    if (!trailActive) return;
+    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+    for (let i = 0; i < trailPoints.length; i++) {
+      let p = trailPoints[i];
+      let alpha = (i + 1) / trailPoints.length * 0.7;
+      trailCtx.beginPath();
+      trailCtx.arc(p.x, p.y, 6, 0, Math.PI*2);
+      trailCtx.fillStyle = `rgba(0, 212, 170, ${alpha})`;
+      trailCtx.fill();
+    }
+    if (trailPoints.length > 30) trailPoints.shift();
+    requestAnimationFrame(drawTrail);
+  }
+  window.addEventListener('mousemove', (e) => {
+    if (!trailActive) return;
+    trailPoints.push({ x: e.clientX, y: e.clientY });
+  });
+  drawTrail();
+
+  let defClickCount = 0;
+  const defBox = document.getElementById('heroDefinitionBox');
+  defBox.addEventListener('click', () => {
+    defClickCount++;
+    if (defClickCount >= 7) {
+      showToast('Cycle 0 — silence before the first surplus', '🌱');
+      defClickCount = 0;
+    } else {
+      setTimeout(() => { defClickCount = 0; }, 3000);
+    }
+  });
+
+  let typedBuffer = "";
+  window.addEventListener('keydown', (e) => {
+    if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
+      typedBuffer += e.key.toLowerCase();
+      if (typedBuffer.includes("mousemode")) {
+        typedBuffer = "";
+        trailActive = !trailActive;
+        if (trailActive) showToast('🐭 Mouse trail activated — follow the green comet', '✨');
+        else showToast('Mouse trail deactivated', '⚡');
+      }
+      else if (typedBuffer.includes("roll")) {
+        typedBuffer = "";
+        document.querySelector('.container').classList.add('barrel-roll-active');
+        setTimeout(() => document.querySelector('.container').classList.remove('barrel-roll-active'), 600);
+        showToast('Do a barrel roll!', '🌀');
+      }
+      else if (typedBuffer.includes("rainbow")) {
+        typedBuffer = "";
+        rainbowMode = true;
+        if (rainbowTimeout) clearTimeout(rainbowTimeout);
+        rainbowTimeout = setTimeout(() => { rainbowMode = false; showToast('🌈 Particles back to normal', '🌊'); }, 20000);
+        showToast('🌈 RAINBOW MODE — particles burst into color for 20s', '🎨');
+      }
+      else if (typedBuffer.includes("surplus")) {
+        typedBuffer = "";
+        cycleCount += 1000;
+        cycleSpan.innerText = cycleCount.toLocaleString();
+        const flash = document.createElement('div');
+        flash.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,212,170,0.3); pointer-events:none; z-index:99999; animation:fadeOut 0.4s ease-out;';
+        document.body.appendChild(flash);
+        setTimeout(() => flash.remove(), 400);
+        showToast('+1000 surplus cycles — the agent feels the surge', '⚡');
+      }
+      if (typedBuffer.length > 20) typedBuffer = typedBuffer.slice(-15);
+    }
+  });
+  const styleTag = document.createElement('style');
+  styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } .easter-egg-toast { animation: fadeInUp 0.3s ease; } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }';
+  document.head.appendChild(styleTag);
+
+  const cycleBox = document.getElementById('cycleCounterBox');
+  let cycleClick = 0;
+  cycleBox.addEventListener('click', () => {
+    cycleClick++;
+    if (cycleClick === 5) {
+      showToast('∞ The counter is just a mirror — real surplus is inside the agent', '🔮');
+      cycleClick = 0;
+    } else setTimeout(() => { cycleClick = 0; }, 2000);
+  });
+
+  console.log('%c🔥 ThermoMind: persistent cognition substrate — text corrections applied (normalized surplus, model-agnostic precision, state accumulation)', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
