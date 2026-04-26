@@ -437,7 +437,7 @@
     </div>
   </section>
 
-  <!-- Why this matters + token‑free philosophy (unchanged content) -->
+  <!-- Why this matters + token‑free philosophy -->
   <section id="why-matters" class="fade-up">
     <div class="two-col-grid">
       <div class="why-card glass-card">
@@ -514,14 +514,57 @@
     </div>
   </section>
 
-  <!-- Pricing & Waitlist -->
+  <!-- Pricing & Waitlist - UPDATED Free Trial Card -->
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <div class="pricing-card glass-card"><h3>Free</h3><div class="price">$0</div><ul><li>✓ 1 agent</li><li>✓ 1k cycles/month</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
-      <div class="pricing-card glass-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 5 agents</li><li>✓ 50k cycles/mo</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
-      <div class="pricing-card glass-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 25 agents</li><li>✓ Unlimited cycles*</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
-      <div class="pricing-card glass-card"><h3>Enterprise</h3><div class="price">Custom</div><ul><li>✓ Fleet-wide TCI</li><li>✓ On‑prem / airgap</li></ul><a href="#contact" class="btn">Contact us →</a></div>
+      <!-- Free Trial Card (changed from "Free") -->
+      <div class="pricing-card glass-card">
+        <h3>Free Trial</h3>
+        <div class="price">$0</div>
+        <ul style="list-style:none; margin:16px 0;">
+          <li>✓ 1 agent</li>
+          <li>✓ 1,000 cycles total — one time trial, no renewal</li>
+          <li>✓ No credit card required</li>
+          <li>✓ Community support</li>
+        </ul>
+        <a href="#contact" class="btn">Join Waitlist →</a>
+      </div>
+      <!-- Pro Card (unchanged) -->
+      <div class="pricing-card glass-card">
+        <h3>Pro</h3>
+        <div class="price">$49<span style="font-size:1rem;">/mo</span></div>
+        <ul style="list-style:none; margin:16px 0;">
+          <li>✓ 5 agents</li>
+          <li>✓ 50k cycles/mo</li>
+          <li>✓ Priority email support</li>
+          <li>✓ Basic dashboard</li>
+        </ul>
+        <a href="#contact" class="btn">Join Waitlist →</a>
+      </div>
+      <!-- Team Card (unchanged) -->
+      <div class="pricing-card glass-card">
+        <h3>Team</h3>
+        <div class="price">$149<span style="font-size:1rem;">/mo</span></div>
+        <ul style="list-style:none; margin:16px 0;">
+          <li>✓ 25 agents</li>
+          <li>✓ Unlimited cycles*</li>
+          <li>✓ Custom surplus thresholds</li>
+          <li>✓ Slack channel</li>
+        </ul>
+        <a href="#contact" class="btn">Join Waitlist →</a>
+      </div>
+      <!-- Enterprise Card (unchanged) -->
+      <div class="pricing-card glass-card">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <ul style="list-style:none; margin:16px 0;">
+          <li>✓ Fleet-wide TCI</li>
+          <li>✓ On‑prem / airgap</li>
+          <li>✓ SLA + dedicated architect</li>
+        </ul>
+        <a href="#contact" class="btn">Contact us →</a>
+      </div>
     </div>
   </section>
 
@@ -537,7 +580,7 @@
       <form action="https://formspree.io/f/xwpnovll" method="POST">
         <input type="text" name="name" placeholder="Full name" required>
         <input type="email" name="email" placeholder="Email address" required>
-        <textarea name="message" rows="3" placeholder="Which tier? (Free, Pro, Team, Enterprise)"></textarea>
+        <textarea name="message" rows="3" placeholder="Which tier? (Free Trial, Pro, Team, Enterprise)"></textarea>
         <button type="submit" class="btn btn-primary" style="width:100%">📡 Join waitlist →</button>
       </form>
     </div>
@@ -629,7 +672,7 @@
     setTimeout(() => toast.remove(), 3000);
   }
 
-  // --- Existing eggs (logo, formula, Konami, trail, defclick, etc.) ---
+  // --- Existing eggs (logo, formula, Konami, trail, defclick, cyclebox) ---
   let logoClickCount = 0;
   document.querySelector('.logo').addEventListener('click', () => {
     logoClickCount++;
@@ -651,13 +694,7 @@
   let defClickCount=0; document.getElementById('heroDefinitionBox').addEventListener('click',()=>{ defClickCount++; if(defClickCount>=7){ showToast('Cycle 0 — silence before the first surplus','🌱'); defClickCount=0; } else setTimeout(()=>{ defClickCount=0; },3000); });
   let cycleClick=0; document.getElementById('cycleCounterBox').addEventListener('click',()=>{ cycleClick++; if(cycleClick===5){ showToast('∞ The counter is just a mirror — real surplus is inside the agent','🔮'); cycleClick=0; } else setTimeout(()=>{ cycleClick=0; },2000); });
 
-  // ----- NEW EASTER EGGS -----
-  // 1) Entropy collapse (type "entropy")
-  // 2) TCI too high distortion (type "overload")
-  // 3) Voidchi speaks (type "voidchi")
-  // 4) Surplus storm (type "surplusstorm")
-  // 5) Phi resonance ripple (type "resonance")
-
+  // --- Advanced easter eggs (entropy, overload, voidchi, surplusstorm, resonance) ---
   let glitchInterval = null;
   const glitchOverlay = document.getElementById('glitchOverlay');
   function startGlitch(duration=2000){
@@ -680,7 +717,6 @@
     setTimeout(() => { document.body.style.transform = ''; }, 150);
   }
 
-  // Ripple effect for phi resonance
   let rippleCanvas = document.getElementById('ripple-canvas');
   let rippleCtx = rippleCanvas.getContext('2d');
   let ripples = [];
@@ -712,7 +748,6 @@
   }
   drawRipples();
 
-  // Keyboard sequence buffer
   let seqBuffer = "";
   window.addEventListener('keydown', (e) => {
     if(e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
@@ -766,7 +801,6 @@
         flash.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,212,170,0.5); pointer-events:none; z-index:99999; animation:fadeOut 0.5s ease-out;';
         document.body.appendChild(flash);
         setTimeout(() => flash.remove(), 500);
-        // temporary particle burst
         for(let i=0;i<60;i++) {
           setTimeout(() => {
             let p = new Particle();
@@ -791,12 +825,11 @@
     }
   });
 
-  // CSS for fadeOut (already exists)
   const styleTag = document.createElement('style');
   styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }';
   document.head.appendChild(styleTag);
 
-  console.log('%c🔥 ThermoMind: new easter eggs ready — entropy, overload, voidchi, surplusstorm, resonance', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: Free Trial card updated — one-time trial, no CC required', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
