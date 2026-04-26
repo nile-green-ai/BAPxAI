@@ -37,7 +37,6 @@
     position: relative;
     z-index: 2;
   }
-  /* glitch overlay */
   .glitch-overlay {
     position: fixed;
     top: 0;
@@ -50,7 +49,6 @@
     opacity: 0;
     transition: opacity 0.05s linear;
   }
-  /* ripple canvas */
   #ripple-canvas {
     position: fixed;
     top: 0;
@@ -344,7 +342,6 @@
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
   
-  /* barrel roll animation */
   @keyframes barrelRoll {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -388,7 +385,7 @@
     </div>
   </div>
 
-  <!-- Hero with category and definitive positioning -->
+  <!-- Hero section (unchanged) -->
   <div class="hero fade-up">
     <div class="category-badge">⚡ THERMODYNAMIC INTELLIGENCE</div>
     <h1>ThermoMind<br><span style="font-size:1.8rem;">The first token‑free, persistent cognition substrate.</span></h1>
@@ -437,7 +434,7 @@
     </div>
   </section>
 
-  <!-- Why this matters + token‑free philosophy -->
+  <!-- Why this matters -->
   <section id="why-matters" class="fade-up">
     <div class="two-col-grid">
       <div class="why-card glass-card">
@@ -479,7 +476,7 @@
     </div>
   </section>
 
-  <!-- Token-free comparison table -->
+  <!-- Token-free comparison -->
   <section class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Token‑Free vs Traditional</h2>
     <div class="comparison-row">
@@ -514,11 +511,11 @@
     </div>
   </section>
 
-  <!-- Pricing & Waitlist - UPDATED Free Trial Card -->
+  <!-- PRICING SECTION: Updated Team tier to 500k cycles for $149 -->
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <!-- Free Trial Card (changed from "Free") -->
+      <!-- Free Trial (unchanged) -->
       <div class="pricing-card glass-card">
         <h3>Free Trial</h3>
         <div class="price">$0</div>
@@ -530,7 +527,7 @@
         </ul>
         <a href="#contact" class="btn">Join Waitlist →</a>
       </div>
-      <!-- Pro Card (unchanged) -->
+      <!-- Pro (unchanged: 50k cycles/mo) -->
       <div class="pricing-card glass-card">
         <h3>Pro</h3>
         <div class="price">$49<span style="font-size:1rem;">/mo</span></div>
@@ -542,19 +539,19 @@
         </ul>
         <a href="#contact" class="btn">Join Waitlist →</a>
       </div>
-      <!-- Team Card (unchanged) -->
+      <!-- Team: updated to 500k cycles per month at $149 -->
       <div class="pricing-card glass-card">
         <h3>Team</h3>
         <div class="price">$149<span style="font-size:1rem;">/mo</span></div>
         <ul style="list-style:none; margin:16px 0;">
           <li>✓ 25 agents</li>
-          <li>✓ Unlimited cycles*</li>
+          <li>✓ 500k cycles/mo</li>
           <li>✓ Custom surplus thresholds</li>
           <li>✓ Slack channel</li>
         </ul>
         <a href="#contact" class="btn">Join Waitlist →</a>
       </div>
-      <!-- Enterprise Card (unchanged) -->
+      <!-- Enterprise (unchanged) -->
       <div class="pricing-card glass-card">
         <h3>Enterprise</h3>
         <div class="price">Custom</div>
@@ -599,7 +596,6 @@
   let particles = [];
   let rainbowMode = false;
   let entropyCollapse = false;
-  let originalParticleSpeed = 0.35;
   let rainbowTimeout = null;
   let entropyTimeout = null;
   function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -672,7 +668,7 @@
     setTimeout(() => toast.remove(), 3000);
   }
 
-  // --- Existing eggs (logo, formula, Konami, trail, defclick, cyclebox) ---
+  // Existing easter eggs (logo, formula, Konami, trail, defclick, cyclebox)
   let logoClickCount = 0;
   document.querySelector('.logo').addEventListener('click', () => {
     logoClickCount++;
@@ -694,7 +690,7 @@
   let defClickCount=0; document.getElementById('heroDefinitionBox').addEventListener('click',()=>{ defClickCount++; if(defClickCount>=7){ showToast('Cycle 0 — silence before the first surplus','🌱'); defClickCount=0; } else setTimeout(()=>{ defClickCount=0; },3000); });
   let cycleClick=0; document.getElementById('cycleCounterBox').addEventListener('click',()=>{ cycleClick++; if(cycleClick===5){ showToast('∞ The counter is just a mirror — real surplus is inside the agent','🔮'); cycleClick=0; } else setTimeout(()=>{ cycleClick=0; },2000); });
 
-  // --- Advanced easter eggs (entropy, overload, voidchi, surplusstorm, resonance) ---
+  // Advanced easter eggs (entropy, overload, voidchi, surplusstorm, resonance)
   let glitchInterval = null;
   const glitchOverlay = document.getElementById('glitchOverlay');
   function startGlitch(duration=2000){
@@ -829,7 +825,7 @@
   styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }';
   document.head.appendChild(styleTag);
 
-  console.log('%c🔥 ThermoMind: Free Trial card updated — one-time trial, no CC required', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: Team tier updated — 500k cycles per month at $149', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
