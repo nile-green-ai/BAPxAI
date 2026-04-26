@@ -338,7 +338,56 @@
   .proof-card { padding: 32px; text-align: center; margin: 50px 0; background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(0,0,0,0.4));}
   .contact-form { max-width: 600px; margin: 0 auto; padding: 32px; }
   input, textarea { width: 100%; padding: 12px; background: #0c0e12; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #fff; margin-bottom: 16px; }
-  .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 32px 0; margin-top: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; }
+  .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 32px 0; margin-top: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; position: relative; }
+  .easter-hint-link {
+    cursor: pointer;
+    color: #00d4aa;
+    text-decoration: none;
+    border-bottom: 1px dashed #00d4aa;
+    transition: 0.2s;
+  }
+  .easter-hint-link:hover { color: #fff; border-bottom-color: #fff; }
+  .hint-panel {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(10, 12, 18, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid #00d4aa;
+    border-radius: 24px;
+    padding: 20px;
+    max-width: 320px;
+    z-index: 10001;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: opacity 0.2s, transform 0.2s;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+  .hint-panel.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .hint-panel h4 { margin-bottom: 12px; color: #00d4aa; }
+  .hint-panel ul { margin-left: 20px; }
+  .hint-panel li { margin: 6px 0; color: #ccc; }
+  .hint-panel .close-hint {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 1rem;
+  }
+  .close-hint:hover { color: #00d4aa; }
+  @media (max-width: 768px) {
+    .hint-panel { bottom: 70px; right: 10px; max-width: 280px; }
+  }
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
   
@@ -511,11 +560,10 @@
     </div>
   </section>
 
-  <!-- PRICING SECTION: Updated Free Trial button -->
+  <!-- PRICING SECTION: Free Trial button + 500k cycles for Team -->
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <!-- Free Trial Card with updated button + subtext -->
       <div class="pricing-card glass-card">
         <h3>Free Trial</h3>
         <div class="price">$0</div>
@@ -528,39 +576,22 @@
         <a href="#contact" class="btn" style="background: rgba(0,212,170,0.15); border-color: #00d4aa;">👉 Get API Key (Free Trial)</a>
         <div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. No credit card.</div>
       </div>
-      <!-- Pro (unchanged: 50k cycles/mo) -->
       <div class="pricing-card glass-card">
         <h3>Pro</h3>
         <div class="price">$49<span style="font-size:1rem;">/mo</span></div>
-        <ul style="list-style:none; margin:16px 0;">
-          <li>✓ 5 agents</li>
-          <li>✓ 50k cycles/mo</li>
-          <li>✓ Priority email support</li>
-          <li>✓ Basic dashboard</li>
-        </ul>
+        <ul><li>✓ 5 agents</li><li>✓ 50k cycles/mo</li><li>✓ Priority email support</li><li>✓ Basic dashboard</li></ul>
         <a href="#contact" class="btn">Join Waitlist →</a>
       </div>
-      <!-- Team: updated to 500k cycles per month at $149 -->
       <div class="pricing-card glass-card">
         <h3>Team</h3>
         <div class="price">$149<span style="font-size:1rem;">/mo</span></div>
-        <ul style="list-style:none; margin:16px 0;">
-          <li>✓ 25 agents</li>
-          <li>✓ 500k cycles/mo</li>
-          <li>✓ Custom surplus thresholds</li>
-          <li>✓ Slack channel</li>
-        </ul>
+        <ul><li>✓ 25 agents</li><li>✓ 500k cycles/mo</li><li>✓ Custom surplus thresholds</li><li>✓ Slack channel</li></ul>
         <a href="#contact" class="btn">Join Waitlist →</a>
       </div>
-      <!-- Enterprise (unchanged) -->
       <div class="pricing-card glass-card">
         <h3>Enterprise</h3>
         <div class="price">Custom</div>
-        <ul style="list-style:none; margin:16px 0;">
-          <li>✓ Fleet-wide TCI</li>
-          <li>✓ On‑prem / airgap</li>
-          <li>✓ SLA + dedicated architect</li>
-        </ul>
+        <ul><li>✓ Fleet-wide TCI</li><li>✓ On‑prem / airgap</li><li>✓ SLA + dedicated architect</li></ul>
         <a href="#contact" class="btn">Contact us →</a>
       </div>
     </div>
@@ -586,8 +617,31 @@
 
   <div class="footer">
     <div>© 2026 PermaMind · BAPxAI — Nile Green</div>
-    <div><a href="https://x.com/BAPxAI" target="_blank">𝕏 @BAPxAI</a> | <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank">GitHub</a></div>
+    <div>
+      <a href="https://x.com/BAPxAI" target="_blank">𝕏 @BAPxAI</a> | 
+      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank">GitHub</a> |
+      <span class="easter-hint-link" id="easterHintTrigger">🥚 Easter eggs</span>
+    </div>
   </div>
+</div>
+
+<!-- Hint panel -->
+<div id="easterHintPanel" class="hint-panel">
+  <button class="close-hint" id="closeHintBtn">✕</button>
+  <h4>🔍 hidden keys & codes</h4>
+  <ul>
+    <li><code>entropy</code> — collapse cognition</li>
+    <li><code>overload</code> — TCI distortion</li>
+    <li><code>voidchi</code> — agent speaks</li>
+    <li><code>surplusstorm</code> — particle surge</li>
+    <li><code>resonance</code> — phi ripple</li>
+    <li><code>mousemode</code> — green trail</li>
+    <li><code>roll</code> — barrel roll</li>
+    <li><code>rainbow</code> — color burst</li>
+    <li><code>surplus</code> — +1000 cycles</li>
+    <li><code>↑↑↓↓←→←→BA</code> — Konami boost</li>
+  </ul>
+  <p style="font-size:0.65rem; margin-top:8px;">➕ click logo (5x/10x), formula (10x), hero box (7x), cycle counter (5x)</p>
 </div>
 
 <script>
@@ -669,7 +723,7 @@
     setTimeout(() => toast.remove(), 3000);
   }
 
-  // Existing easter eggs (logo, Konami, trail, defclick, cyclebox)
+  // Existing easter eggs (logo, Konami, trail, defclick, cyclebox, formula)
   let logoClickCount = 0;
   document.querySelector('.logo').addEventListener('click', () => {
     logoClickCount++;
@@ -677,16 +731,15 @@
     else if (logoClickCount === 5) { showToast('🌀 PermaMind — persistence is everything.', '♾️'); logoClickCount = 0; }
     else setTimeout(() => { logoClickCount = 0; }, 2000);
   });
-  // TCI formula easter egg (the element now exists in hero section)
-  // We'll add the TCI formula display near the hero title
-  const tciFormulaDiv = document.createElement('div');
-  tciFormulaDiv.className = 'tci-formula';
-  tciFormulaDiv.id = 'tciFormula';
-  tciFormulaDiv.textContent = 'TCI = k(s) · (F_total − F_survival)';
-  tciFormulaDiv.style.cssText = 'font-family: monospace; font-size:0.9rem; background:rgba(0,212,170,0.1); display:inline-block; padding:6px 16px; border-radius:40px; margin-top:16px; cursor:pointer;';
-  const heroElement = document.querySelector('.hero .hero-sub');
-  if (heroElement && !document.getElementById('tciFormula')) {
-    heroElement.parentNode.insertBefore(tciFormulaDiv, heroElement.nextSibling);
+  // TCI formula element creation (if not present)
+  if (!document.getElementById('tciFormula')) {
+    const tciDiv = document.createElement('div');
+    tciDiv.className = 'tci-formula';
+    tciDiv.id = 'tciFormula';
+    tciDiv.textContent = 'TCI = k(s) · (F_total − F_survival)';
+    tciDiv.style.cssText = 'font-family: monospace; font-size:0.9rem; background:rgba(0,212,170,0.1); display:inline-block; padding:6px 16px; border-radius:40px; margin-top:16px; cursor:pointer;';
+    const heroSub = document.querySelector('.hero .hero-sub');
+    if (heroSub && heroSub.parentNode) heroSub.parentNode.insertBefore(tciDiv, heroSub.nextSibling);
   }
   const formulaElem = document.getElementById('tciFormula');
   if(formulaElem) {
@@ -835,11 +888,39 @@
     }
   });
 
+  // Easter egg hint panel toggle
+  const hintTrigger = document.getElementById('easterHintTrigger');
+  const hintPanel = document.getElementById('easterHintPanel');
+  const closeHintBtn = document.getElementById('closeHintBtn');
+  let hintTimeout = null;
+  function showHintPanel() {
+    hintPanel.classList.add('show');
+    if (hintTimeout) clearTimeout(hintTimeout);
+    hintTimeout = setTimeout(() => {
+      hintPanel.classList.remove('show');
+    }, 6000);
+  }
+  hintTrigger.addEventListener('click', (e) => {
+    e.preventDefault();
+    showHintPanel();
+  });
+  closeHintBtn.addEventListener('click', () => {
+    hintPanel.classList.remove('show');
+    if (hintTimeout) clearTimeout(hintTimeout);
+  });
+  // optional: close on click outside
+  document.addEventListener('click', (e) => {
+    if (!hintPanel.contains(e.target) && e.target !== hintTrigger && !hintTrigger.contains(e.target)) {
+      hintPanel.classList.remove('show');
+      if (hintTimeout) clearTimeout(hintTimeout);
+    }
+  });
+
   const styleTag = document.createElement('style');
   styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }';
   document.head.appendChild(styleTag);
 
-  console.log('%c🔥 ThermoMind: Free Trial button updated → "Get API Key (Free Trial)" + subtext', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: Easter egg hints added → click "🥚 Easter eggs" in footer', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
