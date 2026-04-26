@@ -511,11 +511,11 @@
     </div>
   </section>
 
-  <!-- PRICING SECTION: Updated Team tier to 500k cycles for $149 -->
+  <!-- PRICING SECTION: Updated Free Trial button -->
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <!-- Free Trial (unchanged) -->
+      <!-- Free Trial Card with updated button + subtext -->
       <div class="pricing-card glass-card">
         <h3>Free Trial</h3>
         <div class="price">$0</div>
@@ -525,7 +525,8 @@
           <li>✓ No credit card required</li>
           <li>✓ Community support</li>
         </ul>
-        <a href="#contact" class="btn">Join Waitlist →</a>
+        <a href="#contact" class="btn" style="background: rgba(0,212,170,0.15); border-color: #00d4aa;">👉 Get API Key (Free Trial)</a>
+        <div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. No credit card.</div>
       </div>
       <!-- Pro (unchanged: 50k cycles/mo) -->
       <div class="pricing-card glass-card">
@@ -668,7 +669,7 @@
     setTimeout(() => toast.remove(), 3000);
   }
 
-  // Existing easter eggs (logo, formula, Konami, trail, defclick, cyclebox)
+  // Existing easter eggs (logo, Konami, trail, defclick, cyclebox)
   let logoClickCount = 0;
   document.querySelector('.logo').addEventListener('click', () => {
     logoClickCount++;
@@ -676,9 +677,22 @@
     else if (logoClickCount === 5) { showToast('🌀 PermaMind — persistence is everything.', '♾️'); logoClickCount = 0; }
     else setTimeout(() => { logoClickCount = 0; }, 2000);
   });
-  let formulaClicks = 0;
+  // TCI formula easter egg (the element now exists in hero section)
+  // We'll add the TCI formula display near the hero title
+  const tciFormulaDiv = document.createElement('div');
+  tciFormulaDiv.className = 'tci-formula';
+  tciFormulaDiv.id = 'tciFormula';
+  tciFormulaDiv.textContent = 'TCI = k(s) · (F_total − F_survival)';
+  tciFormulaDiv.style.cssText = 'font-family: monospace; font-size:0.9rem; background:rgba(0,212,170,0.1); display:inline-block; padding:6px 16px; border-radius:40px; margin-top:16px; cursor:pointer;';
+  const heroElement = document.querySelector('.hero .hero-sub');
+  if (heroElement && !document.getElementById('tciFormula')) {
+    heroElement.parentNode.insertBefore(tciFormulaDiv, heroElement.nextSibling);
+  }
   const formulaElem = document.getElementById('tciFormula');
-  if(formulaElem) formulaElem.addEventListener('click', () => { formulaClicks++; if(formulaClicks>=10){ showToast('♾️ Surplus overflow — check your real agents!','📈'); formulaClicks=0;} else setTimeout(()=>{formulaClicks=0;},2000); });
+  if(formulaElem) {
+    let formulaClicks = 0;
+    formulaElem.addEventListener('click', () => { formulaClicks++; if(formulaClicks>=10){ showToast('♾️ Surplus overflow — check your real agents!','📈'); formulaClicks=0;} else setTimeout(()=>{formulaClicks=0;},2000); });
+  }
   const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','KeyB','KeyA'];
   let konamiIndex = 0;
   window.addEventListener('keydown', (e) => { if(e.code===konami[konamiIndex]){ konamiIndex++; if(konamiIndex===konami.length){ showToast('🕹️ SURPLUS BOOST — Konami code recognized!','🎮'); konamiIndex=0; } } else konamiIndex=0; });
@@ -825,7 +839,7 @@
   styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }';
   document.head.appendChild(styleTag);
 
-  console.log('%c🔥 ThermoMind: Team tier updated — 500k cycles per month at $149', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: Free Trial button updated → "Get API Key (Free Trial)" + subtext', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
