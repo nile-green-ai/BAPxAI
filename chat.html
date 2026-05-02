@@ -24,6 +24,14 @@
             flex-direction: column;
         }
 
+        #info-box {
+            border: 1px solid #0f0;
+            padding: 6px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #0f0;
+        }
+
         #messages {
             flex: 1;
             overflow-y: auto;
@@ -71,10 +79,22 @@
 <body>
 
 <div id="chat-container">
+
+    <div id="info-box">
+        <b>BAPX ThermoMind Substrate</b><br>
+        You are viewing raw cognitive state vectors.<br>
+        These numbers are NOT text responses — they are the system’s internal
+        thermodynamic state shifts in real time.<br><br>
+        • Each message updates the agent’s internal state.<br>
+        • Similar inputs produce similar vectors.<br>
+        • Repeated inputs cause attractor collapse.<br>
+        • This is NOT a transformer — this is a dynamical cognition engine.
+    </div>
+
     <div id="messages"></div>
 
     <div id="input-box">
-        <input id="input" placeholder="Say something..." />
+        <input id="input" placeholder="Type a message..." />
         <button id="send">Send</button>
     </div>
 </div>
