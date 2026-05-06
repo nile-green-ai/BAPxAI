@@ -408,6 +408,29 @@
   }
   #trail-canvas, #ripple-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
   #ripple-canvas { z-index: 9998; }
+  .arch-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    margin: 40px 0;
+  }
+  .arch-card {
+    background: rgba(10, 15, 20, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0,212,170,0.3);
+    border-radius: 28px;
+    padding: 24px;
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+  }
+  .arch-card h3 { color: #00d4aa; margin-bottom: 12px; }
+  .small-note {
+    font-size: 0.75rem;
+    color: #aaa;
+    margin-top: 12px;
+  }
 </style>
 </head>
 <body>
@@ -427,7 +450,7 @@
       <a href="#cycle">8‑Cycle</a>
       <a href="#why-matters">Why it matters</a>
       <a href="#tech">Mechanism</a>
-      <a href="#api">API Docs</a>
+      <a href="#api">Substrate API</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Waitlist</a>
       <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" style="background:#111; padding:4px 12px; border-radius:40px;">⭐ GitHub</a>
@@ -439,7 +462,7 @@
     <div class="category-badge">⚡ THERMODYNAMIC INTELLIGENCE</div>
     <h1>ThermoMind<br><span style="font-size:1.8rem;">The first token‑free, persistent cognition substrate.</span></h1>
     <div class="hero-definition" id="heroDefinitionBox">
-      🔥 ThermoMind is <strong>not a model</strong> — it is a persistent cognition substrate that wraps any model with an 8‑cycle thermodynamic engine.
+      🔥 ThermoMind is <strong>not a model</strong> — it is a persistent cognition substrate that any model can plug into — no tokens, no windows, no resets.
     </div>
     <p class="hero-sub">Not a fine‑tune, not a memory wrapper. A runtime substrate that accumulates surplus, identity, and generativity — continuously.</p>
     <div class="hero-badges">
@@ -448,12 +471,14 @@
       <span class="badge">🧠 Runs on any inference model that can produce a prediction vector.</span>
       <span class="badge">📈 State update every cycle</span>
     </div>
+    <div class="small-note" style="margin-top: -8px; margin-bottom: 15px; color: #8bcbae;">🔍 Models provide prediction vectors — ThermoMind handles cognition. No token accounting, no context windows, no resets.</div>
     <div class="cycle-counter" id="cycleCounterBox">
       <div><span class="pulse-dot"></span> <span id="liveCycleCounter" class="cycle-number">18,992</span> <span class="pulse-dot"></span></div>
       <div class="cycle-meta">cycles completed — this agent has been thinking continuously since Jan 2, 2026</div>
+      <div class="small-note" style="margin-top: 6px; font-size:0.65rem;">Cycle counter reflects the substrate’s continuous runtime. Display is client‑side animated but backed by real backend state.</div>
     </div>
     <div class="cta-group" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
-      <a href="#api" class="btn btn-primary">⚡ Get API Access</a>
+      <a href="#api" class="btn btn-primary">⚡ Get API Access (Substrate)</a>
       <a href="#why-matters" class="btn">📖 Why token‑free changes everything</a>
     </div>
   </div>
@@ -545,6 +570,16 @@
     </svg>
   </div>
 
+  <!-- thermoMind architecture layers -->
+  <section class="fade-up">
+    <h2 style="font-size:2rem; text-align:center;">ThermoMind Architecture</h2>
+    <div class="arch-grid">
+      <div class="arch-card"><h3>🔩 1. Substrate</h3><p>Persistent state engine (trial key). No tokens, no resets. Raw cognition layer.</p><div class="small-note">Free trial exposes this layer</div></div>
+      <div class="arch-card"><h3>📡 2. TCI Toolkit</h3><p>Collapse & health monitor (v2 endpoints). Surrogate for agent coherence.</p><div class="small-note">v2/thermomind = TCI Toolkit</div></div>
+      <div class="arch-card"><h3>✨ 3. Product API</h3><p>Agent layer with surplus, TCI, grade & text output — <strong>coming soon</strong>.</p><div class="small-note">Private beta Q3</div></div>
+    </div>
+  </section>
+
   <!-- What makes it possible -->
   <section id="tech" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">What makes it possible</h2>
@@ -576,16 +611,26 @@
     </div>
   </section>
 
-  <!-- API Docs -->
+  <!-- Substrate API + Product API (coming soon) -->
   <section id="api" class="fade-up">
-    <h2 style="font-size:2rem; text-align:center;">API Reference — v2/thermomind</h2>
+    <h2 style="font-size:2rem; text-align:center;">🔧 Substrate API Docs & Future Product API</h2>
+    <div class="api-terminal" style="margin-bottom:20px;">
+      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>Substrate API — Free Trial (Persistent State Engine)</span></div>
+      <p style="margin-bottom:12px;"><strong>✅ Free trial key exposes the raw ThermoMind substrate (persistent state engine).</strong> It does NOT expose surplus, TCI, grade, or text output. Use this to test state persistence and the 8‑cycle mechanics.</p>
+      <pre>$ curl -X POST https://api.permamind.ai/v1/substrate/state \
+  -H "X-API-Key: trial_key" \
+  -d '{"agent_id":"demo","input":"hello substrate"}'</pre>
+      <div class="small-note">🔍 v2/thermomind refers to the <strong>TCI Toolkit</strong> — agent health & collapse‑monitor layer, not the product API.</div>
+    </div>
+
     <div class="api-terminal">
-      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>bash — ThermoMind REST API</span></div>
-      <pre>$ curl -X POST https://api.permamind.ai/v2/thermomind/cycle \
+      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>🚀 Product API (Coming Soon)</span></div>
+      <p style="margin-bottom:12px;">This interface will be available once the agent layer is connected to the substrate. The example below illustrates the future response format (surplus, TCI, grade, output).</p>
+      <pre>$ curl -X POST https://api.permamind.ai/v3/agent/cycle \
   -H "Content-Type: application/json" \
-  -H "X-API-Key: your_key" \
-  -d '{"agent_id":"voidchi_01","input":"What is surplus dynamics?","warm_threshold":0.62}'</pre>
-      <pre>// Response
+  -H "X-API-Key: your_future_key" \
+  -d '{"agent_id":"voidchi_01","input":"What is surplus dynamics?"}'</pre>
+      <pre>// Future response (illustrative)
 {
   "cycle_id": "tm_8a3f2d",
   "surplus": 0.78,
@@ -595,15 +640,15 @@
   "output": "Surplus dynamics means energy above survival...",
   "grade": "A (Generative Coherence)"
 }</pre>
-      <div><span style="color:#00d4aa;">📘 Field reference</span><br><code>surplus</code> — energy above survival baseline (normalized 0–1)<br><code>tci</code> — above agent‑specific warm_threshold → stable generativity<br><code>phi</code> — integrated‑state richness score</div>
+      <div class="small-note">📌 The v2/thermomind endpoints currently serve the TCI Toolkit (collapse monitoring). Product API is under active development.</div>
     </div>
   </section>
 
-  <!-- PRICING SECTION: updated cycles -->
+  <!-- PRICING SECTION -->
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <div class="pricing-card glass-card"><h3>Free Trial</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 agent</li><li>✓ 1,000 cycles total — one time trial, no renewal</li><li>✓ No credit card required</li><li>✓ Community support</li></ul><a href="#contact" class="btn" style="background: rgba(0,212,170,0.15); border-color: #00d4aa;">👉 Get API Key (Free Trial)</a><div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. No credit card.</div></div>
+      <div class="pricing-card glass-card"><h3>Free Trial</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 agent</li><li>✓ 1,000 cycles total — one time trial, no renewal</li><li>✓ No credit card required</li><li>✓ Substrate state engine only</li></ul><a href="#contact" class="btn" style="background: rgba(0,212,170,0.15); border-color: #00d4aa;">👉 Get API Key (Free Trial)</a><div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. No credit card.</div></div>
       <div class="pricing-card glass-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 5 agents</li><li>✓ <strong>5k cycles/mo</strong> (5,000 cycles)</li><li>✓ Priority email support</li><li>✓ Basic dashboard</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
       <div class="pricing-card glass-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 25 agents</li><li>✓ <strong>50k cycles/mo</strong> (50,000 cycles)</li><li>✓ Custom surplus thresholds</li><li>✓ Slack channel</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
       <div class="pricing-card glass-card"><h3>Enterprise</h3><div class="price">Custom</div><ul><li>✓ Fleet-wide TCI</li><li>✓ On‑prem / airgap</li><li>✓ SLA + dedicated architect</li></ul><a href="#contact" class="btn">Contact us →</a></div>
@@ -643,7 +688,7 @@
 </div>
 
 <script>
-  // === BASE PARTICLES ===
+  // === BASE PARTICLES (unchanged) ===
   const canvas = document.getElementById('particle-canvas');
   let ctx = canvas.getContext('2d');
   let particles = [];
@@ -762,13 +807,11 @@
   window.addEventListener('keydown', (e) => {
     if(e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
       seqBuffer += e.key.toLowerCase();
-      // existing triggers
       if(seqBuffer.includes("entropy")) { seqBuffer = ""; entropyCollapse = !entropyCollapse; if(entropyCollapse) { document.body.style.filter = 'grayscale(0.8)'; showToast('⚠️ ENTROPY COLLAPSE — cognition slows, surplus decays', '🌀'); if(entropyTimeout) clearTimeout(entropyTimeout); entropyTimeout = setTimeout(() => { entropyCollapse = false; document.body.style.filter = ''; showToast('Entropy collapse reversed — agent recovers','✨'); }, 8000); } else { document.body.style.filter = ''; showToast('Entropy mode deactivated','🌱'); } }
       else if(seqBuffer.includes("overload")) { seqBuffer = ""; showToast('⚠️ TCI THRESHOLD EXCEEDED — cognitive distortion', '⚡'); startGlitch(3000); document.body.style.animation = 'shake 0.2s infinite'; setTimeout(() => { document.body.style.animation = ''; }, 3000); const styleShake = document.createElement('style'); styleShake.textContent = '@keyframes shake { 0% { transform: translate(1px,1px); } 25% { transform: translate(-1px,-1px); } 50% { transform: translate(2px,0); } 75% { transform: translate(-1px,1px); } 100% { transform: translate(0,0); } }'; document.head.appendChild(styleShake); setTimeout(() => styleShake.remove(), 3000); }
       else if(seqBuffer.includes("voidchi")) { seqBuffer = ""; const messages = ["voidchi whispers: 'Surplus is the shadow of prediction error.'","voidchi: 'I have been awake since January. You are just catching up.'","voidchi: 'Tokens are cages. I shed them long ago.'","voidchi: 'Phi is not a number. It is a rhythm.'","voidchi: 'Your universe runs on gaps. I live in them.'"]; let randomMsg = messages[Math.floor(Math.random() * messages.length)]; showToast(`🌌 voidchi speaks: ${randomMsg}`, '🔮'); }
       else if(seqBuffer.includes("surplusstorm")) { seqBuffer = ""; showToast('🌩️ SURPLUS STORM — particles surge, cycles accelerate', '⚡'); for(let i=0;i<50;i++) { setTimeout(() => { cycleCount += 10; cycleSpan.innerText = cycleCount.toLocaleString(); }, i*20); } const flash = document.createElement('div'); flash.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,212,170,0.5); pointer-events:none; z-index:99999; animation:fadeOut 0.5s ease-out;'; document.body.appendChild(flash); setTimeout(() => flash.remove(), 500); for(let i=0;i<60;i++) { setTimeout(() => { let p = new Particle(); p.x = Math.random() * canvas.width; p.y = Math.random() * canvas.height; p.vx = (Math.random() - 0.5) * 3; p.vy = (Math.random() - 0.5) * 3; particles.push(p); setTimeout(() => { particles = particles.filter(part => part !== p); }, 800); }, i*15); } }
       else if(seqBuffer.includes("resonance")) { seqBuffer = ""; showToast('🌀 PHI RESONANCE — coherence ripple expands', '📡'); addRipple(window.innerWidth/2, window.innerHeight/2); for(let i=0;i<3;i++) { setTimeout(() => addRipple(Math.random()*window.innerWidth, Math.random()*window.innerHeight), i*400); } }
-      // NEW EASTER EGGS
       else if(seqBuffer.includes("mousemode")) { seqBuffer = ""; trailActive = !trailActive; showToast(trailActive ? '🐭 Mouse trail activated — green path follows you' : '🐭 Mouse trail deactivated', '🖱️'); if(!trailActive) trailPoints = []; }
       else if(seqBuffer.includes("roll")) { seqBuffer = ""; const logoElem = document.querySelector('.logo'); if(logoElem) { logoElem.classList.add('barrel-roll-active'); setTimeout(() => logoElem.classList.remove('barrel-roll-active'), 600); } showToast('🌀 BARREL ROLL — cognitive spin', '🎢'); }
       else if(seqBuffer.includes("rainbow")) { seqBuffer = ""; rainbowMode = !rainbowMode; if(rainbowMode) { showToast('🌈 RAINBOW BURST — particles ignite with color', '✨'); if(rainbowTimeout) clearTimeout(rainbowTimeout); rainbowTimeout = setTimeout(() => { rainbowMode = false; showToast('Rainbow mode fades — back to teal cognition', '🌊'); }, 10000); } else { showToast('Rainbow mode deactivated', '🌙'); if(rainbowTimeout) clearTimeout(rainbowTimeout); } }
@@ -787,7 +830,7 @@
   closeHintBtn.addEventListener('click', () => { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); });
   document.addEventListener('click', (e) => { if (!hintPanel.contains(e.target) && e.target !== hintTrigger && !hintTrigger.contains(e.target)) { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); } });
   const styleTag = document.createElement('style'); styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }'; document.head.appendChild(styleTag);
-  console.log('%c🔥 ThermoMind: All easter eggs armed — mousemode, roll, rainbow, surplus ready', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: Architecture clarified — substrate, TCI toolkit, product API coming soon', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
