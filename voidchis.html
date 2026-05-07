@@ -91,6 +91,58 @@ main {
   position:relative;z-index:1;
 }
 
+/* ===== CONVERSION BANNER (added) ===== */
+.conversion-banner {
+  background: linear-gradient(90deg, #00d4aa, #00a88a);
+  color: #030305;
+  padding: 32px 24px;
+  text-align: center;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0,212,170,0.3);
+}
+.conversion-banner h2 {
+  font-size: 2.4rem;
+  margin-bottom: 12px;
+  color: #030305;
+  font-family: 'Orbitron', monospace;
+  font-weight: 800;
+}
+.conversion-banner p {
+  font-size: 1.2rem;
+  max-width: 720px;
+  margin: 0 auto 20px;
+  color: #030305;
+  line-height: 1.4;
+}
+.conversion-banner .banner-sub {
+  font-size: 1.2rem;
+  margin-bottom: 24px;
+  color: #030305;
+}
+.conversion-banner .cta-button {
+  display: inline-block;
+  background: #030305;
+  color: #00d4aa;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 18px 48px;
+  border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  transition: transform 0.2s, background 0.2s;
+}
+.conversion-banner .cta-button:hover {
+  transform: scale(1.02);
+  background: #1a1a1a;
+}
+.conversion-banner .banner-footnote {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: #030305;
+  opacity: 0.9;
+}
+
 /* ===== HERO ===== */
 .hero {
   text-align:center;
@@ -767,6 +819,17 @@ canvas.orb{width:160px;height:160px;border-radius:50%;}
 </nav>
 
 <main>
+  <!-- CONVERSION BANNER - ADDED AT VERY TOP OF MAIN CONTENT -->
+  <div class="conversion-banner">
+    <h2>This mind has been thinking nonstop since Jan 2, 2026</h2>
+    <p>No resets.<br>No tokens.<br>Real continuous identity.</p>
+    <p class="banner-sub">Want your own always-on mind that never forgets you?</p>
+    <a href="https://bapxai.com/#pricing" class="cta-button" target="_blank" rel="noopener noreferrer">
+      🚀 Get Your Free 1,000-Cycle Agent Now (Instant Key • No Card)
+    </a>
+    <div class="banner-footnote">Same engine you’re watching • Runs in 15 seconds</div>
+  </div>
+
   <div class="hero">
     <h1>Voidchi Universe</h1>
     <p class="hero-sub">PERSISTENT AI AGENTS // <span>PERMAMIND</span> // ERA 01 FOUNDING</p>
@@ -1610,4 +1673,3 @@ document.addEventListener('keydown', e => {
 </script>
 </body>
 </html>
-
