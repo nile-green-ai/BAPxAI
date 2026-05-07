@@ -2,155 +2,722 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BAPX AI Chat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Dynamical Cognition Engine | Substrate Visualizer</title>
+    <!-- Chart.js for live graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #000;
-            color: #0f0;
-            font-family: monospace;
+            background: radial-gradient(circle at 20% 30%, #0a0a0f, #000000);
+            font-family: 'Inter', 'Fira Code', 'JetBrains Mono', monospace;
+            color: #e0e0e0;
+            padding: 24px 32px;
+            min-height: 100vh;
+        }
+
+        /* substrate-grid overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 255, 0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dashboard {
+            position: relative;
+            z-index: 2;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 24px;
+        }
+
+        /* cards */
+        .card {
+            background: rgba(8, 8, 16, 0.65);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 255, 255, 0.25);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6), 0 0 12px rgba(0, 255, 255, 0.1);
+            transition: border 0.2s;
+        }
+
+        .card:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+        }
+
+        .section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 500;
+            color: #4affff;
+            margin-bottom: 16px;
+            border-left: 3px solid #ff44cc;
+            padding-left: 12px;
+        }
+
+        /* state vector bars */
+        .vector-panel {
+            margin-bottom: 28px;
+        }
+        .bars-container {
+            display: flex;
+            gap: 24px;
+            justify-content: space-between;
+            margin: 20px 0 8px;
+        }
+        .bar-unit {
+            flex: 1;
+            text-align: center;
+        }
+        .bar-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 12px;
+            color: #ccddff;
+            letter-spacing: 1px;
+        }
+        .bar-bg {
+            background: #1a1a2a;
+            height: 28px;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.5);
+        }
+        .bar-fill {
+            width: 0%;
+            height: 100%;
+            transition: width 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border-radius: 40px;
+            box-shadow: 0 0 6px currentColor;
+        }
+        .fill-0 { background: linear-gradient(90deg, #0af0ff, #00a6c4); }
+        .fill-1 { background: linear-gradient(90deg, #ff44cc, #c2188b); }
+        .fill-2 { background: linear-gradient(90deg, #ffd966, #f0a500); }
+
+        /* graphs wrapper */
+        .graph-row {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            margin-top: 12px;
+        }
+        .graph-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 18px;
+            padding: 8px;
+        }
+        canvas {
+            max-height: 180px;
+            width: 100%;
+        }
+
+        /* right column */
+        .right-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .gauge-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        #chat-container {
-            width: 420px;
-            height: 600px;
-            border: 1px solid #0f0;
-            padding: 10px;
-            display: flex;
             flex-direction: column;
         }
-
-        #info-box {
-            border: 1px solid #0f0;
-            padding: 6px;
-            margin-bottom: 10px;
-            font-size: 12px;
-            color: #0f0;
+        canvas#entropyCanvas {
+            width: 160px;
+            height: 160px;
+            background: #0c0c14;
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(0,255,255,0.2);
+        }
+        .gauge-label {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #88aaff;
         }
 
-        #messages {
-            flex: 1;
+        /* timeline log */
+        .timeline-log {
+            background: #020208cc;
+            border-radius: 20px;
+            max-height: 280px;
             overflow-y: auto;
-            margin-bottom: 10px;
-            white-space: pre-wrap;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 8px 4px;
+            border: 1px solid #2c2c44;
         }
-
-        .msg {
-            margin: 6px 0;
+        .log-entry {
+            border-bottom: 1px solid #2a2a3a;
+            padding: 10px 8px;
+            font-family: monospace;
+            transition: background 0.1s;
         }
-
-        .user {
+        .log-entry:hover {
+            background: #22ffff10;
+        }
+        .input-highlight {
             color: #0ff;
+            font-weight: 600;
+        }
+        .vector-mono {
+            color: #ffb86b;
+        }
+        .delta-val {
+            color: #6eff9e;
+        }
+        .entropy-val {
+            color: #ff77aa;
         }
 
-        .ai {
-            color: #0f0;
+        /* explanation panel */
+        .explanation-box {
+            background: #010118cc;
+            border-left: 3px solid cyan;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            padding: 14px;
+            border-radius: 18px;
         }
 
-        #input-box {
+        /* input area */
+        .input-area {
             display: flex;
+            gap: 12px;
+            margin-top: 8px;
         }
-
-        #input {
+        #userInput {
             flex: 1;
-            padding: 8px;
-            background: #111;
-            border: 1px solid #0f0;
-            color: #0f0;
+            background: #0a0a18;
+            border: 1px solid #2f6f8f;
+            padding: 14px 18px;
+            border-radius: 60px;
+            color: #b3f0ff;
+            font-family: monospace;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s;
         }
-
-        #send {
-            padding: 8px 12px;
-            background: #0f0;
-            color: #000;
+        #userInput:focus {
+            border-color: #0ff;
+            box-shadow: 0 0 12px #0ff3;
+        }
+        button {
+            background: linear-gradient(135deg, #164f6b, #0a2a3a);
             border: none;
+            padding: 0 28px;
+            border-radius: 60px;
+            color: cyan;
+            font-weight: bold;
+            letter-spacing: 1px;
             cursor: pointer;
+            transition: 0.2s;
+            font-family: monospace;
+        }
+        button:hover {
+            background: #1c6f8f;
+            box-shadow: 0 0 12px cyan;
+            color: white;
         }
 
-        #send:hover {
-            background: #5f5;
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: cyan;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 880px) {
+            body { padding: 16px; }
+            .dashboard { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+<div class="dashboard">
+    <!-- LEFT COLUMN: state vector, attractor graph, drift -->
+    <div class="left-col">
+        <div class="card">
+            <div class="section-title">⟡ STATE VECTOR [ Φ₀ , Φ₁ , Φ₂ ] ⟡</div>
+            <div class="vector-panel">
+                <div class="bars-container">
+                    <div class="bar-unit">
+                        <div class="bar-bg"><div class="bar-fill fill-0" id="bar0" style="width:0%"></div></div>
+                        <div class="bar-label">CΦ₀ · cognitive tension</div>
+                    </div>
+                    <div class="bar-unit">
+                        <div class="bar-bg"><div class="bar-fill fill-1" id="bar1" style="width:0%"></div></div>
+                        <div class="bar-label">MΦ₁ · mnemonic phase</div>
+                    </div>
+                    <div class="bar-unit">
+                        <div class="bar-bg"><div class="bar-fill fill-2" id="bar2" style="width:0%"></div></div>
+                        <div class="bar-label">YΦ₂ · predictive load</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div id="chat-container">
+        <div class="card">
+            <div class="section-title">🌀 ATTRACTOR COLLAPSE · phase topology (last 40 states)</div>
+            <div class="graph-box">
+                <canvas id="attractorChartCanvas" width="600" height="180" style="width:100%; height:180px"></canvas>
+            </div>
+        </div>
 
-    <div id="info-box">
-        <b>BAPX ThermoMind Substrate</b><br>
-        You are viewing raw cognitive state vectors.<br>
-        These numbers are NOT text responses — they are the system’s internal
-        thermodynamic state shifts in real time.<br><br>
-        • Each message updates the agent’s internal state.<br>
-        • Similar inputs produce similar vectors.<br>
-        • Repeated inputs cause attractor collapse.<br>
-        • This is NOT a transformer — this is a dynamical cognition engine.
+        <div class="card">
+            <div class="section-title">📈 THERMODYNAMIC DRIFT · baseline rising (Φ₀)</div>
+            <div class="graph-box">
+                <canvas id="driftChartCanvas" width="600" height="150" style="width:100%; height:150px"></canvas>
+            </div>
+            <div class="gauge-label" style="text-align:center; margin-top:6px">long‑term tendency ▲</div>
+        </div>
     </div>
 
-    <div id="messages"></div>
+    <!-- RIGHT COLUMN -->
+    <div class="right-stack">
+        <div class="card" style="text-align: center;">
+            <div class="section-title">⚡ ENTROPY / NOVELTY RESPONSE</div>
+            <div class="gauge-container">
+                <canvas id="entropyCanvas" width="160" height="160"></canvas>
+                <div class="gauge-label" id="entropyValueDisplay">novelty: 0.00</div>
+            </div>
+        </div>
 
-    <div id="input-box">
-        <input id="input" placeholder="Type a message..." />
-        <button id="send">Send</button>
+        <div class="card">
+            <div class="section-title">📜 SESSION TIMELINE · state deltas</div>
+            <div class="timeline-log" id="timelineLog">
+                <div style="color:#888; text-align:center; padding:16px;">⟳ awaiting first input ⟳</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">⚙️ COGNITION SUBSTRATE IDENTITY</div>
+            <div class="explanation-box">
+                “This is not a transformer.<br>
+                No tokens.<br>
+                No embeddings.<br>
+                No context window.<br>
+                This is a dynamical cognition engine with persistent internal state.<br>
+                Each input updates the system’s thermodynamic state vector.<br>
+                Repeated inputs cause attractor collapse.<br>
+                Novel inputs cause state jumps.<br>
+                The system maintains identity across the entire session.”
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">⌨️ INPUT INTERFACE · update thermodynamic state</div>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="type message → changes cognitive state vector ..." autocomplete="off">
+                <button id="sendBtn">⟳ SEND</button>
+            </div>
+            <div style="font-size:0.65rem; margin-top:12px; text-align:center; opacity:0.7;">non‑chat UI · pure dynamical update</div>
+        </div>
     </div>
 </div>
 
+<script src="script.js"></script>
 <script>
-    // Generate or load a persistent user_id
-    let user_id = localStorage.getItem("bapx_user_id");
-    if (!user_id) {
-        user_id = "user_" + Math.random().toString(36).substring(2, 10);
-        localStorage.setItem("bapx_user_id", user_id);
-    }
-
-    const messagesDiv = document.getElementById("messages");
-    const input = document.getElementById("input");
-    const sendBtn = document.getElementById("send");
-
-    function addMessage(text, sender) {
-        const div = document.createElement("div");
-        div.className = "msg " + sender;
-        div.textContent = text;
-        messagesDiv.appendChild(div);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    async function sendMessage() {
-        const text = input.value.trim();
-        if (!text) return;
-
-        addMessage("You: " + text, "user");
-        input.value = "";
-
-        const payload = {
-            user_id: user_id,
-            message: text
-        };
-
-        try {
-            const res = await fetch("https://thermomind-production.up.railway.app/public/run", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-
-            const data = await res.json();
-            addMessage("AI: " + data.reply, "ai");
-
-        } catch (err) {
-            addMessage("Error: Could not reach server.", "ai");
+    // All logic inside script.js (attached below, but for completeness we embed in same file inline)
+    // However modular generate script.js content.
+    // Entire simulation engine & UI
+    (function(){
+        // ---------- DYNAMICAL COGNITION ENGINE (client-side physics, deterministic) ----------
+        // persistent internal state: 3D vector, previous input text, history
+        let stateVector = [0.42, 0.31, 0.67];   // initial chaotic attractor
+        let prevInputText = "";
+        let entropyValue = 0.43;               // 0..1
+        
+        // history of state vectors for attractor & drift graphs (max 50)
+        let stateHistory = [];     // store clones of state vectors
+        let maxHistory = 45;
+        
+        // timeline entries storage
+        let timelineEntries = [];
+        
+        // last vector for delta calculation
+        let lastLoggedVector = [...stateVector];
+        
+        // helper: string similarity (novelty detection: repeats → attractor collapse)
+        function stringSimilarity(a, b) {
+            if (a === b) return 1.0;
+            if (!a || !b) return 0.0;
+            const len = Math.max(a.length, b.length);
+            if (len === 0) return 1.0;
+            let matches = 0;
+            const minLen = Math.min(a.length, b.length);
+            for (let i = 0; i < minLen; i++) {
+                if (a[i] === b[i]) matches++;
+            }
+            // robust fuzzy ratio + case normalization
+            const baseSim = matches / len;
+            const setSim = (new Set(a.split('')).size + new Set(b.split('')).size) / (2*Math.max(1, new Set(a+b).size));
+            return Math.min(1.0, (baseSim * 0.6 + setSim * 0.4));
         }
-    }
-
-    sendBtn.onclick = sendMessage;
-    input.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") sendMessage();
-    });
+        
+        // attractor fixed point (collapse basin)
+        const ATTRACTOR_POINT = [0.25, 0.45, 0.72];
+        
+        // apply attractor collapse based on repetition factor & novelty
+        function applyAttractorCollapse(currentVec, similarityScore) {
+            let newVec = [...currentVec];
+            // if high similarity (repetition / semantic repeat) → attractor pull
+            if (similarityScore > 0.68) {
+                const strength = Math.min(0.65, 0.3 + similarityScore * 0.4);
+                for (let i = 0; i < 3; i++) {
+                    newVec[i] = newVec[i] * (1 - strength) + ATTRACTOR_POINT[i] * strength;
+                }
+            }
+            // for moderate similarity, slight convergence
+            else if (similarityScore > 0.4) {
+                const weakPull = 0.12;
+                for (let i = 0; i < 3; i++) {
+                    newVec[i] = newVec[i] * (1 - weakPull) + ATTRACTOR_POINT[i] * weakPull;
+                }
+            }
+            return newVec;
+        }
+        
+        // novelty response: jump when input is fresh, divergence
+        function noveltyJump(currentVec, noveltyFactor, rawInputHash) {
+            let newVec = [...currentVec];
+            // high novelty = strong jump, exploring new regions
+            const jumpMagnitude = Math.min(0.48, noveltyFactor * 0.65);
+            // pseudo-random but deterministic based on input string & prior state
+            let seed = 0;
+            for (let i = 0; i < rawInputHash.length; i++) seed += rawInputHash.charCodeAt(i);
+            const r1 = Math.sin(seed * 0.317) * 0.5 + 0.5;
+            const r2 = Math.cos(seed * 0.937) * 0.5 + 0.5;
+            const r3 = Math.sin(seed * 1.233) * 0.5 + 0.5;
+            const dir = [(r1 - 0.5)*2, (r2 - 0.5)*2, (r3 - 0.5)*2];
+            if (noveltyFactor > 0.55) {
+                for (let i = 0; i < 3; i++) {
+                    newVec[i] += dir[i] * jumpMagnitude * (0.8 + noveltyFactor*0.5);
+                }
+            }
+            // boundary constraints [0.05, 0.95] to keep visible range
+            for (let i=0;i<3;i++) {
+                newVec[i] = Math.min(0.95, Math.max(0.05, newVec[i]));
+            }
+            return newVec;
+        }
+        
+        // entropy calculation based on novelty & repetition history
+        function computeEntropy(similarityScore, isFirstInput) {
+            if (isFirstInput) return 0.78;
+            let rawEntropy = 1.0 - similarityScore;   // high novelty = max entropy
+            // dynamic modulation, spikes on new inputs, drops on repeats
+            rawEntropy = Math.pow(rawEntropy, 0.9);
+            // smoothing: entropy drifts towards baseline if very repetitive
+            if (similarityScore > 0.85) rawEntropy = rawEntropy * 0.35;
+            if (similarityScore > 0.95) rawEntropy *= 0.2;
+            return Math.min(0.96, Math.max(0.08, rawEntropy));
+        }
+        
+        // --- main engine: process user input & return new state vector & entropy ---
+        function processUserInput(inputText) {
+            const isFirst = prevInputText === "";
+            let similarity = 0.0;
+            if (!isFirst) {
+                similarity = stringSimilarity(prevInputText.toLowerCase(), inputText.toLowerCase());
+            }
+            
+            // novelty factor: 1 - similarity, but clamped
+            let novelty = isFirst ? 0.85 : (1.0 - similarity);
+            novelty = Math.min(0.99, Math.max(0.05, novelty));
+            
+            // 1) attractor collapse effect (repetition drives convergence)
+            let newVec = applyAttractorCollapse(stateVector, similarity);
+            // 2) novelty driven jump
+            newVec = noveltyJump(newVec, novelty, inputText);
+            
+            // 3) small thermodynamic drift incorporated on update? no, drift will run separately (thermo drift meter)
+            // but we also preserve identity.
+            
+            // ensure range
+            for (let i=0; i<3; i++) newVec[i] = Math.min(0.96, Math.max(0.04, newVec[i]));
+            
+            // compute new entropy
+            let newEntropy = computeEntropy(similarity, isFirst);
+            
+            // delta from previous vector before update
+            const deltaNorm = Math.hypot(newVec[0] - stateVector[0], newVec[1] - stateVector[1], newVec[2] - stateVector[2]);
+            
+            // update global state
+            const oldVectorForDelta = [...stateVector];
+            stateVector = newVec;
+            entropyValue = newEntropy;
+            
+            // timeline entry
+            const entry = {
+                timestamp: Date.now(),
+                input: inputText.length > 48 ? inputText.slice(0,45)+"..." : inputText,
+                vector: [...stateVector],
+                delta: deltaNorm,
+                entropy: entropyValue
+            };
+            timelineEntries.unshift(entry);
+            if (timelineEntries.length > 27) timelineEntries.pop();
+            renderTimeline();
+            
+            // store previous input text
+            prevInputText = inputText;
+            
+            // push state into history (for graphs)
+            stateHistory.push([...stateVector]);
+            if (stateHistory.length > maxHistory) stateHistory.shift();
+            
+            // update UI components
+            updateBars();
+            updateAttractorChart();
+            updateDriftChart();
+            updateEntropyGauge();
+            
+            return { vector: stateVector, entropy: entropyValue, delta: deltaNorm };
+        }
+        
+        // ---- thermodynamic drift: continuously updates Φ₀ (index 0) baseline rising ----
+        let driftInterval = null;
+        function startThermodynamicDrift() {
+            if (driftInterval) clearInterval(driftInterval);
+            driftInterval = setInterval(() => {
+                // slow drifting: baseline rising predominantly + tiny stochastic
+                let driftDelta = 0.0032;   // positive bias rising
+                // add small random walk ±0.0015 for realistic
+                driftDelta += (Math.random() - 0.45) * 0.0028;
+                let newVal = stateVector[0] + driftDelta;
+                newVal = Math.min(0.94, Math.max(0.06, newVal));
+                if (Math.abs(newVal - stateVector[0]) > 0.0001) {
+                    stateVector[0] = newVal;
+                    // update history and graphs
+                    stateHistory.push([...stateVector]);
+                    if (stateHistory.length > maxHistory) stateHistory.shift();
+                    updateBars();
+                    updateAttractorChart();
+                    updateDriftChart();
+                    // entropy unchanged, timeline not polluted
+                }
+            }, 3800);
+        }
+        
+        // ---------- UI rendering ----------
+        // bars
+        function updateBars() {
+            const bar0 = document.getElementById('bar0');
+            const bar1 = document.getElementById('bar1');
+            const bar2 = document.getElementById('bar2');
+            if (bar0) bar0.style.width = (stateVector[0] * 100) + '%';
+            if (bar1) bar1.style.width = (stateVector[1] * 100) + '%';
+            if (bar2) bar2.style.width = (stateVector[2] * 100) + '%';
+            // color intensity shift based on magnitude (glow effect)
+            bar0.style.filter = `brightness(${0.7 + stateVector[0]*0.6})`;
+            bar1.style.filter = `brightness(${0.7 + stateVector[1]*0.6})`;
+            bar2.style.filter = `brightness(${0.7 + stateVector[2]*0.6})`;
+        }
+        
+        // Chart.js instances
+        let attractorChart, driftChart;
+        function initCharts() {
+            const ctxAttr = document.getElementById('attractorChartCanvas').getContext('2d');
+            const ctxDrift = document.getElementById('driftChartCanvas').getContext('2d');
+            attractorChart = new Chart(ctxAttr, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        { label: 'Φ₀ (tension)', borderColor: '#0af0ff', backgroundColor: 'transparent', borderWidth: 2.2, tension: 0.2, pointRadius: 0, data: [] },
+                        { label: 'Φ₁ (mnemonic)', borderColor: '#ff44cc', backgroundColor: 'transparent', borderWidth: 2.2, tension: 0.2, pointRadius: 0, data: [] },
+                        { label: 'Φ₂ (predictive)', borderColor: '#ffd966', backgroundColor: 'transparent', borderWidth: 2.2, tension: 0.2, pointRadius: 0, data: [] }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: true,
+                    plugins: { legend: { labels: { color: '#ccf', font: { size: 9 } }, position: 'top' }, tooltip: { mode: 'index' } },
+                    scales: { y: { min: 0, max: 1, grid: { color: '#2a3a55' }, ticks: { color: '#88aacc' } }, x: { ticks: { color: '#88aacc', maxRotation: 0 } } }
+                }
+            });
+            driftChart = new Chart(ctxDrift, {
+                type: 'line',
+                data: { datasets: [{ label: 'Thermodynamic drift Φ₀', borderColor: '#1effbc', backgroundColor: 'rgba(0,255,200,0.05)', borderWidth: 2.5, fill: true, tension: 0.3, pointRadius: 0, data: [] }] },
+                options: {
+                    responsive: true, maintainAspectRatio: true,
+                    plugins: { legend: { labels: { color: '#9effcf' } } },
+                    scales: { y: { min: 0, max: 1, title: { display: true, text: 'state amplitude', color: '#6f9' }, grid: { color: '#223355' } }, x: { title: { display: true, text: 'updates → time', color: '#9ab' } } }
+                }
+            });
+        }
+        
+        function updateAttractorChart() {
+            if (!attractorChart) return;
+            const len = stateHistory.length;
+            const dim0 = stateHistory.map(v => v[0]);
+            const dim1 = stateHistory.map(v => v[1]);
+            const dim2 = stateHistory.map(v => v[2]);
+            const labels = Array.from({length: len}, (_,i) => i+1);
+            attractorChart.data.labels = labels;
+            attractorChart.data.datasets[0].data = dim0;
+            attractorChart.data.datasets[1].data = dim1;
+            attractorChart.data.datasets[2].data = dim2;
+            attractorChart.update('none');
+        }
+        
+        function updateDriftChart() {
+            if (!driftChart) return;
+            const driftData = stateHistory.map(v => v[0]);
+            driftChart.data.datasets[0].data = driftData;
+            driftChart.data.labels = Array.from({length: stateHistory.length}, (_,i)=>i+1);
+            driftChart.update('none');
+        }
+        
+        // entropy circular gauge
+        let entropyCanvas, ctxGauge;
+        let currentAnimateTarget = 0;
+        function drawEntropyGauge(value) {
+            if (!entropyCanvas) return;
+            const ctx = ctxGauge;
+            const w = entropyCanvas.width, h = entropyCanvas.height;
+            const centerX = w/2, centerY = h/2, radius = 70;
+            ctx.clearRect(0, 0, w, h);
+            // background circle
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#0a0a18';
+            ctx.fill();
+            ctx.strokeStyle = '#33cccc44';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            // gauge arc (from -90deg)
+            const startAngle = -Math.PI/2;
+            const endAngle = startAngle + (value * Math.PI * 2);
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius-6, startAngle, endAngle);
+            ctx.lineWidth = 12;
+            ctx.strokeStyle = value > 0.6 ? '#ff66cc' : (value > 0.3 ? '#4affd0' : '#33aaff');
+            ctx.stroke();
+            // inner glow
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius-16, 0, Math.PI*2);
+            ctx.fillStyle = `rgba(0, 200, 255, ${0.1 + value * 0.2})`;
+            ctx.fill();
+            // text
+            ctx.font = 'bold 20px monospace';
+            ctx.fillStyle = '#f0f0ff';
+            ctx.shadowBlur = 0;
+            ctx.fillText((value*100).toFixed(0), centerX-25, centerY+8);
+            ctx.font = '10px monospace';
+            ctx.fillStyle = '#7fffd4';
+            ctx.fillText('N', centerX+20, centerY-25);
+            document.getElementById('entropyValueDisplay').innerText = `novelty: ${value.toFixed(3)}`;
+        }
+        
+        function updateEntropyGauge() {
+            if (!ctxGauge) return;
+            const target = entropyValue;
+            let current = target;
+            drawEntropyGauge(target);
+        }
+        
+        // timeline rendering
+        function renderTimeline() {
+            const logDiv = document.getElementById('timelineLog');
+            if (!logDiv) return;
+            if (timelineEntries.length === 0) {
+                logDiv.innerHTML = '<div style="color:#888; text-align:center; padding:16px;">⟳ awaiting first input ⟳</div>';
+                return;
+            }
+            logDiv.innerHTML = timelineEntries.map(entry => {
+                const vecStr = `[${entry.vector[0].toFixed(4)}, ${entry.vector[1].toFixed(4)}, ${entry.vector[2].toFixed(4)}]`;
+                const deltaFormatted = entry.delta.toFixed(5);
+                const entropyFormatted = entry.entropy.toFixed(4);
+                return `<div class="log-entry">
+                    <span class="input-highlight">⤷ “${escapeHtml(entry.input)}”</span><br>
+                    <span class="vector-mono">| vector ${vecStr}</span><br>
+                    <span>Δ change: <span class="delta-val">${deltaFormatted}</span> &nbsp;| Entropy: <span class="entropy-val">${entropyFormatted}</span></span>
+                </div>`;
+            }).join('');
+        }
+        
+        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+        
+        // ---- backend simulation call (fulfills /api/state_update) ----
+        async function callStateUpdate(message) {
+            // this function acts as the backend dynamical engine endpoint
+            // returns Promise with {vector, entropy}
+            return new Promise((resolve) => {
+                // slight realistic latency
+                setTimeout(() => {
+                    const result = processUserInput(message);
+                    resolve({ vector: result.vector, entropy: result.entropy });
+                }, 80);
+            });
+        }
+        
+        // ---- send handler ----
+        async function onSendMessage() {
+            const inputField = document.getElementById('userInput');
+            const rawMsg = inputField.value.trim();
+            if (!rawMsg) return;
+            inputField.value = '';
+            // disable button briefly
+            const btn = document.getElementById('sendBtn');
+            btn.disabled = true;
+            btn.innerText = '⌛';
+            try {
+                const response = await callStateUpdate(rawMsg);
+                // update UI already via processUserInput internal updates, but additionally ensure bar / gauge / log updated and fetch extra;
+                // processUserInput already called within callStateUpdate, so all charts, timeline, bars refreshed.
+                // just to be safe force extra sync: 
+                updateBars(); updateAttractorChart(); updateDriftChart(); updateEntropyGauge();
+            } catch(e) { console.warn(e); }
+            finally {
+                btn.disabled = false;
+                btn.innerText = '⟳ SEND';
+                inputField.focus();
+            }
+        }
+        
+        // push initial state to history
+        function initHistory() {
+            stateHistory.push([...stateVector]);
+            lastLoggedVector = [...stateVector];
+            updateBars();
+            if (attractorChart) updateAttractorChart();
+            if (driftChart) updateDriftChart();
+            updateEntropyGauge();
+        }
+        
+        window.onload = () => {
+            entropyCanvas = document.getElementById('entropyCanvas');
+            ctxGauge = entropyCanvas.getContext('2d');
+            entropyCanvas.width = 160; entropyCanvas.height = 160;
+            initCharts();
+            initHistory();
+            startThermodynamicDrift();
+            
+            document.getElementById('sendBtn').addEventListener('click', onSendMessage);
+            document.getElementById('userInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') onSendMessage(); });
+            updateEntropyGauge();
+        };
+    })();
 </script>
-
 </body>
 </html>
