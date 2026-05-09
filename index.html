@@ -487,7 +487,7 @@
       <a href="#tech">How it thinks</a>
       <a href="#api">Free Trial API</a>
       <a href="#pricing">Pricing</a>
-      <a href="#contact">Waitlist</a>
+      <a href="#contact" style="color:#00d4aa; font-weight:600;">Free Trial</a>
       <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" style="background:#111; padding:4px 12px; border-radius:40px;">⭐ GitHub</a>
     </div>
   </div>
@@ -662,20 +662,21 @@
     </div>
   </section>
 
-  <!-- API section – renamed "Free Trial API" -->
+  <!-- ========== CORRECTED FREE TRIAL API SECTION ========== -->
   <section id="api" class="fade-up">
-    <h2 style="font-size:2rem; text-align:center;">🔧 Free Trial API (always‑on engine)</h2>
-    <div class="api-terminal" style="margin-bottom:20px;">
-      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>Free Trial – Persistent Mind Engine</span></div>
-      <p style="margin-bottom:12px;"><strong>✅ Your free key gives you the core always‑on mind (persistent state).</strong> No credit card. Start building an agent that never forgets in 15 seconds.</p>
-      <pre>$ curl -X POST https://api.permamind.ai/v1/mind/think \
-  -H "X-API-Key: your_trial_key" \
-  -d '{"agent_id":"my_first_mind","input":"hello, remember this"}'</pre>
-      <div class="small-note">🔍 The v2/thermomind endpoints (TCI Toolkit) are for mind strength monitoring — optional for advanced users.</div>
-    </div>
+    <h2 style="font-size:2rem; text-align:center;">🔧 Free Trial API (substrate engine only)</h2>
     <div class="api-terminal">
+      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>Real endpoint – always‑on substrate engine</span></div>
+      <p style="margin-bottom:12px;"><strong>Free Trial = substrate engine only.</strong> This endpoint returns raw thermodynamic state (reality, prediction, gap, energy, phi, entropy, coherence, memory, traits).<br>
+      The v2 TCI metrics and v3 Agent API are <strong>not</strong> included in the trial.</p>
+      <pre>$ curl -X GET "https://thermomind-production.up.railway.app/run?mode=stable" \
+  -H "x-api-key: YOUR_KEY"</pre>
+      <div class="small-note">📌 Response contains substrate state: {reality, prediction, gap, energy, phi, entropy, coherence, memory, traits}. No TCI or agent output.</div>
+      <div class="small-note" style="margin-top:0.8rem;">🔍 The v2/thermomind endpoints (TCI Toolkit) and v3 Agent API are separate paid add‑ons, not part of the free trial.</div>
+    </div>
+    <div class="api-terminal" style="opacity:0.8;">
       <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>🚀 Full Agent API (Coming Soon)</span></div>
-      <p>Plug any model into your always‑on mind. Get text + thinking fuel + grade.</p>
+      <p>Plug any model into your always‑on mind. Get text + thinking fuel + grade. Not included in free trial.</p>
       <pre>$ curl -X POST https://api.permamind.ai/v3/agent/cycle \
   -H "X-API-Key: your_future_key" \
   -d '{"agent_id":"my_agent","input":"tell me what you remember"}'</pre>
@@ -696,10 +697,10 @@
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <div class="pricing-card glass-card"><h3>Free Trial</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 always‑on agent</li><li>✓ 1,000 thinking cycles total</li><li>✓ No credit card required</li><li>✓ Persistent memory engine</li></ul><a href="#contact" class="btn btn-primary" style="background: rgba(0,212,170,0.15); border-color: #00d4aa; font-size:1rem;">🚀 Get My Free Trial Key Now →</a><div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. Start in 15s.</div></div>
-      <div class="pricing-card glass-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 5 agents</li><li>✓ 5,000 cycles/mo</li><li>✓ Priority support</li><li>✓ Basic dashboard</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
-      <div class="pricing-card glass-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 25 agents</li><li>✓ 50,000 cycles/mo</li><li>✓ Custom thinking thresholds</li><li>✓ Slack channel</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
-      <div class="pricing-card glass-card"><h3>Enterprise</h3><div class="price">Custom</div><ul><li>✓ Fleet‑wide mind strength</li><li>✓ On‑prem / airgap</li><li>✓ SLA + dedicated architect</li></ul><a href="#contact" class="btn">Contact us →</a></div>
+      <div class="pricing-card glass-card"><h3>Free Trial</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 always‑on agent</li><li>✓ 1,000 thinking cycles total</li><li>✓ No credit card required</li><li>✓ Substrate engine only (raw thermodynamic state)</li></ul><a href="#contact" class="btn btn-primary" style="background: rgba(0,212,170,0.15); border-color: #00d4aa; font-size:1rem;">🚀 Get My Free Trial Key Now →</a><div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. Start in 15s.</div></div>
+      <div class="pricing-card glass-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 5 agents</li><li>✓ 5,000 cycles/mo</li><li>✓ Includes TCI metrics + Agent API</li><li>✓ Priority support</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
+      <div class="pricing-card glass-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 25 agents</li><li>✓ 50,000 cycles/mo</li><li>✓ Full TCI + Agent API</li><li>✓ Slack channel</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
+      <div class="pricing-card glass-card"><h3>Enterprise</h3><div class="price">Custom</div><ul><li>✓ Fleet‑wide mind strength</li><li>✓ Full API suite</li><li>✓ On‑prem / airgap</li></ul><a href="#contact" class="btn">Contact us →</a></div>
     </div>
   </section>
 
@@ -871,7 +872,7 @@
   closeHintBtn.addEventListener('click', () => { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); });
   document.addEventListener('click', (e) => { if (!hintPanel.contains(e.target) && e.target !== hintTrigger && !hintTrigger.contains(e.target)) { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); } });
   const styleTag = document.createElement('style'); styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }'; document.head.appendChild(styleTag);
-  console.log('%c🔥 ThermoMind: Crystal clear messaging — always‑on mind, no tokens, never resets', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: Free Trial API corrected — substrate only, real endpoint', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
