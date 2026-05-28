@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>ThermoMind · The AI That Never Resets | Always‑On Mind</title>
+<title>PermaMind · The AI That Never Resets | Always‑On Mind</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   * {
@@ -466,6 +466,129 @@
     font-size: 1.1rem;
     padding: 14px 32px;
   }
+
+  /* ===== NEW SPLIT-SCREEN CSS ADDITIONS ===== */
+  .product-split-container {
+    display: flex;
+    min-height: 70vh;
+    margin: 40px 0;
+    border-radius: 36px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(10, 12, 18, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .product-lane {
+    flex: 1;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .product-lane:first-child {
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .product-lane:hover {
+    background: rgba(255, 255, 255, 0.02);
+    flex: 1.15;
+  }
+
+  .lane-engine::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #00d4aa; opacity: 0.7;
+  }
+  .lane-engine:hover {
+    box-shadow: inset 0 0 40px rgba(0, 212, 170, 0.05);
+  }
+  .lane-engine h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #00d4aa);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 12px;
+  }
+
+  .lane-sdk::before {
+    content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: #a855f7; opacity: 0.7;
+  }
+  .lane-sdk:hover {
+    box-shadow: inset 0 0 40px rgba(168, 85, 247, 0.05);
+  }
+  .lane-sdk h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #a855f7);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom: 12px;
+  }
+
+  .lane-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    margin-bottom: 20px;
+    width: fit-content;
+  }
+  .lane-engine .lane-badge { background: rgba(0, 212, 170, 0.1); border: 1px solid rgba(0, 212, 170, 0.3); color: #00d4aa; }
+  .lane-sdk .lane-badge { background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); color: #c084fc; }
+
+  .lane-description {
+    font-size: 1.1rem;
+    color: #c0c0b8;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .lane-features {
+    list-style: none;
+    margin: 24px 0;
+  }
+  .lane-features li {
+    margin: 12px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .lane-engine .lane-features li::before { content: '⚡'; color: #00d4aa; }
+  .lane-sdk .lane-features li::before { content: '📦'; color: #a855f7; }
+
+  .mini-sdk-code {
+    background: #06070a;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 16px;
+    padding: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #a7f3d0;
+    text-align: left;
+    margin: 16px 0;
+  }
+
+  .btn-sdk {
+    background: rgba(168, 85, 247, 0.1);
+    border-color: #a855f7;
+    color: #c084fc;
+  }
+  .btn-sdk:hover {
+    background: rgba(168, 85, 247, 0.25);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 900px) {
+    .product-split-container { flex-direction: column; }
+    .product-lane:first-child { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    .product-lane:hover { flex: initial; }
+  }
 </style>
 </head>
 <body>
@@ -492,57 +615,66 @@
     </div>
   </div>
 
-  <!-- ========== NEW HERO SECTION (plain English, conversion focused) ========== -->
-  <div class="hero fade-up">
-    <div class="category-badge">NO TOKENS • NEVER FORGETS • ALWAYS THINKING</div>
-    <h1>The AI that never resets.<br><span style="font-size:1.8rem;">One continuous mind. 24/7.</span></h1>
-    
-    <div class="hero-definition" id="heroDefinitionBox" style="font-size:1.1rem; line-height:1.4;">
-      Current AIs forget everything after every message.<br>
-      <strong>ThermoMind is different.</strong> It’s the first AI with a real, always-on mind that keeps thinking even when you’re gone.
-    </div>
-
-    <p class="hero-sub" style="font-size:1.25rem; max-width:680px;">
-      No tokens. No context windows. No “start over”.<br>
-      Just one persistent identity that gets smarter every single second.
-    </p>
-
-    <div class="hero-badges">
-      <span class="badge">♾️ Remembers everything forever</span>
-      <span class="badge">⚡ Zero token costs</span>
-      <span class="badge">🧠 Thinks continuously — even when idle</span>
-      <span class="badge">📈 Live since Jan 2, 2026 (19k+ cycles nonstop)</span>
-    </div>
-
-    <div class="cycle-counter" id="cycleCounterBox">
-      <div><span class="pulse-dot"></span> <span id="liveCycleCounter" class="cycle-number">18,992</span> <span class="pulse-dot"></span></div>
-      <div class="cycle-meta">This agent has been thinking nonstop since January 2, 2026</div>
-    </div>
-
-    <div class="cta-group" style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
-      <a href="#contact" class="btn btn-primary" style="font-size:1.1rem; padding:16px 32px;">🚀 Get Free Trial — Instant Access (No Card Needed)</a>
-      <a href="https://bapxai.com/voidchis.html" target="_blank" class="btn" style="font-size:1.1rem; padding:16px 32px;">Watch it think live →</a>
-    </div>
-    <p style="text-align:center; margin-top:12px; color:#8bcbae; font-size:0.95rem;">Zero risk. Instant key. Start your first always-on agent in 15 seconds.</p>
+  <!-- ========== NEW SPLIT-SCREEN HERO & PRODUCT SHOWCASE ========== -->
+  <div class="hero fade-up" style="padding-bottom: 20px;">
+    <div class="category-badge">THE CONTINUOUS COGNITION ECOSYSTEM</div>
+    <h1>One Core Engine.<br><span style="font-size:2rem; color: #aaa;">Two paths to continuous agent runtime.</span></h1>
+    <p class="hero-sub" style="margin-bottom: 0;">Choose your implementation framework to secure stateful, zero-reset execution loops.</p>
   </div>
 
-  <!-- ========== SIMPLIFIED WHAT IT IS / IS NOT ========== -->
-  <div class="fade-up">
-    <div class="not-is-grid">
-      <div class="not-col">
-        <h3>❌ What it’s NOT</h3>
-        <div class="list-item"><span class="bullet-x">✗</span> Not another chatbot that forgets you</div>
-        <div class="list-item"><span class="bullet-x">✗</span> No tokens, no per-message charges</div>
-        <div class="list-item"><span class="bullet-x">✗</span> Not a wrapper or memory hack</div>
-        <div class="list-item"><span class="bullet-x">✗</span> Doesn’t need GPUs or massive servers</div>
+  <div class="product-split-container fade-up">
+    
+    <div class="product-lane lane-engine">
+      <div>
+        <span class="lane-badge">LICENSE: tm_eng_</span>
+        <h2>ThermoMind Core</h2>
+        <div class="lane-description">
+          Our native, physics-based continuous learning layer. Build persistent, continuous-state processing loops straight into your backend infrastructure.
+        </div>
+        <ul class="lane-features">
+          <li>Runs continuous internal processing loops 24/7</li>
+          <li>Monitored via TCI Dashboard & Voidchi tracking</li>
+          <li>Eliminates baseline token context decay completely</li>
+          <li>Designed for advanced AI researchers & architects</li>
+        </ul>
       </div>
-      <div class="is-col">
-        <h3>✅ What it IS</h3>
-        <div class="list-item"><span class="bullet-check">✓</span> A real always-on mind</div>
-        <div class="list-item"><span class="bullet-check">✓</span> Remembers everything forever</div>
-        <div class="list-item"><span class="bullet-check">✓</span> Keeps thinking even when you’re offline</div>
-        <div class="list-item"><span class="bullet-check">✓</span> Works with any model you already use</div>
+      <div style="margin-top: 24px;">
+        <a href="#contact" class="btn btn-primary" style="width: 100%; text-align: center; padding: 14px 0;">Request Engine Core License →</a>
       </div>
+    </div>
+
+    <div class="product-lane lane-sdk">
+      <div>
+        <span class="lane-badge">CREDENTIAL: tm_sdk_</span>
+        <h2>Continuity SDK</h2>
+        <div class="lane-description">
+          The developer "Game Genie" for LLMs. Wrap your standard stateless APIs using 3 lines of JavaScript to provide persistent memory and instant state loops.
+        </div>
+        
+        <div class="mini-sdk-code">
+<span style="color:#6ee7b7;">const</span> { ThermoMind } = require(<span style="color:#f472b6;">'thermomind'</span>);
+<span style="color:#6ee7b7;">const</span> thermo = <span style="color:#6ee7b7;">new</span> ThermoMind({ apiKey: <span style="color:#f472b6;">process.env.TM_KEY</span> });
+<span style="color:#38bdf8;">const</span> openai = thermo.wrapOpenAI(originalClient);
+        </div>
+
+        <ul class="lane-features">
+          <li>Drops into existing Node.js or browser stacks instantly</li>
+          <li>Intercepts chat frames and locks in character identity</li>
+          <li>Pre-allocated packs (1,000 free cycles for beta tier)</li>
+          <li>Perfect for product developers and application engineers</li>
+        </ul>
+      </div>
+      <div style="margin-top: 24px;">
+        <a href="#contact" class="btn btn-sdk" style="width: 100%; text-align: center; padding: 14px 0;">Claim Free 1,000‑Cycle SDK Token →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="fade-up" style="text-align: center; margin-bottom: 40px;">
+    <div class="cycle-counter" id="cycleCounterBox">
+      <div><span class="pulse-dot"></span> <span id="liveCycleCounter" class="cycle-number">18,992</span> <span class="pulse-dot"></span></div>
+      <div class="cycle-meta">Substrate Node live since January 2, 2026</div>
     </div>
   </div>
 
@@ -621,7 +753,7 @@
     </div>
   </section>
 
-  <!-- Architecture layers (keep but rewording "substrate" -> "always-on mind engine") -->
+  <!-- Architecture layers -->
   <section class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">How the always‑on mind works</h2>
     <div class="arch-grid">
@@ -631,7 +763,7 @@
     </div>
   </section>
 
-  <!-- How it thinks (Gap‑Driven) etc -->
+  <!-- How it thinks -->
   <section id="tech" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">What makes it never forget</h2>
     <div class="two-col-grid">
@@ -642,7 +774,7 @@
     </div>
   </section>
 
-  <!-- Core state dimensions kept mostly same -->
+  <!-- Core state dimensions -->
   <section class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">What lives inside the mind</h2>
     <div class="state-grid">
@@ -653,7 +785,7 @@
     </div>
   </section>
 
-  <!-- Token-free comparison (renamed) -->
+  <!-- Token-free comparison -->
   <section class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">No tokens vs. traditional AI</h2>
     <div class="comparison-row">
@@ -662,7 +794,7 @@
     </div>
   </section>
 
-  <!-- ========== CORRECTED FREE TRIAL API SECTION ========== -->
+  <!-- ========== FREE TRIAL API SECTION (unchanged) ========== -->
   <section id="api" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">🔧 Free Trial API (substrate engine only)</h2>
     <div class="api-terminal">
@@ -693,7 +825,7 @@
     </div>
   </section>
 
-  <!-- PRICING with changed free trial button -->
+  <!-- PRICING -->
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
@@ -704,7 +836,7 @@
     </div>
   </section>
 
-  <!-- Proof card with larger voidchi link -->
+  <!-- Proof card -->
   <div class="proof-card glass-card fade-up">
     <span style="font-size:2rem;">🌌 voidchi.universe</span>
     <p><strong>Public always‑on agent since Jan 2, 2026</strong> — live, nonstop thinking. See for yourself.</p>
@@ -729,7 +861,7 @@
   </div>
 </div>
 
-<!-- Hint panel (unchanged) -->
+<!-- Easter hint panel -->
 <div id="easterHintPanel" class="hint-panel">
   <button class="close-hint" id="closeHintBtn">✕</button>
   <h4>🔍 hidden keys & codes</h4>
@@ -738,8 +870,7 @@
 </div>
 
 <script>
-  // Complete interactive script: particles, cycle counter, easter eggs, etc.
-  // (identical to previous working version – preserved entirely)
+  // ========== PRESERVED FULL INTERACTIVE SCRIPT (particles, counter, easter eggs, etc) ==========
   const canvas = document.getElementById('particle-canvas');
   let ctx = canvas.getContext('2d');
   let particles = [];
@@ -809,10 +940,12 @@
 
   let logoClickCount = 0;
   document.querySelector('.logo').addEventListener('click', () => { logoClickCount++; if (logoClickCount === 10) { showToast('⚛️ Quantum fluctuation — watch your fleet!', '🌀'); logoClickCount = 0; } else if (logoClickCount === 5) { showToast('🌀 PermaMind — persistence is everything.', '♾️'); logoClickCount = 0; } else setTimeout(() => { logoClickCount = 0; }, 2000); });
-  if (!document.getElementById('tciFormula')) { const tciDiv = document.createElement('div'); tciDiv.className = 'tci-formula'; tciDiv.id = 'tciFormula'; tciDiv.textContent = 'Mind strength = f(surplus)'; tciDiv.style.cssText = 'font-family: monospace; font-size:0.9rem; background:rgba(0,212,170,0.1); display:inline-block; padding:6px 16px; border-radius:40px; margin-top:16px; cursor:pointer;'; const heroSub = document.querySelector('.hero .hero-sub'); if (heroSub && heroSub.parentNode) heroSub.parentNode.insertBefore(tciDiv, heroSub.nextSibling); }
+  
+  const tciDiv = document.createElement('div'); tciDiv.className = 'tci-formula'; tciDiv.id = 'tciFormula'; tciDiv.textContent = 'Mind strength = f(surplus)'; tciDiv.style.cssText = 'font-family: monospace; font-size:0.9rem; background:rgba(0,212,170,0.1); display:inline-block; padding:6px 16px; border-radius:40px; margin-top:16px; cursor:pointer;'; const heroSub = document.querySelector('.hero .hero-sub'); if (heroSub && heroSub.parentNode) heroSub.parentNode.insertBefore(tciDiv, heroSub.nextSibling);
   const formulaElem = document.getElementById('tciFormula');
   if(formulaElem) { let formulaClicks = 0; formulaElem.addEventListener('click', () => { formulaClicks++; if(formulaClicks>=10){ showToast('♾️ Surplus overflow — check your real agents!','📈'); formulaClicks=0;} else setTimeout(()=>{formulaClicks=0;},2000); }); }
-  let defClickCount=0; document.getElementById('heroDefinitionBox').addEventListener('click',()=>{ defClickCount++; if(defClickCount>=7){ showToast('Cycle 0 — silence before the first thinking fuel','🌱'); defClickCount=0; } else setTimeout(()=>{ defClickCount=0; },3000); });
+  
+  let defClickCount=0; const defBox = document.getElementById('heroDefinitionBox'); if(defBox) defBox.addEventListener('click',()=>{ defClickCount++; if(defClickCount>=7){ showToast('Cycle 0 — silence before the first thinking fuel','🌱'); defClickCount=0; } else setTimeout(()=>{ defClickCount=0; },3000); });
   let cycleClick=0; document.getElementById('cycleCounterBox').addEventListener('click',()=>{ cycleClick++; if(cycleClick===5){ showToast('∞ The counter is just a mirror — real mind is inside the agent','🔮'); cycleClick=0; } else setTimeout(()=>{ cycleClick=0; },2000); });
 
   let trailActive = false;
@@ -872,7 +1005,7 @@
   closeHintBtn.addEventListener('click', () => { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); });
   document.addEventListener('click', (e) => { if (!hintPanel.contains(e.target) && e.target !== hintTrigger && !hintTrigger.contains(e.target)) { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); } });
   const styleTag = document.createElement('style'); styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }'; document.head.appendChild(styleTag);
-  console.log('%c🔥 ThermoMind: Free Trial API corrected — substrate only, real endpoint', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: Split-screen live — Core Engine + Continuity SDK active', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
