@@ -589,6 +589,117 @@
     .product-lane:first-child { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
     .product-lane:hover { flex: initial; }
   }
+
+  /* ---- New Hero Split (full-width 50/50) ---- */
+  .new-split-hero {
+    width: 100%;
+    background: radial-gradient(ellipse at 20% 30%, rgba(0, 212, 170, 0.08), rgba(3, 3, 5, 0.9)), linear-gradient(135deg, rgba(0,212,170,0.02) 0%, rgba(10, 20, 30, 0.7) 100%);
+    border-bottom: 1px solid rgba(0, 212, 170, 0.25);
+    border-top: 1px solid rgba(0, 212, 170, 0.1);
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero-split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 64px 24px 64px 24px;
+  }
+  .hero-col {
+    background: rgba(18, 20, 26, 0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 212, 170, 0.25);
+    border-radius: 2rem;
+    padding: 2rem 2rem 2rem 2rem;
+    transition: transform 0.2s ease, border-color 0.2s;
+  }
+  .hero-col:hover {
+    border-color: #00d4aa;
+    transform: translateY(-5px);
+    background: rgba(18, 20, 26, 0.65);
+    box-shadow: 0 20px 35px -12px rgba(0,212,170,0.2);
+  }
+  .hero-col h2 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #00d4aa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .hero-col-right h2 {
+    background: linear-gradient(135deg, #ffffff, #c084fc);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    color: #b0b0aa;
+    margin-bottom: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    border-left: 2px solid #00d4aa;
+    padding-left: 12px;
+  }
+  .hero-col-right .hero-subtitle {
+    border-left-color: #a855f7;
+  }
+  .hero-bullets {
+    list-style: none;
+    margin: 1.5rem 0;
+  }
+  .hero-bullets li {
+    margin: 0.85rem 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-family: 'Inter', monospace;
+  }
+  .hero-bullets li::before {
+    content: "▹";
+    color: #00d4aa;
+    font-size: 1rem;
+  }
+  .hero-col-right .hero-bullets li::before {
+    content: "◈";
+    color: #c084fc;
+  }
+  .hero-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    text-align: center;
+    width: 100%;
+    background: rgba(0,212,170,0.1);
+    border: 1px solid #00d4aa;
+    padding: 12px 0;
+    border-radius: 60px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: #00d4aa;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+  .hero-btn-sdk {
+    background: rgba(168, 85, 247, 0.1);
+    border-color: #a855f7;
+    color: #c084fc;
+  }
+  .hero-btn-sdk:hover {
+    background: rgba(168, 85, 247, 0.25);
+    transform: translateY(-2px);
+  }
+  .hero-btn:hover {
+    background: rgba(0,212,170,0.25);
+    transform: translateY(-2px);
+  }
+  @media (max-width: 800px) {
+    .hero-split-grid { grid-template-columns: 1fr; padding: 48px 20px; gap: 1.5rem; }
+    .hero-col { padding: 1.75rem; }
+  }
 </style>
 </head>
 <body>
@@ -615,16 +726,46 @@
     </div>
   </div>
 
-  <!-- ========== NEW SPLIT-SCREEN HERO & PRODUCT SHOWCASE ========== -->
+  <!-- ===== NEW SPLIT HERO SECTION (full-width, 50/50) ===== -->
+  <div class="new-split-hero fade-up">
+    <div class="hero-split-grid">
+      <!-- LEFT COLUMN: ThermoMind Core -->
+      <div class="hero-col">
+        <h2>ThermoMind Core</h2>
+        <div class="hero-subtitle">The physics-based continuous cognition engine.</div>
+        <ul class="hero-bullets">
+          <li>Always-on substrate engine</li>
+          <li>8-step thermodynamic loop</li>
+          <li>TCI metrics + quantum validation</li>
+          <li>For researchers & backend architects</li>
+        </ul>
+        <a href="#engine-section" class="hero-btn">Learn the Engine →</a>
+      </div>
+      <!-- RIGHT COLUMN: ThermoMind Continuity SDK -->
+      <div class="hero-col hero-col-right">
+        <h2>ThermoMind Continuity SDK</h2>
+        <div class="hero-subtitle">Give your LLM a persistent memory.</div>
+        <ul class="hero-bullets">
+          <li>Wrap any LLM in 3 lines of code</li>
+          <li>Persistent identity + drift tracking</li>
+          <li>Zero-reset execution loops</li>
+          <li>For developers & product builders</li>
+        </ul>
+        <a href="#sdk-section" class="hero-btn hero-btn-sdk">Install the SDK →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ORIGINAL HERO SECTION (PRESERVED FULLY) ========== -->
   <div class="hero fade-up" style="padding-bottom: 20px;">
     <div class="category-badge">THE CONTINUOUS COGNITION ECOSYSTEM</div>
     <h1>One Core Engine.<br><span style="font-size:2rem; color: #aaa;">Two paths to continuous agent runtime.</span></h1>
     <p class="hero-sub" style="margin-bottom: 0;">Choose your implementation framework to secure stateful, zero-reset execution loops.</p>
   </div>
 
+  <!-- SPLIT PRODUCT CONTAINER (preserved, added IDs for anchor links) -->
   <div class="product-split-container fade-up">
-    
-    <div class="product-lane lane-engine">
+    <div class="product-lane lane-engine" id="engine-section">
       <div>
         <span class="lane-badge">LICENSE: tm_eng_</span>
         <h2>ThermoMind Core</h2>
@@ -643,7 +784,7 @@
       </div>
     </div>
 
-    <div class="product-lane lane-sdk">
+    <div class="product-lane lane-sdk" id="sdk-section">
       <div>
         <span class="lane-badge">CREDENTIAL: tm_sdk_</span>
         <h2>Continuity SDK</h2>
@@ -668,7 +809,6 @@
         <a href="#contact" class="btn btn-sdk" style="width: 100%; text-align: center; padding: 14px 0;">Claim Free 1,000‑Cycle SDK Token →</a>
       </div>
     </div>
-
   </div>
 
   <div class="fade-up" style="text-align: center; margin-bottom: 40px;">
@@ -870,7 +1010,7 @@
 </div>
 
 <script>
-  // ========== PRESERVED FULL INTERACTIVE SCRIPT (particles, counter, easter eggs, etc) ==========
+  // ========== FULL PRESERVED INTERACTIVE SCRIPT (particles, counter, easter eggs, etc) ==========
   const canvas = document.getElementById('particle-canvas');
   let ctx = canvas.getContext('2d');
   let particles = [];
@@ -1005,7 +1145,7 @@
   closeHintBtn.addEventListener('click', () => { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); });
   document.addEventListener('click', (e) => { if (!hintPanel.contains(e.target) && e.target !== hintTrigger && !hintTrigger.contains(e.target)) { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); } });
   const styleTag = document.createElement('style'); styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }'; document.head.appendChild(styleTag);
-  console.log('%c🔥 ThermoMind: Split-screen live — Core Engine + Continuity SDK active', 'color:#00d4aa; font-size:12px;');
+  console.log('%c🔥 ThermoMind: New split hero active — Core + SDK always-on', 'color:#00d4aa; font-size:12px;');
 </script>
 </body>
 </html>
