@@ -984,16 +984,118 @@
   </div>
 
   <section id="contact" class="fade-up">
-    <h2 style="font-size:2rem; text-align:center;">Start your always‑on mind — free</h2>
+    <h2 style="font-size:2rem; text-align:center;">Start your always-on mind — free</h2>
     <div class="contact-form glass-card">
-      <form action="https://formspree.io/f/xwpnovll" method="POST">
-        <input type="text" name="name" placeholder="Full name" required>
-        <input type="email" name="email" placeholder="Email address" required>
-        <textarea name="message" rows="3" placeholder="Which tier? (Free Trial, Pro, Team, Enterprise)"></textarea>
-        <button type="submit" class="btn btn-primary" style="width:100%; font-size:1.1rem; padding:16px;">✨ Get Free Trial Key →</button>
-      </form>
+
+      <!-- Step 1: Signup form -->
+      <div id="trialForm">
+        <p style="text-align:center; color:#c0c0b8; margin-bottom:24px; font-family:'JetBrains Mono',monospace; font-size:0.9rem;">
+          1,000 free cycles. No credit card. Instant key delivery.
+        </p>
+        <input type="text" id="trialName" placeholder="Your name" />
+        <input type="email" id="trialEmail" placeholder="Email address (your key gets sent here)" required />
+        <button id="trialSubmitBtn" class="btn btn-primary" style="width:100%; font-size:1.1rem; padding:16px;" onclick="submitTrialKey()">
+          ✨ Get My Free Trial Key →
+        </button>
+        <div id="trialError" style="display:none; color:#ff7b7b; text-align:center; margin-top:12px; font-family:monospace; font-size:0.85rem;"></div>
+        <div style="font-size:0.7rem; margin-top:12px; color:#aaa; text-align:center;">
+          One key per email. Cycles tracked automatically.
+        </div>
+      </div>
+
+      <!-- Step 2: Success — show key -->
+      <div id="trialSuccess" style="display:none; text-align:center;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">🔥</div>
+        <h3 style="color:#00d4aa; margin-bottom:8px;">Your Trial Key</h3>
+        <p style="color:#c0c0b8; font-size:0.9rem; margin-bottom:20px;">Also sent to your email. 1,000 cycles included.</p>
+        <div id="keyDisplay" style="
+          background:#06070a;
+          border:1px solid rgba(0,212,170,0.4);
+          border-radius:16px;
+          padding:16px 20px;
+          font-family:'JetBrains Mono',monospace;
+          font-size:0.85rem;
+          color:#00d4aa;
+          word-break:break-all;
+          margin-bottom:16px;
+          cursor:pointer;
+          position:relative;
+        " onclick="copyKey()" title="Click to copy"></div>
+        <button onclick="copyKey()" class="btn btn-primary" style="width:100%; margin-bottom:12px;">📋 Copy Key</button>
+        <div id="copiedMsg" style="display:none; color:#00d4aa; font-family:monospace; font-size:0.85rem; margin-bottom:16px;">✓ Copied to clipboard!</div>
+        <div style="background:rgba(0,212,170,0.05); border:1px solid rgba(0,212,170,0.2); border-radius:16px; padding:16px; text-align:left; font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:#a7f3d0;">
+          <div style="margin-bottom:8px; color:#6b6a64;"># Quick start:</div>
+          <div>npm install nile-green-ai/thermomind-continuity</div>
+          <div style="margin-top:8px; color:#6b6a64;"># Add to your .env:</div>
+          <div id="envDisplay"></div>
+        </div>
+        <a href="https://github.com/nile-green-ai/thermomind-continuity" target="_blank" class="btn btn-sdk" style="width:100%; margin-top:16px; text-align:center; padding:12px 0;">
+          View Docs on GitHub →
+        </a>
+      </div>
+
     </div>
   </section>
+
+  <script>
+    async function submitTrialKey() {
+      const name = document.getElementById('trialName').value.trim();
+      const email = document.getElementById('trialEmail').value.trim();
+      const btn = document.getElementById('trialSubmitBtn');
+      const errDiv = document.getElementById('trialError');
+
+      errDiv.style.display = 'none';
+
+      if (!email || !email.includes('@')) {
+        errDiv.textContent = 'Please enter a valid email address.';
+        errDiv.style.display = 'block';
+        return;
+      }
+
+      btn.textContent = 'Generating your key...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('https://thermomind-production.up.railway.app/keys/trial', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          errDiv.textContent = data.detail || 'Something went wrong. Try again.';
+          errDiv.style.display = 'block';
+          btn.textContent = '✨ Get My Free Trial Key →';
+          btn.disabled = false;
+          return;
+        }
+
+        // Show success
+        document.getElementById('trialForm').style.display = 'none';
+        document.getElementById('trialSuccess').style.display = 'block';
+        document.getElementById('keyDisplay').textContent = data.api_key;
+        document.getElementById('envDisplay').textContent = `TM_KEY=${data.api_key}`;
+        window._trialKey = data.api_key;
+
+      } catch (err) {
+        errDiv.textContent = 'Network error. Please try again.';
+        errDiv.style.display = 'block';
+        btn.textContent = '✨ Get My Free Trial Key →';
+        btn.disabled = false;
+      }
+    }
+
+    function copyKey() {
+      const key = window._trialKey;
+      if (!key) return;
+      navigator.clipboard.writeText(key).then(() => {
+        document.getElementById('copiedMsg').style.display = 'block';
+        setTimeout(() => { document.getElementById('copiedMsg').style.display = 'none'; }, 2000);
+      });
+    }
+  </script>
 
   <div class="footer">
     <div>© 2026 PermaMind · BAPxAI — Nile Green</div>
