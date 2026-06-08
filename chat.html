@@ -332,6 +332,7 @@
                 <button id="sendBtn">⟳ SEND</button>
             </div>
             <div style="font-size:0.65rem; margin-top:12px; text-align:center; opacity:0.7;">non‑chat UI · pure dynamical update</div>
+            <div id="engineStatus" style="font-size:0.65rem; margin-top:6px; text-align:center; color:#4affff;">⟳ connecting to ThermoMind engine...</div>
         </div>
     </div>
 </div>
@@ -658,17 +659,77 @@
         
         function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
         
-        // ---- backend simulation call (fulfills /api/state_update) ----
+        // ---- LIVE ENGINE CALL → ThermoMind Railway endpoint ----
+        const ENGINE_URL = "https://thermomind-production.up.railway.app";
+
         async function callStateUpdate(message) {
-            // this function acts as the backend dynamical engine endpoint
-            // returns Promise with {vector, entropy}
-            return new Promise((resolve) => {
-                // slight realistic latency
-                setTimeout(() => {
-                    const result = processUserInput(message);
-                    resolve({ vector: result.vector, entropy: result.entropy });
-                }, 80);
-            });
+            try {
+                // Hit the live engine with the message as a query param
+                const res = await fetch(`${ENGINE_URL}/public/run?message=${encodeURIComponent(message)}`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" }
+                });
+                if (!res.ok) throw new Error(`Engine HTTP ${res.status}`);
+                const data = await res.json();
+
+                // Map engine response to vector + entropy
+                // reality_vector is the 3D state, gap is informational deficit (D), novelty is entropy proxy
+                const vec = Array.isArray(data.reality_vector) ? data.reality_vector : [data.reality_vector, 0.5, data.gap || 0.1];
+                const entropy = typeof data.novelty === "number" ? data.novelty : (typeof data.gap === "number" ? data.gap : 0.5);
+
+                // Still run local attractor/novelty logic for visual richness
+                // but seed it with real engine values
+                stateVector = [
+                    Math.min(0.95, Math.max(0.05, vec[0])),
+                    Math.min(0.95, Math.max(0.05, vec.length > 1 ? vec[1] : 0.5)),
+                    Math.min(0.95, Math.max(0.05, vec.length > 2 ? vec[2] : data.surplus_energy || 0.3))
+                ];
+                entropyValue = Math.min(0.96, Math.max(0.08, entropy));
+
+                // delta from last vector
+                const deltaNorm = Math.hypot(
+                    stateVector[0] - lastLoggedVector[0],
+                    stateVector[1] - lastLoggedVector[1],
+                    stateVector[2] - lastLoggedVector[2]
+                );
+
+                // log to timeline
+                const entry = {
+                    timestamp: Date.now(),
+                    input: message.length > 48 ? message.slice(0,45)+"..." : message,
+                    vector: [...stateVector],
+                    delta: deltaNorm,
+                    entropy: entropyValue
+                };
+                timelineEntries.unshift(entry);
+                if (timelineEntries.length > 27) timelineEntries.pop();
+                renderTimeline();
+
+                // push to history
+                lastLoggedVector = [...stateVector];
+                prevInputText = message;
+                stateHistory.push([...stateVector]);
+                if (stateHistory.length > maxHistory) stateHistory.shift();
+
+                updateBars();
+                updateAttractorChart();
+                updateDriftChart();
+                updateEntropyGauge();
+
+                return { vector: stateVector, entropy: entropyValue };
+
+            } catch (err) {
+                // Fallback to local simulation if engine unreachable
+                console.warn("[ThermoMind] Engine unreachable, falling back to local sim:", err.message);
+                const statusEl = document.getElementById('engineStatus');
+                if (statusEl) { statusEl.textContent = "⚠ local sim (engine offline)"; statusEl.style.color = "#ff9944"; }
+                return new Promise((resolve) => {
+                    setTimeout(() => {
+                        const result = processUserInput(message);
+                        resolve({ vector: result.vector, entropy: result.entropy });
+                    }, 80);
+                });
+            }
         }
         
         // ---- send handler ----
@@ -716,6 +777,18 @@
             document.getElementById('sendBtn').addEventListener('click', onSendMessage);
             document.getElementById('userInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') onSendMessage(); });
             updateEntropyGauge();
+
+            // ping engine on load
+            fetch("https://thermomind-production.up.railway.app/public/run")
+                .then(r => r.json())
+                .then(d => {
+                    const el = document.getElementById('engineStatus');
+                    if (el) { el.textContent = "⚡ ThermoMind engine LIVE"; el.style.color = "#4affff"; }
+                })
+                .catch(() => {
+                    const el = document.getElementById('engineStatus');
+                    if (el) { el.textContent = "⚠ engine offline · local sim active"; el.style.color = "#ff9944"; }
+                });
         };
     })();
 </script>
