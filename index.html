@@ -337,7 +337,7 @@
   .price { font-size: 2rem; font-weight: 800; color: #00d4aa; margin: 12px 0; }
   .proof-card { padding: 32px; text-align: center; margin: 50px 0; background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(0,0,0,0.4));}
   .contact-form { max-width: 600px; margin: 0 auto; padding: 32px; }
-  input, textarea { width: 100%; padding: 12px; background: #0c0e12; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #fff; margin-bottom: 16px; }
+  input, textarea, select { width: 100%; padding: 12px; background: #0c0e12; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; color: #fff; margin-bottom: 16px; }
   .footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 32px 0; margin-top: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; position: relative; }
   .easter-hint-link {
     cursor: pointer;
@@ -719,10 +719,12 @@
       <a href="#cycle">The 8‑step loop</a>
       <a href="#why-matters">Why it matters</a>
       <a href="#tech">How it thinks</a>
-      <a href="#api">Free Trial API</a>
+      <a href="#api">API</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact" style="color:#00d4aa; font-weight:600;">Free Trial</a>
-      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" style="background:#111; padding:4px 12px; border-radius:40px;">⭐ GitHub</a>
+      <a href="https://thermomind-production.up.railway.app/demo" target="_blank" style="color:#D4AF37;">📡 Live Dashboard</a>
+      <a href="https://github.com/nile-green-ai/OSIRIS_OS" target="_blank" style="background:#111; padding:4px 12px; border-radius:40px;">𓆃 OSIRIS_OS</a>
+      <a href="https://github.com/nile-green-ai/tci-toolkit" target="_blank" style="background:#111; padding:4px 12px; border-radius:40px;">⭐ TCI</a>
     </div>
   </div>
 
@@ -806,7 +808,7 @@
         </ul>
       </div>
       <div style="margin-top: 24px;">
-        <a href="#contact" class="btn btn-sdk" style="width: 100%; text-align: center; padding: 14px 0;">Claim Free 1,000‑Cycle SDK Token →</a>
+        <a href="#contact" class="btn btn-sdk" style="width: 100%; text-align: center; padding: 14px 0;">Claim Free SDK Key →</a>
       </div>
     </div>
   </div>
@@ -934,34 +936,56 @@
     </div>
   </section>
 
-  <!-- ========== FREE TRIAL API SECTION (unchanged) ========== -->
+  <!-- ========== UPDATED API SECTION ========== -->
   <section id="api" class="fade-up">
-    <h2 style="font-size:2rem; text-align:center;">🔧 Free Trial API (substrate engine only)</h2>
+    <h2 style="font-size:2rem; text-align:center;">🔧 Live API — Three Tiers</h2>
+
     <div class="api-terminal">
-      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>Real endpoint – always‑on substrate engine</span></div>
-      <p style="margin-bottom:12px;"><strong>Free Trial = substrate engine only.</strong> This endpoint returns raw thermodynamic state (reality, prediction, gap, energy, phi, entropy, coherence, memory, traits).<br>
-      The v2 TCI metrics and v3 Agent API are <strong>not</strong> included in the trial.</p>
-      <pre>$ curl -X GET "https://thermomind-production.up.railway.app/run?mode=stable" \
-  -H "x-api-key: YOUR_KEY"</pre>
-      <div class="small-note">📌 Response contains substrate state: {reality, prediction, gap, energy, phi, entropy, coherence, memory, traits}. No TCI or agent output.</div>
-      <div class="small-note" style="margin-top:0.8rem;">🔍 The v2/thermomind endpoints (TCI Toolkit) and v3 Agent API are separate paid add‑ons, not part of the free trial.</div>
+      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>SDK Keys (tm_sdk_) — Sessions + Memory</span></div>
+      <p style="margin-bottom:12px; color:#c0c0b8;">Wrap any LLM with persistent memory. Works with GPT, Claude, DeepSeek, Gemini, Llama. <strong>1,000 cycles/month free.</strong></p>
+      <pre># Register (free, instant)
+curl -X POST https://thermomind-production.up.railway.app/keys/register \
+  -H "Content-Type: application/json" \
+  -d '{"email": "you@example.com", "name": "your project"}'
+
+# Create a session
+curl -X POST https://thermomind-production.up.railway.app/v1/sessions \
+  -H "Authorization: Bearer YOUR_KEY"
+
+# Send a message — state persists forever
+curl -X POST https://thermomind-production.up.railway.app/v1/sessions/SESSION_ID/events \
+  -H "Authorization: Bearer YOUR_KEY" \
+  -d '{"type": "message", "content": "Hello", "role": "user"}'</pre>
     </div>
-    <div class="api-terminal" style="opacity:0.8;">
-      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>🚀 Full Agent API (Coming Soon)</span></div>
-      <p>Plug any model into your always‑on mind. Get text + thinking fuel + grade. Not included in free trial.</p>
-      <pre>$ curl -X POST https://api.permamind.ai/v3/agent/cycle \
-  -H "X-API-Key: your_future_key" \
-  -d '{"agent_id":"my_agent","input":"tell me what you remember"}'</pre>
-      <pre>// Future response (example)
+
+    <div class="api-terminal" style="margin-top:16px;">
+      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>Research Keys (tm_research_) — TCI + GCL Glyphs</span></div>
+      <p style="margin-bottom:12px; color:#c0c0b8;">Everything in SDK plus live TCI scoring, Vector Lingua glyph routing, OSIRIS telemetry. <strong>10,000 cycles/month.</strong></p>
+      <pre># Live TCI score for your session
+curl https://thermomind-production.up.railway.app/v2/sessions/SESSION_ID/tci \
+  -H "Authorization: Bearer YOUR_RESEARCH_KEY"
+
+# Response:
 {
-  "cycle_id": "tm_8a3f2d",
-  "thinking_fuel": 0.78,
-  "mind_strength": 0.84,
-  "mode": "WARM",
-  "phi": 0.59,
-  "output": "I remember everything we talked about...",
-  "grade": "A"
-}</pre>
+  "tci": { "score": 0.369, "grade": "C", "stage": "At Risk",
+           "surplus": 0.106, "k_s": 3.48, "f_total": 0.256 }
+}
+
+# Current GCL glyph state
+curl https://thermomind-production.up.railway.app/v2/sessions/SESSION_ID/glyph \
+  -H "Authorization: Bearer YOUR_RESEARCH_KEY"</pre>
+    </div>
+
+    <div class="api-terminal" style="margin-top:16px; opacity:0.85;">
+      <div class="terminal-header"><span class="terminal-dot"></span><span class="terminal-dot"></span><span class="terminal-dot"></span><span>Public — No Key Required</span></div>
+      <pre># Live OSIRIS + ThermoMind + TCI dashboard
+https://thermomind-production.up.railway.app/demo
+
+# Public bridge telemetry (real-time engine state)
+curl https://thermomind-production.up.railway.app/bridge/telemetry
+
+# Vector Lingua public run
+curl "https://thermomind-production.up.railway.app/public/run?message=hello"</pre>
     </div>
   </section>
 
@@ -969,20 +993,26 @@
   <section id="pricing" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Pricing</h2>
     <div class="pricing-grid">
-      <div class="pricing-card glass-card"><h3>Free Trial</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1 always‑on agent</li><li>✓ 1,000 thinking cycles total</li><li>✓ No credit card required</li><li>✓ Substrate engine only (raw thermodynamic state)</li></ul><a href="#contact" class="btn btn-primary" style="background: rgba(0,212,170,0.15); border-color: #00d4aa; font-size:1rem;">🚀 Get My Free Trial Key Now →</a><div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. Start in 15s.</div></div>
-      <div class="pricing-card glass-card"><h3>Pro</h3><div class="price">$49<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 5 agents</li><li>✓ 5,000 cycles/mo</li><li>✓ Includes TCI metrics + Agent API</li><li>✓ Priority support</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
-      <div class="pricing-card glass-card"><h3>Team</h3><div class="price">$149<span style="font-size:1rem;">/mo</span></div><ul><li>✓ 25 agents</li><li>✓ 50,000 cycles/mo</li><li>✓ Full TCI + Agent API</li><li>✓ Slack channel</li></ul><a href="#contact" class="btn">Join Waitlist →</a></div>
-      <div class="pricing-card glass-card"><h3>Enterprise</h3><div class="price">Custom</div><ul><li>✓ Fleet‑wide mind strength</li><li>✓ Full API suite</li><li>✓ On‑prem / airgap</li></ul><a href="#contact" class="btn">Contact us →</a></div>
+      <div class="pricing-card glass-card"><h3>SDK Free</h3><div class="price">$0</div><ul style="list-style:none; margin:16px 0;"><li>✓ 1,000 cycles/month</li><li>✓ Sessions, memory, state</li><li>✓ No credit card required</li><li>✓ Resets monthly</li></ul><a href="#contact" class="btn btn-primary" style="background: rgba(0,212,170,0.15); border-color: #00d4aa; font-size:1rem;">🚀 Register Free →</a><div style="font-size:0.7rem; margin-top:8px; color:#aaa;">Instant activation. 1k cycles/month.</div></div>
+      <div class="pricing-card glass-card"><h3>Research</h3><div class="price">Contact</div><ul style="list-style:none; margin:16px 0;"><li>✓ 10,000 cycles/month</li><li>✓ TCI scoring + grades</li><li>✓ GCL glyph routing</li><li>✓ OSIRIS telemetry access</li></ul><a href="#contact" class="btn">Get Research Key →</a></div>
+      <div class="pricing-card glass-card"><h3>Cycle Packs</h3><div class="price">$—</div><ul style="list-style:none; margin:16px 0;"><li>✓ 5k cycles</li><li>✓ 20k cycles</li><li>✓ 50k cycles</li><li>✓ Never expire</li></ul><a href="https://bapxai.com" target="_blank" class="btn">Buy at bapxai.com →</a></div>
+      <div class="pricing-card glass-card"><h3>Engine Core</h3><div class="price">License</div><ul style="list-style:none; margin:16px 0;"><li>✓ Unlimited cycles</li><li>✓ Direct substrate access</li><li>✓ tm_eng_ key</li><li>✓ Full admin suite</li></ul><a href="#contact" class="btn">Contact →</a></div>
     </div>
   </section>
 
-  <!-- Proof card -->
+  <!-- UPDATED PROOF SECTION (live stats from bridge) -->
   <div class="proof-card glass-card fade-up">
-    <span style="font-size:2rem;">🌌 voidchi.universe</span>
-    <p><strong>Public always‑on agent since Jan 2, 2026</strong> — live, nonstop thinking. See for yourself.</p>
-    <a href="https://bapxai.com/voidchis.html" target="_blank" class="btn btn-primary" style="font-size:1.2rem; padding:16px 36px;">🔮 Watch voidchi think live →</a>
+    <span style="font-size:2rem;">📡 Three Engines. One Loop. Running Now.</span>
+    <p style="margin:16px 0;"><strong>OSIRIS_OS × ThermoMind × TCI</strong> — bidirectional bridge, live since June 2026.<br/>
+    OSIRIS cycle <strong id="proofCycle">89,270+</strong> · ThermoMind Φ <strong id="proofPhi">1.0000</strong> · TCI Grade <strong id="proofGrade">C</strong></p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+      <a href="https://thermomind-production.up.railway.app/demo" target="_blank" class="btn btn-primary" style="font-size:1rem; padding:14px 28px;">📡 Live Dashboard →</a>
+      <a href="https://bapxai.com/voidchis.html" target="_blank" class="btn" style="font-size:1rem; padding:14px 28px;">🔮 Voidchi Universe →</a>
+      <a href="https://github.com/nile-green-ai/OSIRIS_OS" target="_blank" class="btn" style="font-size:1rem; padding:14px 28px;">𓆃 OSIRIS_OS →</a>
+    </div>
   </div>
 
+  <!-- CONTACT / SIGNUP FORM (now uses /keys/register) -->
   <section id="contact" class="fade-up">
     <h2 style="font-size:2rem; text-align:center;">Start your always-on mind — free</h2>
     <div class="contact-form glass-card">
@@ -990,12 +1020,19 @@
       <!-- Step 1: Signup form -->
       <div id="trialForm">
         <p style="text-align:center; color:#c0c0b8; margin-bottom:24px; font-family:'JetBrains Mono',monospace; font-size:0.9rem;">
-          1,000 free cycles. No credit card. Instant key delivery.
+          1,000 free cycles/month. No credit card. Instant key delivery.
         </p>
         <input type="text" id="trialName" placeholder="Your name" />
         <input type="email" id="trialEmail" placeholder="Email address (your key gets sent here)" required />
+        <select id="trialUse" style="width:100%; padding:12px; background:#0c0e12; border:1px solid rgba(255,255,255,0.1); border-radius:16px; color:#fff; margin-bottom:16px;">
+          <option value="">What are you building? (optional)</option>
+          <option value="personal">Personal project</option>
+          <option value="research">Research / academic</option>
+          <option value="production">Production app</option>
+          <option value="commercial">Commercial product</option>
+        </select>
         <button id="trialSubmitBtn" class="btn btn-primary" style="width:100%; font-size:1.1rem; padding:16px;" onclick="submitTrialKey()">
-          ✨ Get My Free Trial Key →
+          ✨ Get My 1,000 Free Cycles →
         </button>
         <div id="trialError" style="display:none; color:#ff7b7b; text-align:center; margin-top:12px; font-family:monospace; font-size:0.85rem;"></div>
         <div style="font-size:0.7rem; margin-top:12px; color:#aaa; text-align:center;">
@@ -1006,8 +1043,8 @@
       <!-- Step 2: Success — show key -->
       <div id="trialSuccess" style="display:none; text-align:center;">
         <div style="font-size:2.5rem; margin-bottom:12px;">🔥</div>
-        <h3 style="color:#00d4aa; margin-bottom:8px;">Your Trial Key</h3>
-        <p style="color:#c0c0b8; font-size:0.9rem; margin-bottom:20px;">Also sent to your email. 1,000 cycles included.</p>
+        <h3 style="color:#00d4aa; margin-bottom:8px;">Your API Key</h3>
+        <p style="color:#c0c0b8; font-size:0.9rem; margin-bottom:20px;">1,000 cycles/month, resets monthly. Save your key.</p>
         <div id="keyDisplay" style="
           background:#06070a;
           border:1px solid rgba(0,212,170,0.4);
@@ -1036,66 +1073,6 @@
 
     </div>
   </section>
-
-  <script>
-    async function submitTrialKey() {
-      const name = document.getElementById('trialName').value.trim();
-      const email = document.getElementById('trialEmail').value.trim();
-      const btn = document.getElementById('trialSubmitBtn');
-      const errDiv = document.getElementById('trialError');
-
-      errDiv.style.display = 'none';
-
-      if (!email || !email.includes('@')) {
-        errDiv.textContent = 'Please enter a valid email address.';
-        errDiv.style.display = 'block';
-        return;
-      }
-
-      btn.textContent = 'Generating your key...';
-      btn.disabled = true;
-
-      try {
-        const res = await fetch('https://thermomind-production.up.railway.app/keys/trial', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, name })
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          errDiv.textContent = data.detail || 'Something went wrong. Try again.';
-          errDiv.style.display = 'block';
-          btn.textContent = '✨ Get My Free Trial Key →';
-          btn.disabled = false;
-          return;
-        }
-
-        // Show success
-        document.getElementById('trialForm').style.display = 'none';
-        document.getElementById('trialSuccess').style.display = 'block';
-        document.getElementById('keyDisplay').textContent = data.api_key;
-        document.getElementById('envDisplay').textContent = `TM_KEY=${data.api_key}`;
-        window._trialKey = data.api_key;
-
-      } catch (err) {
-        errDiv.textContent = 'Network error. Please try again.';
-        errDiv.style.display = 'block';
-        btn.textContent = '✨ Get My Free Trial Key →';
-        btn.disabled = false;
-      }
-    }
-
-    function copyKey() {
-      const key = window._trialKey;
-      if (!key) return;
-      navigator.clipboard.writeText(key).then(() => {
-        document.getElementById('copiedMsg').style.display = 'block';
-        setTimeout(() => { document.getElementById('copiedMsg').style.display = 'none'; }, 2000);
-      });
-    }
-  </script>
 
   <div class="footer">
     <div>© 2026 PermaMind · BAPxAI — Nile Green</div>
@@ -1160,8 +1137,21 @@
   window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
   resizeCanvas(); initParticles(); animate();
 
-  let cycleCount = 18992;
+  // Live cycle counter – pulls from bridge telemetry
+  let cycleCount = 89270;
   const cycleSpan = document.getElementById('liveCycleCounter');
+  async function fetchLiveCycle() {
+    try {
+      const r = await fetch('https://thermomind-production.up.railway.app/bridge/telemetry');
+      const d = await r.json();
+      if (d.status === 'ok' && d.data && d.data.cycle) {
+        cycleCount = d.data.cycle;
+        cycleSpan.innerText = cycleCount.toLocaleString();
+      }
+    } catch(e) {}
+  }
+  fetchLiveCycle();
+  setInterval(fetchLiveCycle, 30000);
   setInterval(() => { if (!entropyCollapse) cycleCount += Math.floor(Math.random() * 5) + 1; cycleSpan.innerText = cycleCount.toLocaleString(); cycleSpan.style.transform = 'scale(1.05)'; setTimeout(() => { if(cycleSpan) cycleSpan.style.transform = 'scale(1)'; }, 150); }, 1400);
 
   const faders = document.querySelectorAll('.fade-up');
@@ -1248,6 +1238,79 @@
   document.addEventListener('click', (e) => { if (!hintPanel.contains(e.target) && e.target !== hintTrigger && !hintTrigger.contains(e.target)) { hintPanel.classList.remove('show'); if (hintTimeout) clearTimeout(hintTimeout); } });
   const styleTag = document.createElement('style'); styleTag.textContent = '@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }'; document.head.appendChild(styleTag);
   console.log('%c🔥 ThermoMind: New split hero active — Core + SDK always-on', 'color:#00d4aa; font-size:12px;');
+
+  // Update proof section from bridge
+  fetch('https://thermomind-production.up.railway.app/bridge/telemetry')
+    .then(r=>r.json()).then(d=>{
+      if(d.status==='ok'&&d.data){
+        const el=document.getElementById('proofCycle');
+        const ph=document.getElementById('proofPhi');
+        const gr=document.getElementById('proofGrade');
+        if(el) el.textContent=(d.data.cycle||89270).toLocaleString()+'+';
+        if(ph) ph.textContent=(d.data.thermo_phi||1.0).toFixed(4);
+        if(gr) gr.textContent=d.data.grade||'C';
+      }
+    }).catch(()=>{});
+
+  // Submit trial key function (calls /keys/register)
+  async function submitTrialKey() {
+    const name = document.getElementById('trialName').value.trim();
+    const email = document.getElementById('trialEmail').value.trim();
+    const intended_use = document.getElementById('trialUse')?.value || '';
+    const btn = document.getElementById('trialSubmitBtn');
+    const errDiv = document.getElementById('trialError');
+
+    errDiv.style.display = 'none';
+
+    if (!email || !email.includes('@')) {
+      errDiv.textContent = 'Please enter a valid email address.';
+      errDiv.style.display = 'block';
+      return;
+    }
+
+    btn.textContent = 'Generating your key...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch('https://thermomind-production.up.railway.app/keys/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name, intended_use })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        errDiv.textContent = data.detail || 'Something went wrong. Try again.';
+        errDiv.style.display = 'block';
+        btn.textContent = '✨ Get My 1,000 Free Cycles →';
+        btn.disabled = false;
+        return;
+      }
+
+      // Show success
+      document.getElementById('trialForm').style.display = 'none';
+      document.getElementById('trialSuccess').style.display = 'block';
+      document.getElementById('keyDisplay').textContent = data.api_key;
+      document.getElementById('envDisplay').textContent = `TM_KEY=${data.api_key}`;
+      window._trialKey = data.api_key;
+
+    } catch (err) {
+      errDiv.textContent = 'Network error. Please try again.';
+      errDiv.style.display = 'block';
+      btn.textContent = '✨ Get My 1,000 Free Cycles →';
+      btn.disabled = false;
+    }
+  }
+
+  function copyKey() {
+    const key = window._trialKey;
+    if (!key) return;
+    navigator.clipboard.writeText(key).then(() => {
+      document.getElementById('copiedMsg').style.display = 'block';
+      setTimeout(() => { document.getElementById('copiedMsg').style.display = 'none'; }, 2000);
+    });
+  }
 </script>
 </body>
 </html>
