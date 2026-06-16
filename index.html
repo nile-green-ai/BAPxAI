@@ -7,10 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:      #05050a;
-  --surface: #0a0a12;
-  --panel:   #0d0d18;
-  --border:  #1a1a2e;
+  --bg:      #0d0d16;
+  --surface: #14141f;
+  --panel:   #181826;
+  --border:  #2a2a40;
   --blue:    #3b82f6;
   --cyan:    #00f5ff;
   --green:   #00ff88;
@@ -18,8 +18,8 @@
   --red:     #ff2244;
   --purple:  #bf00ff;
   --pink:    #ff00aa;
-  --text:    #e8e8ff;
-  --muted:   #6b7299;
+  --text:    #ffffff;
+  --muted:   #a8aed4;
   --pixel:   'Press Start 2P', monospace;
   --mono:    'Space Mono', monospace;
   --code:    'JetBrains Mono', monospace;
@@ -91,7 +91,7 @@ nav{
 .nav-logo span{color:var(--yellow);}
 .nav-links{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
 .nav-links a{
-  font-family:var(--pixel);font-size:0.45rem;
+  font-family:var(--pixel);font-size:0.5rem;
   color:var(--muted);padding:6px 10px;
   border:1px solid transparent;
   transition:all 0.15s;letter-spacing:0.05em;
@@ -132,9 +132,9 @@ nav{
   text-shadow:0 0 20px rgba(255,215,0,0.6);
 }
 .hero-sub{
-  font-family:var(--pixel);font-size:0.55rem;
+  font-family:var(--pixel);font-size:0.65rem;
   color:var(--muted);max-width:580px;margin:0 auto 36px;
-  line-height:2.2;letter-spacing:0.05em;
+  line-height:2.3;letter-spacing:0.05em;
 }
 
 /* SCORE STRIP */
@@ -225,7 +225,7 @@ nav{
   color:var(--cyan);letter-spacing:0.05em;
   text-shadow:0 0 14px rgba(0,245,255,0.4);
 }
-.section-header p{color:var(--muted);margin-top:14px;font-size:0.78rem;max-width:540px;margin-left:auto;margin-right:auto;font-family:var(--code);}
+.section-header p{color:var(--muted);margin-top:14px;font-size:0.92rem;max-width:540px;margin-left:auto;margin-right:auto;font-family:var(--code);line-height:1.8;}
 
 /* ENGINE CARDS */
 .engines-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
@@ -243,7 +243,7 @@ nav{
 .engine-card.blue h3{color:var(--cyan);}
 .engine-card.gold h3{color:var(--yellow);}
 .engine-card.purple h3{color:var(--purple);}
-.engine-card p{font-size:0.78rem;color:var(--muted);line-height:1.7;font-family:var(--code);}
+.engine-card p{font-size:0.88rem;color:var(--muted);line-height:1.8;font-family:var(--code);}
 .engine-bar{position:absolute;bottom:0;left:0;right:0;height:3px;}
 .engine-bar.blue{background:linear-gradient(90deg,var(--cyan),var(--blue));}
 .engine-bar.gold{background:linear-gradient(90deg,var(--yellow),var(--pink));}
@@ -255,7 +255,7 @@ nav{
   background:var(--panel);padding:20px;
   border-top:2px solid var(--cyan);
 }
-.tele-label{font-family:var(--pixel);font-size:0.4rem;color:var(--muted);margin-bottom:8px;letter-spacing:0.1em;}
+.tele-label{font-family:var(--pixel);font-size:0.48rem;color:var(--muted);margin-bottom:8px;letter-spacing:0.1em;}
 .tele-value{font-family:var(--pixel);font-size:0.7rem;color:var(--cyan);text-shadow:0 0 8px rgba(0,245,255,0.5);}
 .tele-value.yellow{color:var(--yellow);text-shadow:0 0 8px rgba(255,215,0,0.5);}
 .tele-value.green{color:var(--green);text-shadow:0 0 8px rgba(0,255,136,0.5);}
@@ -324,7 +324,7 @@ nav{
 .tier-card.p1 .tier-price{color:var(--green);}
 .tier-card.p2 .tier-price{color:var(--yellow);}
 .tier-card.op .tier-price{color:var(--purple);}
-.tier-per{font-family:var(--pixel);font-size:0.38rem;color:var(--muted);margin-bottom:16px;letter-spacing:0.08em;}
+.tier-per{font-family:var(--pixel);font-size:0.46rem;color:var(--muted);margin-bottom:16px;letter-spacing:0.08em;}
 .tier-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
 .tier-card li{font-size:0.75rem;display:flex;gap:8px;align-items:flex-start;color:var(--text);font-family:var(--code);}
 .tier-card.p1 li::before{content:"▶";color:var(--cyan);flex-shrink:0;font-size:0.6rem;margin-top:3px;}
@@ -339,7 +339,7 @@ nav{
   text-shadow:0 0 10px rgba(255,215,0,0.5);
 }
 .shop-sub{
-  font-family:var(--pixel);font-size:0.38rem;
+  font-family:var(--pixel);font-size:0.46rem;
   color:var(--muted);text-align:center;
   margin-bottom:32px;letter-spacing:0.1em;
 }
@@ -355,7 +355,7 @@ nav{
 .item-name{font-family:var(--pixel);font-size:0.45rem;color:var(--yellow);margin-bottom:8px;letter-spacing:0.08em;}
 .item-lives{font-family:var(--pixel);font-size:0.38rem;color:var(--cyan);margin-bottom:12px;letter-spacing:0.05em;}
 .item-price{font-family:var(--pixel);font-size:1rem;color:var(--green);margin-bottom:16px;text-shadow:0 0 8px rgba(0,255,136,0.4);}
-.item-desc{font-size:0.7rem;color:var(--muted);font-family:var(--code);line-height:1.5;margin-bottom:16px;}
+.item-desc{font-size:0.85rem;color:var(--muted);font-family:var(--code);line-height:1.5;margin-bottom:16px;}
 .btn-buy{
   font-family:var(--pixel);font-size:0.4rem;
   background:rgba(255,215,0,0.12);
@@ -412,7 +412,7 @@ nav{
   background:var(--panel);padding:36px;
 }
 .form-title{font-family:var(--pixel);font-size:0.7rem;color:var(--cyan);margin-bottom:6px;letter-spacing:0.05em;}
-.form-sub{font-family:var(--pixel);font-size:0.38rem;color:var(--muted);margin-bottom:28px;letter-spacing:0.08em;}
+.form-sub{font-family:var(--pixel);font-size:0.46rem;color:var(--muted);margin-bottom:28px;letter-spacing:0.08em;}
 .form-field{margin-bottom:12px;}
 .form-field input,.form-field select{
   width:100%;padding:12px 14px;
@@ -435,7 +435,7 @@ nav{
 }
 .btn-submit:hover{background:rgba(0,245,255,0.22);text-shadow:0 0 8px var(--cyan);}
 .btn-submit:disabled{opacity:0.5;cursor:not-allowed;}
-.form-note{font-family:var(--pixel);font-size:0.35rem;color:var(--muted);text-align:center;margin-top:10px;letter-spacing:0.08em;}
+.form-note{font-family:var(--pixel);font-size:0.42rem;color:var(--muted);text-align:center;margin-top:10px;letter-spacing:0.08em;}
 .form-error{color:var(--red);font-family:var(--pixel);font-size:0.4rem;text-align:center;margin-top:10px;display:none;letter-spacing:0.05em;}
 .success-block{display:none;text-align:center;}
 .key-box{
@@ -454,8 +454,8 @@ nav{
   border-left:3px solid var(--cyan);
 }
 .paper-row:hover{border-left-color:var(--yellow);}
-.paper-title{font-family:var(--pixel);font-size:0.4rem;color:var(--text);letter-spacing:0.05em;margin-bottom:4px;}
-.paper-doi{font-family:var(--code);font-size:0.72rem;color:var(--muted);}
+.paper-title{font-family:var(--pixel);font-size:0.48rem;color:var(--text);letter-spacing:0.05em;margin-bottom:6px;line-height:1.6;}
+.paper-doi{font-family:var(--code);font-size:0.85rem;color:var(--muted);}
 .paper-link{
   font-family:var(--pixel);font-size:0.38rem;
   color:var(--cyan);white-space:nowrap;
@@ -474,7 +474,7 @@ footer{
 }
 footer a {
   font-family: var(--pixel);
-  font-size: 0.4rem;
+  font-size: 0.48rem;
   color: var(--muted);
   transition: color 0.15s;
   letter-spacing: 0.05em;
@@ -485,7 +485,7 @@ footer a:hover {
 }
 footer span {
   font-family: var(--pixel);
-  font-size: 0.35rem;
+  font-size: 0.42rem;
   color: var(--muted);
   letter-spacing: 0.05em;
 }
@@ -541,9 +541,15 @@ footer span {
 <section class="hero wrap">
   <div class="hero-credit">© 2026 PERMAMIND AI — ALL RIGHTS RESERVED — 1 PLAYER</div>
   <h1>YOUR AI FORGETS<br>EVERYTHING.<br><em>THIS FIXES THAT.</em></h1>
-  <p class="hero-sub">DROP-IN MEMORY LAYER FOR ANY LLM.<br>WRAP YOUR MODEL IN 2 LINES.<br>IT REMEMBERS FOREVER.</p>
-  <div class="score-strip"><div class="score-pill green"><span class="lbl">STATUS</span><span class="val" id="statusVal">● LIVE</span></div><div class="score-pill"><span class="lbl">OSIRIS CYCLE</span><span class="val" id="cycleVal">---</span></div><div class="score-pill gold"><span class="lbl">TCI GRADE</span><span class="val" id="gradeVal">--</span></div><div class="score-pill"><span class="lbl">EMERGENCE</span><span class="val" id="emergeVal">--</span></div><div class="score-pill"><span class="lbl">Φ (PHI)</span><span class="val" id="phiVal">--</span></div><div class="score-pill"><span class="lbl">GLYPH</span><span class="val" id="glyphVal">--</span></div></div>
+  <p class="hero-sub">PERSISTENT MEMORY LAYER FOR ANY LLM.<br>WRAP YOUR MODEL IN 2 LINES.<br>NEVER FORGETS AGAIN.</p>
   <div class="hero-ctas"><a href="#get-key" class="btn btn-cyan">▶ INSERT COIN — FREE KEY</a><a href="https://thermomind-production.up.railway.app/demo" target="_blank" class="btn btn-yellow">▶ LIVE DEMO</a><a href="#item-shop" class="btn btn-green">▶ ITEM SHOP</a></div>
+</section>
+
+<section class="wrap fade-up" style="margin:50px 0 70px;text-align:center;max-width:700px;margin-left:auto;margin-right:auto;">
+  <div class="pixel-box" style="padding:28px 32px;background:var(--panel);">
+    <div style="font-family:var(--pixel);font-size:0.6rem;color:var(--cyan);margin-bottom:16px;letter-spacing:0.05em;">► WHAT IS THIS, ACTUALLY?</div>
+    <p style="font-family:var(--code);font-size:0.95rem;color:var(--text);line-height:1.9;">ThermoMind turns prediction error into a stable memory state stored in a database. No context window tricks. No RAG. No fine-tuning. You send a message, the engine updates its state, and that state persists — across sessions, across models, forever.</p>
+  </div>
 </section>
 
 <!-- NEW: What is ThermoMind? (3 sentences) -->
@@ -581,7 +587,7 @@ footer span {
 <div class="divider"></div>
 
 <!-- ENGINES -->
-<section id="engines" class="wrap fade-up" style="margin-bottom:80px"><div class="section-header"><div class="section-eyebrow">// SELECT YOUR FIGHTER</div><h2>THE STACK</h2><p>Three interconnected systems. One persistent substrate.</p></div><div class="engines-grid"><div class="engine-card blue pixel-box"><span class="engine-icon">🧠</span><h3>THERMOMIND ENGINE</h3><p>Commercial substrate. Live in production. Pure thermodynamic physics running in a database. No GPU. No tokens. No transformers.</p><div class="engine-bar blue"></div></div><div class="engine-card gold pixel-box-yellow"><span class="engine-icon">⚡</span><h3>OSIRIS_OS</h3><p>Open source emergence engine. 90,000+ cycles. No resets. Bidirectionally bridged to ThermoMind. Currently holding TCI Grade B.</p><div class="engine-bar gold"></div></div><div class="engine-card purple pixel-box-purple"><span class="engine-icon">🎮</span><h3>CONTINUITY SDK</h3><p>The Game Genie. Drop it on any LLM — GPT, Claude, DeepSeek, Llama. MIT licensed. Open source. 2 lines of code.</p><div class="engine-bar purple"></div></div></div></section>
+<section id="engines" class="wrap fade-up" style="margin-bottom:80px"><div class="section-header"><div class="section-eyebrow">// SELECT YOUR FIGHTER</div><h2>THE STACK</h2><p>Three interconnected systems. One persistent substrate.</p></div><div class="engines-grid"><div class="engine-card blue pixel-box"><span class="engine-icon">🧠</span><h3>THERMOMIND ENGINE</h3><p>Commercial substrate. Live in production. Pure thermodynamic physics running in a database. No GPU. No tokens. No transformers.</p><div class="engine-bar blue"></div></div><div class="engine-card gold pixel-box-yellow"><span class="engine-icon">⚡</span><h3>OSIRIS_OS</h3><p>Open source emergence engine. 90,000+ cycles. No resets. Bidirectionally bridged to ThermoMind. Currently holding TCI Grade B.</p><div class="engine-bar gold"></div></div><div class="engine-card purple pixel-box-purple"><span class="engine-icon">🎮</span><h3>CONTINUITY SDK</h3><p>The Game Genie. Drop it on any LLM — GPT, Claude, DeepSeek, Llama. MIT licensed. Open source. 2 lines of code.</p><div style="margin-top:14px;font-family:var(--pixel);font-size:0.42rem;color:var(--yellow);">★ 11 STARS ON GITHUB</div><div class="engine-bar purple"></div></div></div></section>
 
 <div class="divider"></div>
 
@@ -596,7 +602,7 @@ footer span {
 <div class="divider"></div>
 
 <!-- ITEM SHOP + NO REFUND DISCLAIMER (added) -->
-<section id="item-shop" class="wrap fade-up" style="margin-bottom:80px"><div class="shop-header">★ ★ ★ ITEM SHOP ★ ★ ★</div><div class="shop-sub">PAY-AS-YOU-GO · LIVES NEVER EXPIRE · STACK ON TOP OF MONTHLY</div><div class="shop-grid"><div class="shop-item pixel-box"><span class="item-icon">🧪</span><div class="item-name">POTION</div><div class="item-lives">+1,000 LIVES</div><div class="item-price">$5</div><div class="item-desc">Perfect top-up when you're running low. Never expires.</div><a href="https://buy.stripe.com/aFaeVda4Y8fs0sbenB2wU0F" target="_blank" class="btn-buy">BUY NOW →</a></div><div class="shop-item pixel-box-yellow featured"><span class="item-icon">🧪</span><div class="item-name">HI-POTION</div><div class="item-lives">+3,000 LIVES</div><div class="item-price">$12</div><div class="item-desc">Power through a research sprint. Never expires.</div><a href="https://buy.stripe.com/aFa00jgtm1R41wfgvJ2wU0G" target="_blank" class="btn-buy">BUY NOW →</a></div><div class="shop-item pixel-box-green"><span class="item-icon">✨</span><div class="item-name">ELIXIR</div><div class="item-lives">+10,000 LIVES</div><div class="item-price">$30</div><div class="item-desc">Serious fuel for serious agents. Never expires.</div><a href="https://buy.stripe.com/aFafZh1ysbrE3En1AP2wU0H" target="_blank" class="btn-buy">BUY NOW →</a></div><div class="shop-item pixel-box-purple"><span class="item-icon">🌟</span><div class="item-name">MEGA ELIXIR</div><div class="item-lives">+25,000 LIVES</div><div class="item-price">$60</div><div class="item-desc">Max power. For agents that never sleep. Never expires.</div><a href="https://buy.stripe.com/28E8wP4KEgLY7UD4N12wU0I" target="_blank" class="btn-buy">BUY NOW →</a></div></div><div class="shop-note">► USE THE SAME EMAIL AS YOUR API KEY ◄</div></section>
+<section id="item-shop" class="wrap fade-up" style="margin-bottom:80px"><div class="shop-header">★ ★ ★ ITEM SHOP ★ ★ ★</div><div class="shop-sub">PAY-AS-YOU-GO · LIVES (CYCLES) NEVER EXPIRE · STACK ON TOP OF MONTHLY</div><div class="pixel-box-red" style="padding:16px 20px;background:var(--panel);margin:0 auto 32px;max-width:600px;"><p style="font-family:var(--pixel);font-size:0.46rem;color:var(--red);line-height:2;text-align:center;letter-spacing:0.05em;">⚠ "LIVES" = API CYCLES. ONE LIFE = ONE API CALL.<br>⚠ USE THE SAME EMAIL AS YOUR API KEY SIGNUP — A DIFFERENT EMAIL MEANS NO ACCOUNT TO CREDIT.</p></div><div class="shop-grid"><div class="shop-item pixel-box"><span class="item-icon">🧪</span><div class="item-name">POTION</div><div class="item-lives">+1,000 LIVES</div><div class="item-price">$5</div><div class="item-desc">Perfect top-up when you're running low. Never expires.</div><a href="https://buy.stripe.com/aFaeVda4Y8fs0sbenB2wU0F" target="_blank" class="btn-buy">BUY NOW →</a></div><div class="shop-item pixel-box-yellow featured"><span class="item-icon">🧪</span><div class="item-name">HI-POTION</div><div class="item-lives">+3,000 LIVES</div><div class="item-price">$12</div><div class="item-desc">Power through a research sprint. Never expires.</div><a href="https://buy.stripe.com/aFa00jgtm1R41wfgvJ2wU0G" target="_blank" class="btn-buy">BUY NOW →</a></div><div class="shop-item pixel-box-green"><span class="item-icon">✨</span><div class="item-name">ELIXIR</div><div class="item-lives">+10,000 LIVES</div><div class="item-price">$30</div><div class="item-desc">Serious fuel for serious agents. Never expires.</div><a href="https://buy.stripe.com/aFafZh1ysbrE3En1AP2wU0H" target="_blank" class="btn-buy">BUY NOW →</a></div><div class="shop-item pixel-box-purple"><span class="item-icon">🌟</span><div class="item-name">MEGA ELIXIR</div><div class="item-lives">+25,000 LIVES</div><div class="item-price">$60</div><div class="item-desc">Max power. For agents that never sleep. Never expires.</div><a href="https://buy.stripe.com/28E8wP4KEgLY7UD4N12wU0I" target="_blank" class="btn-buy">BUY NOW →</a></div></div><div class="shop-note">► USE THE SAME EMAIL AS YOUR API KEY ◄</div></section>
 
 <!-- REFUND DISCLAIMER (new) -->
 <div class="refund-disclaimer">
@@ -613,12 +619,12 @@ footer span {
 <div class="divider"></div>
 
 <!-- RESEARCH -->
-<section id="research" class="wrap fade-up" style="margin-bottom:80px"><div class="section-header"><div class="section-eyebrow">// LORE DROP</div><h2>RESEARCH FOUNDATION</h2><p>20+ papers. All timestamped. All DOI-backed. No institution. No permission asked.</p></div><div class="papers-list"><div class="paper-row"><div><div class="paper-title">THERMODYNAMIC COGNITION INDEX (TCI)</div><div class="paper-doi">10.5281/zenodo.19263435</div></div><a href="https://zenodo.org/records/19263435" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">ADVERSARIAL FRAGMENTATION & THE OSIRIS-SET-ISIS CYCLE</div><div class="paper-doi">10.5281/zenodo.20586942</div></div><a href="https://zenodo.org/records/20586942" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">THERMODYNAMIC MEMORY SALIENCE (TMS)</div><div class="paper-doi">10.5281/zenodo.20674050</div></div><a href="https://zenodo.org/records/20674050" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">VECTOR LINGUA: PRE-LINGUISTIC COMMUNICATION PROTOCOL</div><div class="paper-doi">10.5281/zenodo.20638308</div></div><a href="https://zenodo.org/records/20638308" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">UNIVERSAL CONSCIOUSNESS INDEX (UCIt)</div><div class="paper-doi">10.5281/zenodo.18872212</div></div><a href="https://zenodo.org/records/18872212" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">GAP FRAMEWORK + PSSU ARCHITECTURE</div><div class="paper-doi">10.5281/zenodo.14511726</div></div><a href="https://zenodo.org/records/14511726" target="_blank" class="paper-link">READ →</a></div></div></section>
+<section id="research" class="wrap fade-up" style="margin-bottom:80px"><div class="section-header"><div class="section-eyebrow">// LORE DROP</div><h2>RESEARCH FOUNDATION</h2><p>20+ papers. All timestamped. All DOI-backed. No institution. No permission asked.</p></div><div class="pixel-box" style="padding:20px 24px;background:var(--panel);margin-bottom:28px;max-width:680px;margin-left:auto;margin-right:auto;"><p style="font-family:var(--code);font-size:0.88rem;color:var(--text);line-height:1.8;text-align:center;">This isn't marketing copy — every claim on this page traces back to a published, citable paper. The bold stuff (physical state as memory, thermodynamic learning) is backed by math you can read below.</p></div><div class="papers-list"><div class="paper-row"><div><div class="paper-title">THERMODYNAMIC COGNITION INDEX (TCI)</div><div class="paper-doi">10.5281/zenodo.19263435</div></div><a href="https://zenodo.org/records/19263435" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">ADVERSARIAL FRAGMENTATION & THE OSIRIS-SET-ISIS CYCLE</div><div class="paper-doi">10.5281/zenodo.20586942</div></div><a href="https://zenodo.org/records/20586942" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">THERMODYNAMIC MEMORY SALIENCE (TMS)</div><div class="paper-doi">10.5281/zenodo.20674050</div></div><a href="https://zenodo.org/records/20674050" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">VECTOR LINGUA: PRE-LINGUISTIC COMMUNICATION PROTOCOL</div><div class="paper-doi">10.5281/zenodo.20638308</div></div><a href="https://zenodo.org/records/20638308" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">UNIVERSAL CONSCIOUSNESS INDEX (UCIt)</div><div class="paper-doi">10.5281/zenodo.18872212</div></div><a href="https://zenodo.org/records/18872212" target="_blank" class="paper-link">READ →</a></div><div class="paper-row"><div><div class="paper-title">GAP FRAMEWORK + PSSU ARCHITECTURE</div><div class="paper-doi">10.5281/zenodo.14511726</div></div><a href="https://zenodo.org/records/14511726" target="_blank" class="paper-link">READ →</a></div></div></section>
 
 <div class="divider"></div>
 
 <!-- GET KEY -->
-<section id="get-key" class="wrap fade-up" style="margin-bottom:80px"><div class="section-header"><div class="section-eyebrow">// PRESS START</div><h2>INSERT COIN — GET FREE KEY</h2><p>500 lives/month. No credit card. Free forever.</p></div><div class="form-wrap pixel-box"><div class="form-title">PLAYER ONE REGISTRATION</div><div class="form-sub">500 LIVES/MONTH · NO CARD · INSTANT DELIVERY</div><div id="formBlock"><div class="form-field"><input type="text" id="trialName" placeholder="Your name"></div><div class="form-field"><input type="email" id="trialEmail" placeholder="Email address" required></div><div class="form-field"><select id="trialUse"><option value="">What are you building? (optional)</option><option value="personal">Personal project</option><option value="research">Research / academic</option><option value="production">Production app</option><option value="commercial">Commercial product</option></select></div><button class="btn-submit" id="submitBtn" onclick="submitKey()">▶ PRESS START — GET MY KEY</button><div class="form-error" id="formError"></div><div class="form-note">ONE KEY PER EMAIL · LIVES AUTO-RESET MONTHLY · NO CARD EVER</div></div><div class="success-block" id="successBlock"><div style="font-family:var(--pixel);font-size:0.5rem;color:var(--green);margin-bottom:12px;">✓ PLAYER ONE ACTIVATED</div><div class="key-box" id="keyDisplay" onclick="copyKey()">LOADING KEY...</div><div style="font-family:var(--pixel);font-size:0.38rem;color:var(--muted);">CLICK TO COPY · SAVE THIS KEY</div><div style="margin-top:16px;font-family:var(--pixel);font-size:0.38rem;color:var(--muted);line-height:2.2;">500 LIVES/MONTH FREE FOREVER<br>NEED MORE? → <a href="#item-shop" style="color:var(--yellow);">ITEM SHOP</a><br>UPGRADE → <a href="https://bapxai.com" target="_blank" style="color:var(--cyan);">BAPXAI.COM</a></div></div></div></section>
+<section id="get-key" class="wrap fade-up" style="margin-bottom:80px"><div class="section-header"><div class="section-eyebrow">// PRESS START</div><h2>INSERT COIN — GET FREE KEY</h2><p>500 lives (API cycles) per month. No credit card. Free forever.</p></div><div class="form-wrap pixel-box"><div class="form-title">PLAYER ONE REGISTRATION</div><div class="form-sub">500 LIVES/MONTH · NO CARD · INSTANT DELIVERY</div><div id="formBlock"><div class="form-field"><input type="text" id="trialName" placeholder="Your name"></div><div class="form-field"><input type="email" id="trialEmail" placeholder="Email address" required></div><div class="form-field"><select id="trialUse"><option value="">What are you building? (optional)</option><option value="personal">Personal project</option><option value="research">Research / academic</option><option value="production">Production app</option><option value="commercial">Commercial product</option></select></div><button class="btn-submit" id="submitBtn" onclick="submitKey()">▶ PRESS START — GET MY KEY</button><div class="form-error" id="formError"></div><div class="form-note">ONE KEY PER EMAIL · LIVES = API CYCLES · AUTO-RESET MONTHLY · NO CARD EVER</div></div><div class="success-block" id="successBlock"><div style="font-family:var(--pixel);font-size:0.5rem;color:var(--green);margin-bottom:12px;">✓ PLAYER ONE ACTIVATED</div><div class="key-box" id="keyDisplay" onclick="copyKey()">LOADING KEY...</div><div style="font-family:var(--pixel);font-size:0.42rem;color:var(--muted);">CLICK TO COPY · SAVE THIS KEY</div><div style="margin-top:16px;font-family:var(--pixel);font-size:0.42rem;color:var(--muted);line-height:2.4;">500 LIVES/MONTH FREE FOREVER (1 LIFE = 1 API CYCLE)<br>NEED MORE? → <a href="#item-shop" style="color:var(--yellow);">ITEM SHOP</a><br>⚠ USE THIS SAME EMAIL WHEN BUYING ITEMS<br>UPGRADE → <a href="https://bapxai.com" target="_blank" style="color:var(--cyan);">BAPXAI.COM</a></div></div></div></section>
 
 <!-- FOOTER (updated with terms/privacy/refunds links) -->
 <footer>
@@ -672,7 +678,7 @@ navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navLink
 document.querySelectorAll('.fade-up').forEach(el=>new IntersectionObserver(entries=>entries.forEach(e=>e.isIntersecting&&e.target.classList.add('visible')),{threshold:0.1}).observe(el));
 
 // TELEMETRY
-async function fetchTelemetry(){try{const r=await fetch('https://thermomind-production.up.railway.app/bridge/telemetry');const j=await r.json();if(j.status==='ok'&&j.data){const d=j.data;const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};set('t-cycle',d.cycle??'---');set('t-emerge',typeof d.emergence==='number'?d.emergence.toFixed(4):'---');set('t-traj',d.trajectory??'---');set('t-grade',d.grade??'--');set('t-phi',typeof d.thermo_phi==='number'?d.thermo_phi.toFixed(4):'---');set('t-regime',d.regime??'---');set('t-surplus',typeof d.surplus==='number'?d.surplus.toFixed(4):'---');set('t-ks',typeof d.ks==='number'?d.ks.toFixed(4):'---');set('t-uptime',d.uptime??'---');set('cycleVal',d.cycle??'---');set('gradeVal',d.grade??'--');set('emergeVal',typeof d.emergence==='number'?d.emergence.toFixed(3):'---');set('phiVal',typeof d.thermo_phi==='number'?d.thermo_phi.toFixed(3):'---');document.getElementById('statusVal').textContent='● LIVE';const st=document.getElementById('teleStatus');st.textContent='● BRIDGE CONNECTED';st.className='tele-status';}}catch(e){}}
+async function fetchTelemetry(){try{const r=await fetch('https://thermomind-production.up.railway.app/bridge/telemetry');const j=await r.json();if(j.status==='ok'&&j.data){const d=j.data;const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};set('t-cycle',d.cycle??'---');set('t-emerge',typeof d.emergence==='number'?d.emergence.toFixed(4):'---');set('t-traj',d.trajectory??'---');set('t-grade',d.grade??'--');set('t-phi',typeof d.thermo_phi==='number'?d.thermo_phi.toFixed(4):'---');set('t-regime',d.regime??'---');set('t-surplus',typeof d.surplus==='number'?d.surplus.toFixed(4):'---');set('t-ks',typeof d.ks==='number'?d.ks.toFixed(4):'---');set('t-uptime',d.uptime??'---');const st=document.getElementById('teleStatus');st.textContent='● BRIDGE CONNECTED';st.className='tele-status';}}catch(e){}}
 fetchTelemetry();setInterval(fetchTelemetry,15000);
 
 // KEY FORM
